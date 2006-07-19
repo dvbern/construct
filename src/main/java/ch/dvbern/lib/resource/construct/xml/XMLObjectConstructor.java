@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 11:39:58 $ - $Author: meth $ - $Revision: 1.2 $
+ * $Date: 2006/07/19 15:14:23 $ - $Author: meth $ - $Revision: 1.3 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -77,10 +77,6 @@ public class XMLObjectConstructor implements ObjectConstructor,
      * If there is no definition for the object with the passed
      * <code>objectId</code> or if the object can not be created, a
      * <code>ConstructionException</code> is thrown.
-     * <p>
-     * The <code>XMLObjectConstructor</code> uses <a
-     * href="http://www.jdom.org" target="_blank"> <b>JDOM </b> </a> for parsing
-     * the xml-files.
      * <p>
      * The parsing of the xml-tags is delegated to various
      * <code>ElementParser</code> (see <code>ParserFactory</code>)

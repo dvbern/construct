@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 10:28:09 $ - $Author: meth $ - $Revision: 1.1 $
+ * $Date: 2006/07/19 15:14:23 $ - $Author: meth $ - $Revision: 1.2 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -18,7 +18,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -26,8 +25,6 @@ import org.xml.sax.SAXException;
  * xml-tags with the element-name "ref" (<code>&lt;ref  &gt;</code>). The
  * parser may use other <code>ElementParser</code> instances for parsing
  * nested elements.
- * <p>
- * Code relies on <a href="http://www.jdom.org" target="_blank">JDOM </a>
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
  */
@@ -37,13 +34,13 @@ public class RefParser implements ElementParser {
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
      * 
-     * @param element org.jdom.Element containing the information of the parsed
-     *        xml-element
+     * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
-     *        tags
+     *            tags
      * @return ClassObjectPair: parsed xml-data, never null.
      * @exception ElementParserException Thrown, if a problem occurs while
-     *            parsing the xml-tag and creating the class/object instances.
+     *                parsing the xml-tag and creating the class/object
+     *                instances.
      */
     public ClassObjectPair parse(Element element, ParserFactory factory)
             throws ElementParserException {
@@ -64,7 +61,7 @@ public class RefParser implements ElementParser {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder();
             Document doc = builder.parse(ins);
-            Element root = doc.getDocumentElement();
+            Element root = new Element(doc.getDocumentElement());
 
             ClassObjectPair cop = factory.getParser(root.getNodeName()).parse(
                     root, factory);

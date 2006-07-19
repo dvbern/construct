@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 11:39:58 $ - $Author: meth $ - $Revision: 1.2 $
+ * $Date: 2006/07/19 15:14:23 $ - $Author: meth $ - $Revision: 1.3 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -17,8 +17,6 @@ import java.util.List;
  * Implementation of <code>ElementParser</code>. Responsible for parsing xml-tags with the element-name "cast" (<code>&lt;cast  &gt;</code>).
  * The parser may use other <code>ElementParser</code> instances for parsing nested elements.
  * <p>
- * Code relies on <a href="http://www.jdom.org" target="_blank">JDOM </a>
- * <p>
  * For a detailed description of the xml-tags see the special documentation.
  */
 public class CastParser implements ElementParser {
@@ -26,7 +24,7 @@ public class CastParser implements ElementParser {
 	/**
 	 * Method parses the passed xml-element and creates an object based on the information defined by the xml-tag.
 	 * 
-	 * @param element org.jdom.Element containing the information of the parsed xml-element
+	 * @param element containing the information of the parsed xml-element
 	 * @param factory ParserFactory returning the parsers for parsing nested tags
 	 * @return ClassObjectPair: parsed xml-data, never null.
 	 * @exception ElementParserException Thrown, if a problem occurs while parsing the xml-tag and creating the
