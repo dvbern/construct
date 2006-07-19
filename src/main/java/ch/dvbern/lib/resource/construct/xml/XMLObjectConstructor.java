@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 10:28:09 $ - $Author: meth $ - $Revision: 1.1 $
+ * $Date: 2006/07/19 11:39:58 $ - $Author: meth $ - $Revision: 1.2 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -20,7 +20,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -135,7 +134,7 @@ public class XMLObjectConstructor implements ObjectConstructor,
             DocumentBuilder builder = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder();
             Document doc = builder.parse(ins);
-            Element root = doc.getDocumentElement();
+            Element root = new Element(doc.getDocumentElement());
             return parserFactory.getParser(root.getNodeName()).parse(root,
                     parserFactory).getObject();
         } catch (SAXException ex) {
