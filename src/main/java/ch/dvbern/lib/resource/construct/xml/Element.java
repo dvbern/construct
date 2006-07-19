@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 11:39:58 $ - $Author: meth $ - $Revision: 1.1 $
+ * $Date: 2006/07/19 15:55:28 $ - $Author: meth $ - $Revision: 1.2 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -47,6 +47,16 @@ public class Element {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.jdom.Element#getAttributeValue(java.lang.String)
+	 */
+	public String getAttributeValue(String name) {
+
+		return nestedElement.getAttribute(name);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.w3c.dom.Element#getElementsByTagName(java.lang.String)
 	 */
 	public List getElementsByTagName(String name) {
@@ -74,6 +84,16 @@ public class Element {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.jdom.Node#getName()
+	 */
+	public String getName() {
+
+		return nestedElement.getNodeName();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.w3c.dom.Node#getChildNodes()
 	 */
 	public List getChildElements() {
@@ -88,4 +108,32 @@ public class Element {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jdom.Element#getChildren()
+	 */
+	public List getChildren() {
+
+		NodeList nodeList = nestedElement.getChildNodes();
+
+		List result = new ArrayList();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+		    if (nodeList.item(i) instanceof org.w3c.dom.Element) {
+		        result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
+		    }
+		}
+
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jdom.Element#getParent()
+	 */
+	public Element getParent() {
+	    return new Element((org.w3c.dom.Element)nestedElement.getParentNode());
+	}
+	
 }
