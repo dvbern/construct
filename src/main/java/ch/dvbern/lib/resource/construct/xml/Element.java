@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 15:55:28 $ - $Author: meth $ - $Revision: 1.2 $
+ * $Date: 2006/07/19 16:11:17 $ - $Author: meth $ - $Revision: 1.3 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -41,6 +41,9 @@ public class Element {
 	 */
 	public String getAttribute(String name) {
 
+	    if (!nestedElement.hasAttribute(name)) {
+	        return null;
+	    }
 		return nestedElement.getAttribute(name);
 	}
 
@@ -51,6 +54,9 @@ public class Element {
 	 */
 	public String getAttributeValue(String name) {
 
+	    if (!nestedElement.hasAttribute(name)) {
+	        return null;
+	    }
 		return nestedElement.getAttribute(name);
 	}
 
@@ -102,7 +108,9 @@ public class Element {
 
 		List result = new ArrayList();
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
+		    if (nodeList.item(i) instanceof org.w3c.dom.Element) {
+		        result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
+		    }
 		}
 
 		return result;
