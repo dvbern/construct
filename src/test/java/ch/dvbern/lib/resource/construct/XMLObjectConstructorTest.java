@@ -1,3 +1,14 @@
+/*
+ * Copyright © 2006 DV Bern AG, Switzerland
+ *
+ * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
+ * geschützt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulässig. Dies gilt
+ * insbesondere für Vervielfältigungen, die Einspeicherung und Verarbeitung in
+ * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
+ * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
+ *
+ * $Date: 2006/07/20 12:12:10 $ - $Author: meth $ - $Revision: 1.2 $
+ */
 package ch.dvbern.lib.resource.construct;
 
 import java.util.*;
@@ -11,6 +22,9 @@ import ch.dvbern.lib.resource.construct.xml.XMLObjectConstructor;
 import junit.framework.*;
 import java.io.*;
 
+/**
+ * The main test class for construct lib.
+ */
 public class XMLObjectConstructorTest extends TestCase {
     
     private static String FILENAME_SIMPLETC;
@@ -22,18 +36,35 @@ public class XMLObjectConstructorTest extends TestCase {
     private FilePathResourceLocator fprl;
     
     
+    /**
+     * JUnit test constructor.
+     * @param name test name
+     */
     public XMLObjectConstructorTest(String name) {
         super(name);
     }
     
+    /**
+     * JUnit test suite method.
+     * 
+     * @return a JUnit test suite.
+     */
     public static Test suite() {
         return new TestSuite(XMLObjectConstructorTest.class);
     }
     
+    /**
+     * Main method.
+     * 
+     * @param args main method arguments
+     */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
     
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
     protected void setUp() throws Exception {
         
         //create ref.xml
@@ -88,7 +119,7 @@ public class XMLObjectConstructorTest extends TestCase {
         
     }
     
-    protected void originalFile() throws Exception {
+    private void originalFile() throws Exception {
         FileOutputStream fout = new FileOutputStream(fileSTC);
         DataOutputStream dout = new DataOutputStream(fout);
         dout.writeChars("<?xml version=\"1.0\"?>");
@@ -164,7 +195,7 @@ public class XMLObjectConstructorTest extends TestCase {
             dout.close();
     }
     
-    protected void changeFile() throws Exception {
+    private void changeFile() throws Exception {
         FileOutputStream fout = new FileOutputStream(fileSTC.getAbsolutePath());
         DataOutputStream dout = new DataOutputStream(fout);
         dout.writeChars("<?xml version=\"1.0\"?>");
@@ -244,6 +275,9 @@ public class XMLObjectConstructorTest extends TestCase {
         
     }
     
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
     protected void tearDown() throws Exception {
         fprl.stopResourceChecker();
         fileSTC.delete();
@@ -251,7 +285,7 @@ public class XMLObjectConstructorTest extends TestCase {
     }
     
     
-    protected File constructMyClass() throws Exception {
+    private File constructMyClass() throws Exception {
         File file = File.createTempFile("myClass", ".xml");
         FileOutputStream fout = new FileOutputStream(file);
         DataOutputStream dout = new DataOutputStream(fout);
@@ -263,6 +297,11 @@ public class XMLObjectConstructorTest extends TestCase {
         return file;
     }
     
+    /**
+     * test initialization
+     * 
+     * @throws Exception error while initialization
+     */
     public void testInitValues() throws Exception {
         SimpleTestConstruct construct = (SimpleTestConstruct)objConstructor.construct(FILENAME_SIMPLETC, false);
         assertEquals(construct.getAshort(), 1);
@@ -277,12 +316,22 @@ public class XMLObjectConstructorTest extends TestCase {
         //assertEquals(construct.getAStaticInteger(), new Integer("333"));
     }
     
+    /**
+     * ref parser test
+     * 
+     * @throws Exception test failure
+     */
     public void testRefParser() throws Exception {
         SimpleTestConstruct construct = (SimpleTestConstruct)objConstructor.construct(FILENAME_SIMPLETC, false);
         Map map = (Map)construct.getAobject();
-        assertEquals((String)map.get("key 2"), "value 2");
+        assertEquals(map.get("key 2"), "value 2");
     }
     
+    /**
+     * array parser test
+     * 
+     * @throws Exception test failure
+     */
     public void testArrayParser() throws Exception {
         SimpleTestConstruct construct = (SimpleTestConstruct)objConstructor.construct(FILENAME_SIMPLETC, false);
         Integer[] arrayOne = construct.getArrayOne();
@@ -294,6 +343,11 @@ public class XMLObjectConstructorTest extends TestCase {
     }
     
     
+    /**
+     * remove event test
+     * 
+     * @throws Exception test failure
+     */
     public void testRemoveEvent() throws Exception {
         try {
             objConstructor.construct(FILENAME_SIMPLETC, false);
@@ -308,6 +362,11 @@ public class XMLObjectConstructorTest extends TestCase {
         } catch (ConstructionException ex) {}
     }
     
+    /**
+     * change event test
+     * 
+     * @throws Exception test failure
+     */
     public void testChangeEvent() throws Exception {
         XMLObjectConstructorTest.TestFilePathResourceLocator locator = new XMLObjectConstructorTest.TestFilePathResourceLocator(fileSTC.getParent());
         XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(locator));
@@ -329,6 +388,11 @@ public class XMLObjectConstructorTest extends TestCase {
         
     }
     
+    /**
+     * class test
+     * 
+     * @throws Exception test failure
+     */
     public void testClass() throws Exception {
         File file = constructMyClass();
         FilePathResourceLocator fprl = new FilePathResourceLocator(file.getParent(), 500);
@@ -340,6 +404,11 @@ public class XMLObjectConstructorTest extends TestCase {
         file.delete();
     }
     
+    /**
+     * script test
+     * 
+     * @throws Exception test failure
+     */
     public void testScript() throws Exception {
         File file = File.createTempFile("script", ".xml");
         FileOutputStream fout = new FileOutputStream(file);
@@ -434,6 +503,11 @@ public class XMLObjectConstructorTest extends TestCase {
         
     }
     
+    /**
+     * field access test
+     * 
+     * @throws Exception test failure
+     */
     public void testFieldAccess() throws Exception {
         File file = File.createTempFile("field", ".xml");
         FileOutputStream fout = new FileOutputStream(file);
@@ -496,6 +570,11 @@ public class XMLObjectConstructorTest extends TestCase {
         private HashSet listeners;
         private HashSet files;
         
+        /**
+         * Test resource locator.
+         * 
+         * @param path file path
+         */
         public TestFilePathResourceLocator(String path) {
             this.path = path;
             listeners = new HashSet();
@@ -552,11 +631,16 @@ public class XMLObjectConstructorTest extends TestCase {
             }
         }
         
+        /**
+         * resource change notification
+         * 
+         * @param resource identifier of the resource
+         */
         public void notifyResourceChange(String resource) {
             ResourceChangedEvent event = new ResourceChangedEvent(this, resource);
             Set clone = null;
             synchronized(listeners) {
-                clone = (Set)((HashSet)listeners).clone();
+                clone = (Set)listeners.clone();
             }
             for (Iterator i = clone.iterator(); i.hasNext();) {
                 ResourceChangeListener listener = (ResourceChangeListener)i.next();
