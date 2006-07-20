@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 16:11:17 $ - $Author: meth $ - $Revision: 1.3 $
+ * $Date: 2006/07/20 12:11:54 $ - $Author: meth $ - $Revision: 1.4 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -34,36 +34,36 @@ public class Element {
 		this.nestedElement = nestedElement;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.w3c.dom.Element#getAttribute(java.lang.String)
+	 * @param name name of the attribute to be read
+	 * @return value of the requested attribute or <code>null</code> if not existing
 	 */
 	public String getAttribute(String name) {
 
-	    if (!nestedElement.hasAttribute(name)) {
-	        return null;
-	    }
+		if (!nestedElement.hasAttribute(name)) {
+			return null;
+		}
 		return nestedElement.getAttribute(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.jdom.Element#getAttributeValue(java.lang.String)
+	 * @param name name of the attribute to be read
+	 * @return value of the requested attribute or <code>null</code> if not existing
 	 */
 	public String getAttributeValue(String name) {
 
-	    if (!nestedElement.hasAttribute(name)) {
-	        return null;
-	    }
+		if (!nestedElement.hasAttribute(name)) {
+			return null;
+		}
 		return nestedElement.getAttribute(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.w3c.dom.Element#getElementsByTagName(java.lang.String)
+	 * @param name name of the requested subelements
+	 * @return requested subelements or an empty <code>List</code> if not existing
 	 */
 	public List getElementsByTagName(String name) {
 
@@ -77,30 +77,27 @@ public class Element {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.w3c.dom.Node#getNodeName()
+	 * @return name of the node
 	 */
 	public String getNodeName() {
 
 		return nestedElement.getNodeName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.jdom.Node#getName()
+	 * @return name of the node
 	 */
 	public String getName() {
 
 		return nestedElement.getNodeName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.w3c.dom.Node#getChildNodes()
+	 * @return subelements or an empty <code>List</code> if not existing
 	 */
 	public List getChildElements() {
 
@@ -108,18 +105,17 @@ public class Element {
 
 		List result = new ArrayList();
 		for (int i = 0; i < nodeList.getLength(); i++) {
-		    if (nodeList.item(i) instanceof org.w3c.dom.Element) {
-		        result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
-		    }
+			if (nodeList.item(i) instanceof org.w3c.dom.Element) {
+				result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
+			}
 		}
 
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.jdom.Element#getChildren()
+	 * @return subelements or an empty <code>List</code> if not existing
 	 */
 	public List getChildren() {
 
@@ -127,21 +123,21 @@ public class Element {
 
 		List result = new ArrayList();
 		for (int i = 0; i < nodeList.getLength(); i++) {
-		    if (nodeList.item(i) instanceof org.w3c.dom.Element) {
-		        result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
-		    }
+			if (nodeList.item(i) instanceof org.w3c.dom.Element) {
+				result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
+			}
 		}
 
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.jdom.Element#getParent()
+	 * @return parent element
 	 */
 	public Element getParent() {
-	    return new Element((org.w3c.dom.Element)nestedElement.getParentNode());
+
+		return new Element((org.w3c.dom.Element) nestedElement.getParentNode());
 	}
-	
+
 }

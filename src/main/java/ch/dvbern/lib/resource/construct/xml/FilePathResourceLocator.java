@@ -7,7 +7,7 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/19 10:28:08 $ - $Author: meth $ - $Revision: 1.1 $
+ * $Date: 2006/07/20 12:14:23 $ - $Author: meth $ - $Revision: 1.2 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -80,7 +80,7 @@ public class FilePathResourceLocator implements ResourceLocator {
     /**
      * Method registers listeners interested in changes or removals of resources.
      *
-     * @param listener: listener interested in changes or removals of resources; must not be null
+     * @param listener listener interested in changes or removals of resources; must not be null
      */
     public void addResourceChangeListener(ResourceChangeListener listener) {
         if (listener == null) {
@@ -96,7 +96,7 @@ public class FilePathResourceLocator implements ResourceLocator {
     /**
      * Method de-registers listeners.
      *
-     * @param listener: registered listener that has to be removed
+     * @param listener registered listener that has to be removed
      */
     public void removeResourceChangeListener(ResourceChangeListener listener) {
         synchronized(listeners) {
