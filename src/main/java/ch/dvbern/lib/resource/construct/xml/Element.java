@@ -7,13 +7,17 @@
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
  * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
- * $Date: 2006/07/20 12:11:54 $ - $Author: meth $ - $Revision: 1.4 $
+ * $Date: 2007/05/14 14:29:48 $ - $Author: meth $ - $Revision: 1.5 $
  */
 package ch.dvbern.lib.resource.construct.xml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -32,6 +36,20 @@ public class Element {
 
 		super();
 		this.nestedElement = nestedElement;
+	}
+	
+	/**
+	 * @see org.w3c.dom.Element#getAttributes()
+	 * @return all element attributes as Map<String, String>
+	 */
+	public Map getAttributes() {
+		Map result = new HashMap();
+		NamedNodeMap nnm =  nestedElement.getAttributes();
+		for (int i = 0; i < nnm.getLength(); i++) {
+			Node node = nnm.item(i);
+			result.put(node.getNodeName(), node.getNodeValue());
+		}
+		return result;
 	}
 
 	/**
