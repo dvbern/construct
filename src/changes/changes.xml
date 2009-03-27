@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>DVBern Lib Invocationcache</title>
+	</properties>
+	<body>
+		<release version="1.0.0-SNAPSHOT" date="2009-03-27">
+			<action dev="beph" type="add">
+				Umstellung auf Maven
+			</action>
+		</release>
+	</body>
+</document>

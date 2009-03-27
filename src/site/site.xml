@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<version position="left" />
+	<body>
+		<menu ref="reports" />
+	</body>
+	<skin>
+		<artifactId>dvbern-default-skin</artifactId>
+		<groupId>ch.dvbern.maven.skins</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</skin>
+</project>
