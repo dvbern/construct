@@ -20,8 +20,24 @@
 		<system>jira</system>
 		<url>http://jira/jira/browse/CONSTRUCT</url>
 	</issueManagement>
+	<ciManagement>
+		<system>continuum</system>
+		<url>http://continuum/continuum</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnSuccess>false</sendOnSuccess>
+				<sendOnWarning>false</sendOnWarning>
+				<configuration>
+					<address>thomas.meister@dvbern.ch</address>
+				</configuration>
+			</notifier>
+		</notifiers> 
+	</ciManagement>
 	<url>
-		http://wiki/wiki/Edit.jsp?page=DV%20Bern%20Lib%20Invocationcache
+		http://wiki/wiki/Wiki.jsp?page=DVBernLibConstruct
 	</url>
 	<developers>
 		<developer>
