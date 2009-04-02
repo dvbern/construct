@@ -40,6 +40,19 @@
 	<url>
 		http://wiki/wiki/Wiki.jsp?page=DVBernLibConstruct
 	</url>
+	<reporting>
+		<plugins>
+			<!-- changes.xml -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>changes-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>changelog-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 	<developers>
 		<developer>
 			<id>meth</id>
