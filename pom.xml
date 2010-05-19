@@ -5,12 +5,12 @@
 	<artifactId>dvbern-lib-construct</artifactId>
 	<packaging>jar</packaging>
 	<name>dvbern-lib-construct</name>
-	<version>1.2.1</version>
+	<version>1.2.2-SNAPSHOT</version>
 	<description>Instanzieren von Java Objekten aus einer XML Struktur heraus</description>
 	<parent>
 		<groupId>ch.dvbern.maven</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.1</version>
+		<version>1.2</version>
 	</parent>
 	<scm>
 		<connection>
