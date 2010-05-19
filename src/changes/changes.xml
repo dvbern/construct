@@ -4,7 +4,12 @@
 		<author email="thomas.meister@dvbern.ch">Thomas Meister</author>
 	</properties>
 	<body>
-		<release version="1.2.1-SNAPSHOT" date="2009-04-02">
+		<release version="1.2.2" date="2009-04-02">
+			<action dev="hefr" type="add">
+				Parent POM aktualisiert
+			</action>
+		</release>
+		<release version="1.2.1" date="2009-04-02">
 			<action dev="hefr" type="add">
 				Dokumentation hinzugefügt
 			</action>
