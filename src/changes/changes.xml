@@ -5,7 +5,7 @@
 	</properties>
 	<body>
 		<release version="1.2.2" date="2009-04-02">
-			<action dev="hefr" type="add">
+			<action dev="meth" type="add">
 				Parent POM aktualisiert
 			</action>
 		</release>
