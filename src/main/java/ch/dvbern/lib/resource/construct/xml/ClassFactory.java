@@ -13,6 +13,8 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import java.lang.reflect.*;
 
+import javax.annotation.Nonnull;
+
 /**
  * This class is responsible for returning <code>Class</code> instances
  * corresponing to the specified <code>type</code>
@@ -45,7 +47,7 @@ public class ClassFactory {
     /**
      * Returns a <code>Class</code> instance for the specified
      * <code>type</code>, never null. See description of class.
-     * 
+     *
      * @param type String, see description of this <code>ClassFactory</code>.
      * @return Returns a <code>Class</code> instance for the specified
      *         <code>type</code>, never null
@@ -53,8 +55,9 @@ public class ClassFactory {
      *            been found for the specified <code>type</code>.
      * @see ClassFactory
      */
-    public static Class getKlass(String type) throws ClassNotFoundException {
-        Class retVal = null;
+	@Nonnull
+    public static Class getKlass(@Nonnull String type) throws ClassNotFoundException {
+        Class retVal;
         if (type.equalsIgnoreCase("string")) {
             retVal = String.class;
         } else if (type.equalsIgnoreCase("int")) {

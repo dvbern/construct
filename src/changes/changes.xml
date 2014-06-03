@@ -4,6 +4,13 @@
 		<author email="thomas.meister@dvbern.ch">Thomas Meister</author>
 	</properties>
 	<body>
+		<release version="2.0.0" date="2014-06-03">
+			<action dev="lich" type="add">
+				Exception-Handling verbessert, so dass im normalen Stacktrace nun auch sinnvolle Messages stehen.
+				JSR305 (Nonnull/Nullable) eingebaut
+				Cleanup/Sonar love
+			</action>
+		</release>
 		<release version="1.2.2" date="2009-04-02">
 			<action dev="meth" type="add">
 				Parent POM aktualisiert

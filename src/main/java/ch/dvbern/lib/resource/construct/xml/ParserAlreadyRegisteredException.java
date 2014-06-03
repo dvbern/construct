@@ -11,30 +11,25 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * This exception indicates that a parser is already registerd with a given
  * name.
- * 
+ *
  * @see ParserFactory
  */
-public class ParserAlreadyRegisteredException extends java.lang.Exception {
+public class ParserAlreadyRegisteredException extends Exception {
 
 	private static final long serialVersionUID = 4404585566412735102L;
-
-	/**
-     * Creates a new instance of <code>ParserAlreadyRegisteredException</code>
-     * without detail message.
-     */
-    public ParserAlreadyRegisteredException() {
-    }
 
     /**
      * Constructs an instance of <code>ParserAlreadyRegisteredException</code>
      * with the specified detail message.
-     * 
+     *
      * @param msg the detail message.
      */
-    public ParserAlreadyRegisteredException(String msg) {
+    public ParserAlreadyRegisteredException(@Nonnull String msg) {
         super(msg);
     }
 }

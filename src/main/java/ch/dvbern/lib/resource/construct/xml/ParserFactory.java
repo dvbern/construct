@@ -13,26 +13,30 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import java.util.*;
 
+import javax.annotation.Nonnull;
+
 /**
  * This class is responsible for managing <code>ElementParser</code>. Basic
  * parsers are added in <code>init()</code>, additional ones may be added via
  * <code>registerParser()</code>. The factory stores a
  * <code>ResourceLocator</code> responsible for locating resources
  * (xml-files).
- * 
+ *
  * @see ElementParser
  * @see ResourceLocator
  */
 public class ParserFactory {
 
-    private Map parsers = new HashMap();
+	@Nonnull
+    private final Map<String, ElementParser> parsers = new HashMap<String, ElementParser>();
 
-    private ResourceLocator locator;
+	@Nonnull
+    private final ResourceLocator locator;
 
     /**
      * Default constructor. Sets <code>ClassLoaderResourceLocator</code> as
      * resource locator.
-     * 
+     *
      * @see ClassLoaderResourceLocator
      */
     public ParserFactory() {
@@ -41,15 +45,12 @@ public class ParserFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @param locator <code>ResourceLocator</code> for locating resources;
      *        never null
      * @see ResourceLocator
      */
-    public ParserFactory(ResourceLocator locator) {
-        if (locator == null) {
-            throw new IllegalArgumentException("locator must not be null");
-        }
+    public ParserFactory(@Nonnull ResourceLocator locator) {
         this.locator = locator;
         init();
     }
@@ -82,17 +83,18 @@ public class ParserFactory {
     /**
      * Method returns <code>ElementParser</code> for a xml-tag with the
      * <code>elementName</code>.
-     * 
+     *
      * @param elementName identifier of the element
      * @return <code>ElementParser</code> for the given
      *         <code>element-name</code>. Never null.
      * @exception ParserNotRegisteredException Thrown if there is no parser
      *            registered for the given <code>elementName</code>.
      */
-    public ElementParser getParser(String elementName)
+	@Nonnull
+    public ElementParser getParser(@Nonnull String elementName)
             throws ParserNotRegisteredException {
         String lowerCaseName = elementName.toLowerCase();
-        ElementParser parser = (ElementParser) parsers.get(lowerCaseName);
+        ElementParser parser = parsers.get(lowerCaseName);
         if (parser == null) {
             throw new ParserNotRegisteredException(
                     "there is no parser registered for elementName="
@@ -106,7 +108,7 @@ public class ParserFactory {
      * the <code>elementName</code>.<code>elementName</code> should
      * correspond to the element-name of the tag, for which the parser is
      * designed.
-     * 
+     *
      * @param elementName Name, under which the parser is registered. Should
      *        correspond to the element-name of the tag, for which the parser is
      *        designed.
@@ -114,7 +116,7 @@ public class ParserFactory {
      * @exception ParserAlreadyRegisteredException Thrown, if there is already a
      *            parser registered with <code>elementName</code>
      */
-    public void registerParser(String elementName, ElementParser parser)
+    public void registerParser(@Nonnull String elementName, @Nonnull ElementParser parser)
             throws ParserAlreadyRegisteredException {
         String lowerCaseName = elementName.toLowerCase();
         synchronized (parsers) {
@@ -129,9 +131,10 @@ public class ParserFactory {
 
     /**
      * Method returns the ResourceLocator used by this factory.
-     * 
+     *
      * @return ResourceLocator used by this factory
      */
+	@Nonnull
     public ResourceLocator getResourceLocator() {
         return locator;
     }

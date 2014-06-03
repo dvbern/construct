@@ -13,6 +13,8 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import java.util.*;
 
+import javax.annotation.Nonnull;
+
 import ch.dvbern.lib.resource.construct.*;
 
 /**
@@ -28,7 +30,7 @@ public class ConstructParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -37,12 +39,16 @@ public class ConstructParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
 
-        ClassObjectPair retVal = null;
+        ClassObjectPair retVal;
         String className = element.getAttribute("class");
-        Class klass = null;
+		if (className == null || className.isEmpty()) {
+			throw new ElementParserException("attribute 'class' may not be null on " + element.getNodeName());
+		}
+        Class klass;
         try {
             klass = ClassFactory.getKlass(className);
         } catch (ClassNotFoundException ex) {
@@ -51,27 +57,26 @@ public class ConstructParser implements ElementParser {
                     ex);
         }
 
-        List argChildren = element.getChildElements();
-        List argClasses = new ArrayList(argChildren.size());
-        List initArgs = new ArrayList(argChildren.size());
-        for (int i = 0; i < argChildren.size(); i++) {
-            Element el = (Element) argChildren.get(i);
-            //add constructor argument
-            try {
-                ClassObjectPair cop = factory.getParser(el.getNodeName())
-                        .parse(el, factory);
-                argClasses.add(cop.getKlass());
-                initArgs.add(cop.getObject());
-            } catch (ParserNotRegisteredException ex) {
-                throw new ElementParserException(
-                        "no parser found for element name=" + el.getNodeName(),
-                        ex);
-            }
+        List<Element> argChildren = element.getChildElements();
+        List<Class<?>> argClasses = new ArrayList<Class<?>>(argChildren.size());
+        List<Object> initArgs = new ArrayList<Object>(argChildren.size());
+		for (Element el : argChildren) {
+			//add constructor argument
+			try {
+				ClassObjectPair cop = factory.getParser(el.getNodeName())
+								.parse(el, factory);
+				argClasses.add(cop.getKlass());
+				initArgs.add(cop.getObject());
+			} catch (ParserNotRegisteredException ex) {
+				throw new ElementParserException(
+								"no parser found for element name=" + el.getNodeName(),
+								ex);
+			}
 
-        }
+		}
 
-        Construct construct = new Construct(klass, (Class[]) argClasses
-                .toArray(new Class[] {}), initArgs.toArray(new Object[] {}));
+        Construct construct = new Construct(klass, argClasses
+                .toArray(new Class<?>[argClasses.size()]), initArgs.toArray(new Object[initArgs.size()]));
         try {
             retVal = new ClassObjectPair(construct.getKlass(), construct
                     .getObject());

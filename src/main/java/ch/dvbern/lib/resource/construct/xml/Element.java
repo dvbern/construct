@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,25 +28,25 @@ import org.w3c.dom.NodeList;
  */
 public class Element {
 
+	@Nonnull
 	private org.w3c.dom.Element nestedElement;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param nestedElement the wrapped element
 	 */
-	public Element(org.w3c.dom.Element nestedElement) {
-
-		super();
+	public Element(@Nonnull org.w3c.dom.Element nestedElement) {
 		this.nestedElement = nestedElement;
 	}
-	
+
 	/**
 	 * @see org.w3c.dom.Element#getAttributes()
-	 * @return all element attributes as Map<String, String>
+	 * @return all element attributes as a copy
 	 */
-	public Map getAttributes() {
-		Map result = new HashMap();
+	@Nonnull
+	public Map<String, String> getAttributes() {
+		Map<String, String> result = new HashMap<String, String>();
 		NamedNodeMap nnm =  nestedElement.getAttributes();
 		for (int i = 0; i < nnm.getLength(); i++) {
 			Node node = nnm.item(i);
@@ -57,7 +60,8 @@ public class Element {
 	 * @param name name of the attribute to be read
 	 * @return value of the requested attribute or <code>null</code> if not existing
 	 */
-	public String getAttribute(String name) {
+	@Nullable
+	public String getAttribute(@Nonnull String name) {
 
 		if (!nestedElement.hasAttribute(name)) {
 			return null;
@@ -66,11 +70,11 @@ public class Element {
 	}
 
 	/**
-	 * @see org.jdom.Element#getAttributeValue(java.lang.String)
+	 * @see org.w3c.dom.Element#getAttribute(java.lang.String)
 	 * @param name name of the attribute to be read
 	 * @return value of the requested attribute or <code>null</code> if not existing
 	 */
-	public String getAttributeValue(String name) {
+	public String getAttributeValue(@Nonnull String name) {
 
 		if (!nestedElement.hasAttribute(name)) {
 			return null;
@@ -83,11 +87,12 @@ public class Element {
 	 * @param name name of the requested subelements
 	 * @return requested subelements or an empty <code>List</code> if not existing
 	 */
-	public List getElementsByTagName(String name) {
+	@Nonnull
+	public List<Element> getElementsByTagName(@Nonnull String name) {
 
 		NodeList nodeList = nestedElement.getElementsByTagName(name).item(0).getChildNodes();
 
-		List result = new ArrayList();
+		List<Element> result = new ArrayList<Element>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
 		}
@@ -99,15 +104,17 @@ public class Element {
 	 * @see org.w3c.dom.Node#getNodeName()
 	 * @return name of the node
 	 */
+	@Nonnull
 	public String getNodeName() {
 
 		return nestedElement.getNodeName();
 	}
 
 	/**
-	 * @see org.jdom.Node#getName()
+	 * @see Node#getNodeName()
 	 * @return name of the node
 	 */
+	@Nonnull
 	public String getName() {
 
 		return nestedElement.getNodeName();
@@ -117,11 +124,12 @@ public class Element {
 	 * @see org.w3c.dom.Node#getChildNodes()
 	 * @return subelements or an empty <code>List</code> if not existing
 	 */
-	public List getChildElements() {
+	@Nonnull
+	public List<Element> getChildElements() {
 
 		NodeList nodeList = nestedElement.getChildNodes();
 
-		List result = new ArrayList();
+		List<Element> result = new ArrayList<Element>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			if (nodeList.item(i) instanceof org.w3c.dom.Element) {
 				result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
@@ -132,14 +140,15 @@ public class Element {
 	}
 
 	/**
-	 * @see org.jdom.Element#getChildren()
+	 * @see org.w3c.dom.Element#getChildNodes()
 	 * @return subelements or an empty <code>List</code> if not existing
 	 */
-	public List getChildren() {
+	@Nonnull
+	public List<Element> getChildren() {
 
 		NodeList nodeList = nestedElement.getChildNodes();
 
-		List result = new ArrayList();
+		List<Element> result = new ArrayList<Element>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			if (nodeList.item(i) instanceof org.w3c.dom.Element) {
 				result.add(new Element((org.w3c.dom.Element) nodeList.item(i)));
@@ -150,9 +159,10 @@ public class Element {
 	}
 
 	/**
-	 * @see org.jdom.Element#getParent()
+	 * @see org.w3c.dom.Element#getParentNode()
 	 * @return parent element
 	 */
+	@Nullable
 	public Element getParent() {
 
 		return new Element((org.w3c.dom.Element) nestedElement.getParentNode());

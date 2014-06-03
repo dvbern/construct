@@ -13,10 +13,12 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import java.io.*;
 
+import javax.annotation.Nonnull;
+
 /**
  * Abstraction of resource locator. Used by XMLObjectConstructor resp. ParserFactory. Event source for
  * <code>ResourceChangedEvent</code>s
- * 
+ *
  * @see ClassLoaderResourceLocator
  * @see ParserFactory
  * @see XMLObjectConstructor
@@ -26,24 +28,25 @@ public interface ResourceLocator {
 
 	/**
 	 * Method returns resource as InputStream or throws Exception.
-	 * 
+	 *
 	 * @param resourceName Name of resource to locate (name of xml-file)
 	 * @return InputStream: resource as InputStream; never null.
-	 * @exception ResourceNotFoundException: Thrown if specified resource could not have been found
+	 * @throws ResourceNotFoundException if specified resource could not have been found
 	 */
-	InputStream getResourceAsStream(String resourceName) throws ResourceNotFoundException;
+	@Nonnull
+	InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException;
 
 	/**
 	 * Method registers listeners interested in changes or removals of resources.
-	 * 
+	 *
 	 * @param listener listener interested in changes or removals of resources
 	 */
-	void addResourceChangeListener(ResourceChangeListener listener);
+	void addResourceChangeListener(@Nonnull ResourceChangeListener listener);
 
 	/**
 	 * Method de-registers listeners.
-	 * 
+	 *
 	 * @param listener registered listener that has to be removed
 	 */
-	void removeResourceChangeListener(ResourceChangeListener listener);
+	void removeResourceChangeListener(@Nonnull ResourceChangeListener listener);
 }

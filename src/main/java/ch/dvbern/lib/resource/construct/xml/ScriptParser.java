@@ -13,6 +13,8 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of <code>ElementParser</code>. Responsible for parsing
  * xml-tags with the element-name "script" (<code>&lt;script  &gt;</code>).
@@ -26,7 +28,7 @@ public class ScriptParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -35,43 +37,47 @@ public class ScriptParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
 
         /** * process all the children ** */
         ClassObjectPair lastCOP = null;
-        List children = element.getChildElements();
-        if (children != null && children.size() > 0) {
+        List<Element> children = element.getChildElements();
+        if (children.size() > 0) {
             //create new ScopeParserFactory for storage of variables
             ScopeParserFactory scopeFactory = new ScopeParserFactory(factory);
-            for (int i = 0; i < children.size(); i++) {
-                Element child = (Element) children.get(i);
-                String tagName = child.getNodeName();
-                if (tagName.equals("return")) {
-                    //always return the object created by a return-tag
-                    Element objTag = (Element) child.getChildElements().get(0);
-                    try {
-                        lastCOP = scopeFactory.getParser(objTag.getNodeName())
-                                .parse(objTag, scopeFactory);
-                        return lastCOP;
-                    } catch (ParserNotRegisteredException ex) {
-                        throw new ElementParserException(ex);
-                    }
-                } else {
-                    /***********************************************************
-                     * * let the VardefParser parse and define the variables
-                     * (for tags with name 'vardef') or let the parsers do the
-                     * business (for tags with name 'invoke')
-                     **********************************************************/
-                    try {
-                        lastCOP = scopeFactory.getParser(child.getNodeName())
-                                .parse(child, scopeFactory);
-                    } catch (ParserNotRegisteredException ex) {
-                        throw new ElementParserException(ex);
-                    }
-                }
-            }
+			for (Element child : children) {
+				String tagName = child.getNodeName();
+				if (tagName.equals("return")) {
+					//always return the object created by a return-tag
+					Element objTag = child.getChildElements().get(0);
+					try {
+						lastCOP = scopeFactory.getParser(objTag.getNodeName())
+										.parse(objTag, scopeFactory);
+						return lastCOP;
+					} catch (ParserNotRegisteredException ex) {
+						throw new ElementParserException(ex);
+					}
+				} else {
+					/***********************************************************
+					 * * let the VardefParser parse and define the variables
+					 * (for tags with name 'vardef') or let the parsers do the
+					 * business (for tags with name 'invoke')
+					 **********************************************************/
+					try {
+						lastCOP = scopeFactory.getParser(child.getNodeName())
+										.parse(child, scopeFactory);
+					} catch (ParserNotRegisteredException ex) {
+						throw new ElementParserException(ex);
+					}
+				}
+			}
         }
+
+		if (lastCOP == null) {
+			throw new ElementParserException("no child elements defined for element " + element.getNodeName());
+		}
 
         //if there has not been a return-tag, return the last created
         // ClassObjectPair

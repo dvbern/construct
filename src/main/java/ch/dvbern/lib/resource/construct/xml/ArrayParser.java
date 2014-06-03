@@ -14,6 +14,8 @@ package ch.dvbern.lib.resource.construct.xml;
 import java.lang.reflect.*;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of <code>ElementParser</code>. Responsible for parsing xml-tags with the element-name "array" (<code>&lt;array  &gt;</code>).
  * The parser may use other <code>ElementParser</code> instances for parsing nested elements. <br>
@@ -23,14 +25,15 @@ public class ArrayParser implements ElementParser {
 
 	/**
 	 * Method parses the passed xml-element and creates an object based on the information defined by the xml-tag.
-	 * 
+	 *
 	 * @param element containing the information of the parsed xml-element
 	 * @param factory ParserFactory returning the parsers for parsing nested tags
 	 * @return ClassObjectPair: parsed xml-data, never null.
 	 * @exception ElementParserException Thrown, if a problem occurs while parsing the xml-tag and creating the
 	 *                class/object instances.
 	 */
-	public ClassObjectPair parse(Element element, ParserFactory factory) throws ElementParserException {
+	@Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory) throws ElementParserException {
 
 		// get Class of array
 		// check elementName
@@ -39,7 +42,10 @@ public class ArrayParser implements ElementParser {
 			throw new ElementParserException("array-parser can not handle elements with the name=" + elementName);
 		}
 		String type = element.getAttribute("elementtype");
-		Class arrayClass = null;
+		if (type == null || type.isEmpty()) {
+			throw new ElementParserException("Attribute 'elementtype' may not be null/empty on element " + element.getNodeName());
+		}
+		Class arrayClass;
 		try {
 			arrayClass = ClassFactory.getKlass(type);
 		} catch (ClassNotFoundException ex) {

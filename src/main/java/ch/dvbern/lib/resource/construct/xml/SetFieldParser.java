@@ -14,6 +14,8 @@ package ch.dvbern.lib.resource.construct.xml;
 import java.lang.reflect.*;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of <code>ElementParser</code>. Responsible for parsing
  * xml-tags with the element-name "setfield" (<code>&lt;setfield  &gt;</code>).
@@ -27,7 +29,7 @@ public class SetFieldParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -36,7 +38,8 @@ public class SetFieldParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
 
         /** * get name of field ** */
@@ -49,9 +52,9 @@ public class SetFieldParser implements ElementParser {
                     "object must have exactly on child (construct or ref or cast...)");
         }
         Element objectElToParse = (Element) objectElChildren.get(0);
-        ClassObjectPair cop = null;
-        Object myObject = null;
-        Class myClass = null;
+        ClassObjectPair cop;
+        Object myObject;
+        Class myClass;
         try {
             cop = factory.getParser(objectElToParse.getNodeName()).parse(
                     objectElToParse, factory);
@@ -62,9 +65,9 @@ public class SetFieldParser implements ElementParser {
         }
 
         /** * get value to set ** */
-        Element valueEl = (Element) element.getElementsByTagName("value")
+        Element valueEl = element.getElementsByTagName("value")
                 .get(0);
-        Object newValue = null;
+        Object newValue;
         try {
             ClassObjectPair tmp = factory.getParser(valueEl.getNodeName())
                     .parse(valueEl, factory);

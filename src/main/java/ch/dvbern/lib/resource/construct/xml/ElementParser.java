@@ -11,6 +11,8 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Abstraction of ElementParser. Its implementations are responsible for parsing
  * xml-elements and creating objects based on the declared information in the
@@ -23,7 +25,7 @@ public interface ElementParser {
 	/**
 	 * Method parses the passed xml-element and creates an object based on the
 	 * information defined by the xml-tag.
-	 * 
+	 *
 	 * @param element
 	 *            containing the information of the parsed xml-element
 	 * @param factory
@@ -33,7 +35,8 @@ public interface ElementParser {
 	 *                Thrown, if a problem occurs while parsing the xml-tag and
 	 *                creating the class/object instances.
 	 */
-	ClassObjectPair parse(Element element, ParserFactory factory)
+	@Nonnull
+	ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
 			throws ElementParserException;
 
 }

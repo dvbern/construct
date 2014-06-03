@@ -11,6 +11,8 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 import ch.dvbern.lib.resource.construct.*;
 
 /**
@@ -46,7 +48,7 @@ public class PrimObjectFactory {
      * <li>"boolean"</li>
      * <li>"char"</li>
      * </ul>
-     * 
+     *
      * @param type <code>java.lang.String</code> indicating the type of the
      *        wrapper
      * @param strValue <code>java.lang.String</code> containing the value to
@@ -57,13 +59,13 @@ public class PrimObjectFactory {
      *            supported or if a wrapper of type <code>type</code> cannot
      *            be created for the value <code>strValue</code>
      */
-
-    public static Object getWrapper(String type, String strValue)
+	@Nonnull
+    public static Object getWrapper(@Nonnull String type, @Nonnull String strValue)
             throws ConstructionException {
         Object returnVal = null;
         try {
             if (type.equalsIgnoreCase("string")) {
-                returnVal = new String(strValue);
+                returnVal = strValue;
             } else if (type.equalsIgnoreCase("int")) {
                 returnVal = Integer.valueOf(strValue);
             } else if (type.equalsIgnoreCase("long")) {
@@ -81,8 +83,7 @@ public class PrimObjectFactory {
                     throw new ConstructionException(strValue
                             + " is NOT a valid Character");
                 }
-                char ch = strValue.charAt(0);
-                returnVal = new Character(ch);
+				returnVal = strValue.charAt(0);
             }
         } catch (Exception ex) {
             throw new ConstructionException(

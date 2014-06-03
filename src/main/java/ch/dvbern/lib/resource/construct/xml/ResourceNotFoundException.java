@@ -11,30 +11,25 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exception indicating that a specific resource could not have been found. Used
  * by implementation of ResourceLocator
- * 
+ *
  * @see ResourceLocator
  */
-public class ResourceNotFoundException extends java.lang.Exception {
+public class ResourceNotFoundException extends Exception {
 
 	private static final long serialVersionUID = -1502396802449310508L;
-
-	/**
-     * Creates a new instance of <code>ResourceNotFoundException</code>
-     * without detail message.
-     */
-    public ResourceNotFoundException() {
-    }
 
     /**
      * Constructs an instance of <code>ResourceNotFoundException</code> with
      * the specified detail message.
-     * 
+     *
      * @param msg the detail message.
      */
-    public ResourceNotFoundException(String msg) {
+    public ResourceNotFoundException(@Nonnull String msg) {
         super(msg);
     }
 }

@@ -11,26 +11,28 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Interface for listeners, interested in changes or removals of resources.
  * Event sources: implementations of <code>ResourceLocator</code>
- * 
+ *
  * @see ResourceLocator
  */
 public interface ResourceChangeListener extends java.util.EventListener {
     /**
      * Method is called, if a resource has been changed.
-     * 
+     *
      * @param event <code>ResourceChangedEvent</code>: object containing the
      *        information about changed resource.
      */
-    void resourceChanged(ResourceChangedEvent event);
+    void resourceChanged(@Nonnull ResourceChangedEvent event);
 
     /**
      * Method is called, if a resource has been removed.
-     * 
+     *
      * @param event <code>ResourceChangedEvent</code>: object containing the
      *        information about removed resource.
      */
-    void resourceRemoved(ResourceChangedEvent event);
+    void resourceRemoved(@Nonnull ResourceChangedEvent event);
 }

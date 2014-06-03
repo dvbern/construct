@@ -14,6 +14,8 @@ package ch.dvbern.lib.resource.construct.xml;
 import java.lang.reflect.*;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of <code>ElementParser</code>. Responsible for parsing
  * xml-tags with the element-name "invoke" (<code>&lt;invoke  &gt;</code>).
@@ -27,7 +29,7 @@ public class InvokeParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -36,7 +38,8 @@ public class InvokeParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
 
         /** * get name of method ** */
@@ -49,8 +52,8 @@ public class InvokeParser implements ElementParser {
                     "object must have exactly on child (construct or ref or cast...)");
         }
         Element objectElToParse = (Element) objectElChildren.get(0);
-        Object myObject = null;
-        Class myClass = null;
+        Object myObject;
+        Class<?> myClass;
         try {
             ClassObjectPair cop = factory.getParser(
                     objectElToParse.getNodeName()).parse(objectElToParse,
@@ -63,30 +66,26 @@ public class InvokeParser implements ElementParser {
 
         /** * get parameters ** */
         List parameterElList = element.getElementsByTagName("parameters");
-        Class[] classArray = null; //may be null
-        Object[] objArray = null; // may ne null
-        if (parameterElList != null) {
-            classArray = new Class[parameterElList.size()];
-            objArray = new Object[parameterElList.size()];
-            for (int i = 0; i < parameterElList.size(); i++) {
-                Element paramEl = (Element) parameterElList.get(i);
-                try {
-                    ClassObjectPair cop = factory.getParser(
-                            paramEl.getNodeName()).parse(paramEl, factory);
-                    classArray[i] = cop.getKlass();
-                    objArray[i] = cop.getObject();
-                } catch (ParserNotRegisteredException ex) {
-                    throw new ElementParserException(ex);
-                }
-            }
-        }
+        Class<?>[] classArray = new Class[parameterElList.size()];
+		Object[] objArray = new Object[parameterElList.size()];
+		for (int i = 0; i < parameterElList.size(); i++) {
+			Element paramEl = (Element) parameterElList.get(i);
+			try {
+				ClassObjectPair cop = factory.getParser(
+						paramEl.getNodeName()).parse(paramEl, factory);
+				classArray[i] = cop.getKlass();
+				objArray[i] = cop.getObject();
+			} catch (ParserNotRegisteredException ex) {
+				throw new ElementParserException(ex);
+			}
+		}
 
         /** * get Method and invoke ** */
         try {
             Method method = myClass.getMethod(methodName, classArray);
             Object obj = method.invoke(myObject, objArray);
             if (obj == null) {
-                return new ClassObjectPair(null, null);
+				return new ClassObjectPair(Object.class, null);
             }
             return new ClassObjectPair(obj.getClass(), obj);
         } catch (NoSuchMethodException ex) {

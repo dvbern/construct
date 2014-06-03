@@ -11,30 +11,25 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exception indicating that a variable with the given name is already stored in
  * a given scope Used by ScopeParserFactory.
- * 
+ *
  * @see ScopeParserFactory
  */
-public class VariableAlreadyDefinedException extends java.lang.Exception {
+public class VariableAlreadyDefinedException extends Exception {
 
 	private static final long serialVersionUID = -3083483453012984072L;
-
-	/**
-     * Creates a new instance of <code>VariableAlreadyDefinedException</code>
-     * without detail message.
-     */
-    public VariableAlreadyDefinedException() {
-    }
 
     /**
      * Constructs an instance of <code>VariableAlreadyDefinedException</code>
      * with the specified detail message.
-     * 
+     *
      * @param msg the detail message.
      */
-    public VariableAlreadyDefinedException(String msg) {
+    public VariableAlreadyDefinedException(@Nonnull String msg) {
         super(msg);
     }
 }

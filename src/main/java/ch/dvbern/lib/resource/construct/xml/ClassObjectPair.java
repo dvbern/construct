@@ -11,44 +11,51 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * This class is a holder of a class-object-pair. The class-information doesn't
  * have to equal the class of the object.
  */
 public class ClassObjectPair {
 
+	@Nonnull
     private Class klass;
 
+	@Nullable
     private Object object;
 
     /**
      * Constructor creates <code>ClassObjectPair</code> with the given
      * parameters. <code>class</code> doesn't have to equal the class of the
      * <code>object</code>.
-     * 
+     *
      * @param klass <code>Class</code> of the pair
      * @param object Object of the pair.
      */
-    public ClassObjectPair(Class klass, Object object) {
+    public ClassObjectPair(@Nonnull Class klass, @Nullable Object object) {
         this.klass = klass;
         this.object = object;
     }
 
     /**
      * Returns the <code>klass</code> member.
-     * 
+     *
      * @return <code>klass</code> member
      */
-    public Class getKlass() {
+	@Nonnull
+	public Class getKlass() {
         return klass;
     }
 
     /**
      * Returns the <code>object</code> member.
-     * 
+     *
      * @return <code>object</code> member
      */
-    public Object getObject() {
+	@Nullable
+	public Object getObject() {
         return object;
     }
 }

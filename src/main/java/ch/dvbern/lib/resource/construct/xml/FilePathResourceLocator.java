@@ -14,6 +14,8 @@ package ch.dvbern.lib.resource.construct.xml;
 import java.io.*;
 import java.util.*;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of ResourceLocator. Needs a file-path-information for locating the resources.
  * <br>As <code>ResourceLocator</code> this class acts as event source for <code>ResourceChangedEvent</code>s
@@ -22,48 +24,53 @@ import java.util.*;
  * @see ResourceChangedEvent
  */
 public class FilePathResourceLocator implements ResourceLocator {
-    
+
+	@Nonnull
     private final String path;
-    private final HashSet listeners;
-    private final HashSet files;
+	@Nonnull
+    private final HashSet<ResourceChangeListener> listeners;
+	@Nonnull
+    private final HashSet<File> files;
+	@Nonnull
     private final ResourceChecker resourceChecker;
-    
+
     /**
      * Constructor.
      * Sets as period of resource-change-check 10'000 ms.
      *
      * @param path Filepath where the resources are located.
      */
-    public FilePathResourceLocator(String path) {
+    public FilePathResourceLocator(@Nonnull String path) {
         this(path, 10000);
     }
-    
+
     /**
      * Constructor.
      *
      * @param path File path where the resources are located.
      * @param resChangeCheckPeriod Value (in ms) defining the period of resource-change-check
      */
-    public FilePathResourceLocator(String path, long resChangeCheckPeriod) {
+    public FilePathResourceLocator(@Nonnull String path, long resChangeCheckPeriod) {
         this.path = path;
-        listeners = new HashSet();
-        files = new HashSet();
-        
-        resourceChecker = new ResourceChecker(resChangeCheckPeriod);
+        this.listeners = new HashSet<ResourceChangeListener>();
+        this.files = new HashSet<File>();
+
+        this.resourceChecker = new ResourceChecker(resChangeCheckPeriod);
         Thread thread = new Thread(resourceChecker);
-        thread.start();        
+        thread.start();
     }
-    
+
     /**
      * Method specified resource as InputStream or throws Exception.
      *
      * @param resourceName Name of resource to locate (name of xml-file)
      * @return InputStream: resource as InputStream; never null.
-     * @exception ResourceNotFoundException: Thrown if specified resource could not have been found
+     * @throws ResourceNotFoundException if specified resource could not have been found
      */
-    public InputStream getResourceAsStream(String resourceName) throws ResourceNotFoundException {
+	@Nonnull
+	public InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException {
         try {
-            
+
             File file = new File(path, resourceName);
             synchronized(files) {
                 if (!files.contains(file)) {
@@ -76,85 +83,84 @@ public class FilePathResourceLocator implements ResourceLocator {
             throw new ResourceNotFoundException("resource="+resourceName+" not found");
         }
     }
-    
+
     /**
      * Method registers listeners interested in changes or removals of resources.
      *
      * @param listener listener interested in changes or removals of resources; must not be null
      */
-    public void addResourceChangeListener(ResourceChangeListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException("listener must not be null");
-        }
+    public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
         synchronized(listeners) {
             if (!listeners.contains(listener)) {
                 listeners.add(listener);
             }
         }
     }
-    
+
     /**
      * Method de-registers listeners.
      *
      * @param listener registered listener that has to be removed
      */
-    public void removeResourceChangeListener(ResourceChangeListener listener) {
+    public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
         synchronized(listeners) {
             if (listeners.contains(listener)) {
                 listeners.remove(listener);
             }
         }
     }
-    
+
     /**
      * Method notifies all registered <code>ResourceChangeListener</code>.
      *
      * @param resource Name of resource that has been changed
      */
-    protected void notifyResourceChange(String resource) {
+    protected void notifyResourceChange(@Nonnull String resource) {
         ResourceChangedEvent event = new ResourceChangedEvent(this, resource);
-        Set clone = null;
+		Set<ResourceChangeListener> clone;
         synchronized(listeners) {
-            clone = (Set)listeners.clone();
+			@SuppressWarnings("unchecked")
+			Set<ResourceChangeListener> tmp = (Set<ResourceChangeListener>) listeners.clone();
+			clone = tmp;
         }
-        for (Iterator i = clone.iterator(); i.hasNext();) {
-            ResourceChangeListener listener = (ResourceChangeListener)i.next();
-            try {
-                listener.resourceChanged(event);
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-            }
-        }
+		for (ResourceChangeListener listener : clone) {
+			try {
+				listener.resourceChanged(event);
+			} catch (RuntimeException ex) {
+				ex.printStackTrace();
+			}
+		}
     }
-    
+
     /**
      * Method notifies all registered <code>ResourceChangeListener</code>.
      *
      * @param resource Name of resource that has been removed
      */
-    protected void notifyResourceRemoved(String resource) {
+    protected void notifyResourceRemoved(@Nonnull String resource) {
         ResourceChangedEvent event = new ResourceChangedEvent(this, resource);
-        Set clone = null;
+		Set<ResourceChangeListener> clone;
         synchronized(listeners) {
-            clone = (Set)listeners.clone();
+			@SuppressWarnings("unchecked")
+			Set<ResourceChangeListener> tmp = (Set<ResourceChangeListener>) listeners.clone();
+			clone = tmp;
         }
-        for (Iterator i = clone.iterator(); i.hasNext();) {
-            ResourceChangeListener listener = (ResourceChangeListener)i.next();
-            try {
-                listener.resourceRemoved(event);
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-            }
-        }
+		for (ResourceChangeListener listener : clone) {
+			try {
+				listener.resourceRemoved(event);
+			} catch (RuntimeException ex) {
+				ex.printStackTrace();
+			}
+		}
     }
-    
+
     /**
      * Method stops the resourceChecker which is responsible for checking changes or the resources.
      */
     public void stopResourceChecker() {
         resourceChecker.stopChecker();
     }
-    
+
     /**
      * Responsible for checking the resources for changes. Instantiated in the constructor of FilePathResourceLocator
      */
@@ -162,10 +168,10 @@ public class FilePathResourceLocator implements ResourceLocator {
         private long lastCheck;
         private long checkPeriod;
         private boolean run;
-        
+
         /**
          * Constructor of inner class.
-         * 
+         *
          * @param checkPeriod Value (in ms) defining the checkPeriod of resource-change-check (e.g. Thread-sleep)
          */
         public ResourceChecker(long checkPeriod) {
@@ -173,44 +179,45 @@ public class FilePathResourceLocator implements ResourceLocator {
             this.checkPeriod = checkPeriod;
             run = true;
         }
-        
+
         /**
          * Sets the run-value of the ResourceChecker-Thread to false (smooth stoping)
          */
         public void stopChecker() {
             run = false;
         }
-        
+
         /**
          * Business of the ResourceChecker-Thread
          */
         public void run() {
             while (run) {
-                long tmpCheck = System.currentTimeMillis();                
-                Set clone = null;
-                synchronized (files) {
-                    clone = (Set)(files).clone();
-                }
-                
-                for (Iterator i = clone.iterator(); i.hasNext();) {
-                    File file = (File)i.next();                                        
-                    if (!file.exists()) {                        
-                        notifyResourceRemoved(file.getName());
-                    } else if (file.lastModified() >= lastCheck) {                        
-                        notifyResourceChange(file.getName());
-                    }
-                }
-                
-                lastCheck = tmpCheck;                
+                long tmpCheck = System.currentTimeMillis();
+				Set<File> clone;
+				synchronized (files) {
+					@SuppressWarnings("unchecked")
+					Set<File> tmp = (Set<File>) (files).clone();
+					clone = tmp;
+				}
+
+				for (File file : clone) {
+					if (!file.exists()) {
+						notifyResourceRemoved(file.getName());
+					} else if (file.lastModified() >= lastCheck) {
+						notifyResourceChange(file.getName());
+					}
+				}
+
+                lastCheck = tmpCheck;
                 try {
                     Thread.sleep(checkPeriod);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                }                
+                }
             }
         }
-        
+
     }
-   
-    
+
+
 }

@@ -11,117 +11,60 @@
  */
 package ch.dvbern.lib.resource.construct;
 
-import java.io.*;
+import javax.annotation.Nullable;
 
 /**
  * This exception indicates that an <code>ObjectConstructor</code> was not
  * able to create/return an object. A detail message and/or a nested exception
  * may be passed to the constructor of this exception, which are included in the
  * stack trace of this exception.
- * 
+ *
  * @see ObjectConstructor
  */
-public class ConstructionException extends java.lang.Exception {
+public class ConstructionException extends Exception {
 
 	private static final long serialVersionUID = -5362684009744647564L;
-
-	private final Throwable nested;
 
 	/**
 	 * Creates a new instance of <code>ConstructionException</code> without
 	 * detail message.
 	 */
 	public ConstructionException() {
-		this.nested = null;
+		super();
 	}
 
 	/**
 	 * Constructs an instance of <code>ConstructionException</code> with the
 	 * passed nested exception.
-	 * 
-	 * @param nested
+	 *
+	 * @param cause
 	 *            Throwable, which is beeing wrapped by this exception and
 	 *            included in the stack trace.
 	 */
-	public ConstructionException(Throwable nested) {
-		this.nested = nested;
+	public ConstructionException(@Nullable Throwable cause) {
+		super(cause);
 	}
 
 	/**
 	 * Constructs an instance of <code>ConstructionException</code> with the
 	 * specified detail message.
-	 * 
+	 *
 	 * @param msg
 	 *            the detail message.
 	 */
-	public ConstructionException(String msg) {
+	public ConstructionException(@Nullable String msg) {
 		super(msg);
-		this.nested = null;
 	}
 
 	/**
 	 * Constructs an instance of <code>ConstructionException</code> with the
 	 * specified detail message and the passed nested exception.
-	 * 
-	 * @param msg
+	 *  @param msg
 	 *            the detail message.
-	 * @param nested
+	 * @param cause
 	 *            Throwable, which is beeing wrapped by this exception and
-	 *            included in the stack trace.
 	 */
-	public ConstructionException(String msg, Throwable nested) {
-		super(msg);
-		this.nested = nested;
+	public ConstructionException(@Nullable String msg, @Nullable Throwable cause) {
+		super(msg, cause);
 	}
-
-	/**
-	 * Returns the nested (wrapped) exception,
-	 * 
-	 * @return Throwable: nested (wrapped) exception
-	 */
-
-	public Throwable getNestedException() {
-		return nested;
-	}
-
-	/**
-	 * Call of printStackTrace(PrintWriter)
-	 * 
-	 * @param stream
-	 *            PrintWriter to which the stack trace is beeing printed.
-	 * @see #printStackTrace(PrintWriter)
-	 */
-	public void printStackTrace(PrintStream stream) {
-		PrintWriter writer = new PrintWriter(stream);
-		printStackTrace(writer);
-		writer.flush();
-		//writer.close();
-	}
-
-	/**
-	 * Prints the stack trace of the actual exception and then the stack trace
-	 * of the nested exception.
-	 * 
-	 * @param writer
-	 *            PrintWriter to which the stack trace is beeing printed.
-	 */
-	public void printStackTrace(PrintWriter writer) {
-
-		super.printStackTrace(writer);
-		if (nested != null) {
-			writer.write("\nNESTED EXCEPTION:: ");
-			nested.printStackTrace(writer);
-		}
-
-	}
-
-	/**
-	 * Prints StackTrace to System.out.
-	 * 
-	 * @see #printStackTrace(PrintWriter writer)
-	 */
-	public void printStackTrace() {
-		printStackTrace(System.out);
-	}
-
 }

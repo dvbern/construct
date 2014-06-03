@@ -22,20 +22,22 @@ import ch.dvbern.lib.resource.construct.xml.XMLObjectConstructor;
 import junit.framework.*;
 import java.io.*;
 
+import javax.annotation.Nonnull;
+
 /**
  * The main test class for construct lib.
  */
 public class XMLObjectConstructorTest extends TestCase {
-    
+
     private static String FILENAME_SIMPLETC;
     private File fileSTC;
     private static String FILENAME_REF;
     private File fileRef;
-    
+
     private XMLObjectConstructor objConstructor;
     private FilePathResourceLocator fprl;
-    
-    
+
+
     /**
      * JUnit test constructor.
      * @param name test name
@@ -43,30 +45,30 @@ public class XMLObjectConstructorTest extends TestCase {
     public XMLObjectConstructorTest(String name) {
         super(name);
     }
-    
+
     /**
      * JUnit test suite method.
-     * 
+     *
      * @return a JUnit test suite.
      */
     public static Test suite() {
         return new TestSuite(XMLObjectConstructorTest.class);
     }
-    
+
     /**
      * Main method.
-     * 
+     *
      * @param args main method arguments
      */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
-    
+
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        
+
         //create ref.xml
         fileRef = File.createTempFile("ref.xml", null);
         FileOutputStream fout = new FileOutputStream(fileRef);
@@ -78,7 +80,7 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<int value=\"5\" />");
         dout.writeChars("</construct>");
         dout.writeChars("</vardef>");
-        
+
         dout.writeChars("<invoke methodName=\"put\">");
         dout.writeChars("<target><var name=\"map\" /></target>");
         dout.writeChars("<parameters>");
@@ -97,28 +99,28 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<var name=\"map\" />");
         dout.writeChars("</return>");
         dout.writeChars("</script>");
-        
-        
-        
+
+
+
         FILENAME_REF = fileRef.getName();
-        
+
         if (fout != null)
             fout.close();
         if (dout != null)
             dout.close();
-        
-        
+
+
         //create xml-file simpleTestConstruct.xml
         fileSTC = File.createTempFile("simpleTestConstruct.xml", null);
         originalFile();
         FILENAME_SIMPLETC = fileSTC.getName();
-        
+
         //create objConstructor
         fprl = new FilePathResourceLocator(fileSTC.getParent(), 500);
         objConstructor = new XMLObjectConstructor(new ParserFactory(fprl));
-        
+
     }
-    
+
     private void originalFile() throws Exception {
         FileOutputStream fout = new FileOutputStream(fileSTC);
         DataOutputStream dout = new DataOutputStream(fout);
@@ -135,7 +137,7 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<boolean value=\"true\" />");
         dout.writeChars("<string value=\"a string\" />");
         dout.writeChars("<cast class=\"java.lang.Object\"><ref id=\""+FILENAME_REF+"\" /></cast>");
-        
+
         dout.writeChars("<array elementtype=\"java.lang.Integer\">");
         dout.writeChars("<construct class=\"java.lang.Integer\">");
         //here was initargs
@@ -153,7 +155,7 @@ public class XMLObjectConstructorTest extends TestCase {
         //here was /initargs
         dout.writeChars("</construct>");
         dout.writeChars("</array>");
-        
+
         dout.writeChars("<array elementtype=\"int[]\">");
         dout.writeChars("<array elementtype=\"int\">");
         dout.writeChars("<int value=\"11\" />");
@@ -171,7 +173,7 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<int value=\"33\" />");
         dout.writeChars("</array>");
         dout.writeChars("</array>");
-        
+
         //here was /initargs
         /*
         dout.writeChars("<access>");
@@ -188,20 +190,20 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("</access>");
          */
         dout.writeChars("</construct>");
-        
+
         if (fout != null)
             fout.close();
         if (dout != null)
             dout.close();
     }
-    
+
     private void changeFile() throws Exception {
         FileOutputStream fout = new FileOutputStream(fileSTC.getAbsolutePath());
         DataOutputStream dout = new DataOutputStream(fout);
         dout.writeChars("<?xml version=\"1.0\"?>");
         dout.writeChars("<construct class=\"ch.dvbern.lib.resource.construct.SimpleTestConstruct\">");
         //here was initargs
-        
+
         dout.writeChars("<short value=\"100\" />");
         dout.writeChars("<int value=\"2\" />");
         dout.writeChars("<long value=\"3\" />");
@@ -211,11 +213,11 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<boolean value=\"true\" />");
         dout.writeChars("<string value=\"a string\" />");
         dout.writeChars("<cast class=\"java.lang.Object\"><ref id=\""+FILENAME_REF+"\" /></cast>");
-        
+
         dout.writeChars("<array elementtype=\"java.lang.Integer\">");
         dout.writeChars("<construct class=\"java.lang.Integer\">");
         //here was initargs
-        
+
         dout.writeChars("<string value=\"100\" />");
         //here was /initargs
         dout.writeChars("</construct>");
@@ -230,7 +232,7 @@ public class XMLObjectConstructorTest extends TestCase {
         //here was /initargs
         dout.writeChars("</construct>");
         dout.writeChars("</array>");
-        
+
         dout.writeChars("<array elementtype=\"int[]\">");
         dout.writeChars("<array elementtype=\"int\">");
         dout.writeChars("<int value=\"11\" />");
@@ -248,7 +250,7 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<int value=\"33\" />");
         dout.writeChars("</array>");
         dout.writeChars("</array>");
-        
+
         //here was /initargs
         /*
         dout.writeChars("<access>");
@@ -258,7 +260,7 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("<method name=\"setAStaticInteger\" >");
         dout.writeChars("<construct class=\"java.lang.Integer\" >");
         //here was initargs
-         
+
         dout.writeChars("<string value=\"999\" />");
         //here was /initargs
         dout.writeChars("</construct>");
@@ -266,15 +268,15 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("</access>");
          */
         dout.writeChars("</construct>");
-        
+
         if (fout != null)
             fout.close();
         if (dout != null)
             dout.close();
-        
-        
+
+
     }
-    
+
     /* (non-Javadoc)
      * @see junit.framework.TestCase#tearDown()
      */
@@ -283,23 +285,23 @@ public class XMLObjectConstructorTest extends TestCase {
         fileSTC.delete();
         fileRef.delete();
     }
-    
-    
+
+
     private File constructMyClass() throws Exception {
         File file = File.createTempFile("myClass", ".xml");
         FileOutputStream fout = new FileOutputStream(file);
         DataOutputStream dout = new DataOutputStream(fout);
         dout.writeChars("<?xml version=\"1.0\"?>");
         dout.writeChars("<class name=\"java.lang.String\" />");
-        
+
         dout.close();
         fout.close();
         return file;
     }
-    
+
     /**
      * test initialization
-     * 
+     *
      * @throws Exception error while initialization
      */
     public void testInitValues() throws Exception {
@@ -315,10 +317,10 @@ public class XMLObjectConstructorTest extends TestCase {
         //assertEquals(construct.aStaticString, "new definition");
         //assertEquals(construct.getAStaticInteger(), new Integer("333"));
     }
-    
+
     /**
      * ref parser test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testRefParser() throws Exception {
@@ -326,10 +328,10 @@ public class XMLObjectConstructorTest extends TestCase {
         Map map = (Map)construct.getAobject();
         assertEquals(map.get("key 2"), "value 2");
     }
-    
+
     /**
      * array parser test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testArrayParser() throws Exception {
@@ -341,11 +343,11 @@ public class XMLObjectConstructorTest extends TestCase {
         assertTrue(arrayTwo[1][1] == 22);
         assertTrue(arrayTwo[2][0] == 31);
     }
-    
-    
+
+
     /**
      * remove event test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testRemoveEvent() throws Exception {
@@ -361,36 +363,36 @@ public class XMLObjectConstructorTest extends TestCase {
             fail("no exception thrown");
         } catch (ConstructionException ex) {}
     }
-    
+
     /**
      * change event test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testChangeEvent() throws Exception {
         XMLObjectConstructorTest.TestFilePathResourceLocator locator = new XMLObjectConstructorTest.TestFilePathResourceLocator(fileSTC.getParent());
         XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(locator));
-        
+
         SimpleTestConstruct construct = (SimpleTestConstruct)constructor.construct(FILENAME_SIMPLETC, false);
         assertEquals(construct.getAshort(), 1);
         Integer[] arrayOne = construct.getArrayOne();
         assertTrue(arrayOne[1].equals(new Integer("2")));
         //assertEquals(construct.getAStaticInteger(), new Integer("333"));
-        
+
         changeFile();
         locator.notifyResourceChange(FILENAME_SIMPLETC);
-        
+
         construct = (SimpleTestConstruct)constructor.construct(FILENAME_SIMPLETC, false);
         assertEquals(construct.getAshort(), 100);
         arrayOne = construct.getArrayOne();
         assertTrue(arrayOne[1].equals(new Integer("200")));
         //assertEquals(construct.getAStaticInteger(), new Integer("999"));
-        
+
     }
-    
+
     /**
      * class test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testClass() throws Exception {
@@ -399,21 +401,21 @@ public class XMLObjectConstructorTest extends TestCase {
         XMLObjectConstructor objConstructor = new XMLObjectConstructor(new ParserFactory(fprl));
         Class klass = (Class)objConstructor.construct(file.getName(), false);
         assertTrue(klass.getName().equals("".getClass().getName()));
-        
+
         fprl.stopResourceChecker();
         file.delete();
     }
-    
+
     /**
      * script test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testScript() throws Exception {
         File file = File.createTempFile("script", ".xml");
         FileOutputStream fout = new FileOutputStream(file);
         DataOutputStream dout = new DataOutputStream(fout);
-        
+
         dout.writeChars("<?xml version=\"1.0\"?>");
         dout.writeChars("<script>");
         dout.writeChars("<vardef name=\"a\">");
@@ -437,23 +439,23 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("</parameters>");
         dout.writeChars("</invoke>");
         dout.writeChars("</script>");
-        
-        
-        
+
+
+
         FilePathResourceLocator fprl = new FilePathResourceLocator(file.getParent(), 500);
         XMLObjectConstructor objConstructor = new XMLObjectConstructor(new ParserFactory(fprl));
-        
+
         String obj = (String)objConstructor.construct(file.getName(), false);
         assertEquals(obj, "a string and another string");
-        
+
         file.delete();
         dout.close();
         fout.close();
-        
+
         file = File.createTempFile("script2", ".xml");
         fout = new FileOutputStream(file);
         dout = new DataOutputStream(fout);
-        
+
         dout.writeChars("<?xml version=\"1.0\"?>");
         dout.writeChars("<script>");
         dout.writeChars("<vardef name=\"a\">");
@@ -490,29 +492,29 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("</invoke>");
         dout.writeChars("</return>");
         dout.writeChars("</script>");
-        
+
         obj = (String)objConstructor.construct(file.getName(), false);
         assertEquals(obj, "a string and a modified string are concatenated");
-        
-        
+
+
         file.delete();
         dout.close();
         fout.close();
-        
+
         fprl.stopResourceChecker();
-        
+
     }
-    
+
     /**
      * field access test
-     * 
+     *
      * @throws Exception test failure
      */
     public void testFieldAccess() throws Exception {
         File file = File.createTempFile("field", ".xml");
         FileOutputStream fout = new FileOutputStream(file);
         DataOutputStream dout = new DataOutputStream(fout);
-        
+
         dout.writeChars("<?xml version=\"1.0\"?>");
         dout.writeChars("<script>");
         dout.writeChars("<vardef name=\"myObject\">");
@@ -529,26 +531,26 @@ public class XMLObjectConstructorTest extends TestCase {
         dout.writeChars("</setfield>");
         dout.writeChars("<return><var name=\"myObject\" /></return>");
         dout.writeChars("</script>");
-        
+
         FilePathResourceLocator fprl = new FilePathResourceLocator(file.getParent(), 500);
         XMLObjectConstructor objConstructor = new XMLObjectConstructor(new ParserFactory(fprl));
-        
+
         SimpleFieldTest test = (SimpleFieldTest)objConstructor.construct(file.getName(), false);
         assertTrue(test.field2.equals("field 1"));
-        
+
         file.delete();
         dout.close();
         fout.close();
-        
+
         fprl.stopResourceChecker();
     }
-    
+
     /*
     public void testTmpChangeEvent() throws Exception {
-     
+
         //test
         fprl.stopResourceChecker();
-     
+
         FilePathResourceLocator loc = new FilePathResourceLocator("/home/loue/project/dvbern-lib-forms/construct", 3000);
         XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(loc));
         Map myMap = (Map)constructor.construct("myMap.xml", false);
@@ -558,21 +560,21 @@ public class XMLObjectConstructorTest extends TestCase {
         System.out.println(">>>end of sleep");
         myMap = (Map)constructor.construct("myMap.xml", false);
         System.out.println(">>>tmp:"+myMap);
-     
+
         loc.stopResourceChecker();
-     
-     
+
+
     }
      */
-    
+
     private class TestFilePathResourceLocator implements ResourceLocator {
         private String path;
         private HashSet listeners;
         private HashSet files;
-        
+
         /**
          * Test resource locator.
-         * 
+         *
          * @param path file path
          */
         public TestFilePathResourceLocator(String path) {
@@ -585,14 +587,14 @@ public class XMLObjectConstructorTest extends TestCase {
          *
          * @param listener: registered listener that has to be removed
          */
-        public void removeResourceChangeListener(ResourceChangeListener listener) {
+        public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
             synchronized(listeners) {
                 if (listeners.contains(listener)) {
                     listeners.remove(listener);
                 }
             }
         }
-        
+
         /**
          * Method specified resource as InputStream or throws Exception.
          *
@@ -600,9 +602,10 @@ public class XMLObjectConstructorTest extends TestCase {
          * @return InputStream: resource as InputStream; never null.
          * @exception ResourceNotFoundException: Thrown if specified resource could not have been found
          */
-        public InputStream getResourceAsStream(String resourceName) throws ResourceNotFoundException {
+        @Nonnull
+		public InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException {
             try {
-                
+
                 File file = new File(path, resourceName);
                 synchronized(files) {
                     if (!files.contains(file)) {
@@ -614,13 +617,13 @@ public class XMLObjectConstructorTest extends TestCase {
                 throw new ResourceNotFoundException("resource="+resourceName+" not found");
             }
         }
-        
+
         /**
          * Method registers listeners interested in changes or removals of resources.
          *
          * @param listener: listener interested in changes or removals of resources
          */
-        public void addResourceChangeListener(ResourceChangeListener listener) {
+        public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
             if (listener == null) {
                 throw new IllegalArgumentException("listener must not be null");
             }
@@ -630,10 +633,10 @@ public class XMLObjectConstructorTest extends TestCase {
                 }
             }
         }
-        
+
         /**
          * resource change notification
-         * 
+         *
          * @param resource identifier of the resource
          */
         public void notifyResourceChange(String resource) {
@@ -651,7 +654,7 @@ public class XMLObjectConstructorTest extends TestCase {
                 }
             }
         }
-        
+
     }
 }
 

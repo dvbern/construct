@@ -13,6 +13,7 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import java.io.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,7 +34,7 @@ public class RefParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -42,7 +43,8 @@ public class RefParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
         String elementName = element.getNodeName();
         if (!elementName.equals("ref")) {
@@ -63,9 +65,8 @@ public class RefParser implements ElementParser {
             Document doc = builder.parse(ins);
             Element root = new Element(doc.getDocumentElement());
 
-            ClassObjectPair cop = factory.getParser(root.getNodeName()).parse(
-                    root, factory);
-            return cop;
+			return factory.getParser(root.getNodeName()).parse(
+					root, factory);
         } catch (SAXException ex) {
             throw new ElementParserException("parsing of file with id="
                     + objectId + " NOT successfull", ex);

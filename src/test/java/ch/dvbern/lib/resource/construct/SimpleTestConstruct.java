@@ -40,19 +40,19 @@ public class SimpleTestConstruct {
 	private int[][] arrayTwo;
 
 	/**
-	 * Constructor with member initialization.
-	 * 
-	 * @param ashort
-	 * @param aint
-	 * @param along
-	 * @param afloat
-	 * @param adouble
-	 * @param achar
-	 * @param aboolean
-	 * @param astring
-	 * @param aobject
-	 * @param arrayOne
-	 * @param arrayTwo
+ 	 * Constructor with member initialization.
+	 *
+	 * @param ashort short value
+	 * @param aint int value
+	 * @param along long value
+	 * @param afloat float value
+	 * @param adouble double value
+	 * @param achar char value
+	 * @param aboolean boolean value
+	 * @param astring string value
+	 * @param aobject object value
+	 * @param arrayOne array one
+	 * @param arrayTwo array two
 	 */
 	public SimpleTestConstruct(short ashort, int aint, long along, float afloat, double adouble, char achar,
 			boolean aboolean, String astring, Object aobject, Integer[] arrayOne, int[][] arrayTwo) {
@@ -72,7 +72,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property ashort.
-	 * 
+	 *
 	 * @return Value of property ashort.
 	 */
 	public short getAshort() {
@@ -82,7 +82,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property ashort.
-	 * 
+	 *
 	 * @param ashort New value of property ashort.
 	 */
 	public void setAshort(short ashort) {
@@ -92,7 +92,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property aint.
-	 * 
+	 *
 	 * @return Value of property aint.
 	 */
 	public int getAint() {
@@ -102,7 +102,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property aint.
-	 * 
+	 *
 	 * @param aint New value of property aint.
 	 */
 	public void setAint(int aint) {
@@ -112,7 +112,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property along.
-	 * 
+	 *
 	 * @return Value of property along.
 	 */
 	public long getAlong() {
@@ -122,7 +122,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property along.
-	 * 
+	 *
 	 * @param along New value of property along.
 	 */
 	public void setAlong(long along) {
@@ -132,7 +132,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property afloat.
-	 * 
+	 *
 	 * @return Value of property afloat.
 	 */
 	public float getAfloat() {
@@ -142,7 +142,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property afloat.
-	 * 
+	 *
 	 * @param afloat New value of property afloat.
 	 */
 	public void setAfloat(float afloat) {
@@ -152,7 +152,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property adouble.
-	 * 
+	 *
 	 * @return Value of property adouble.
 	 */
 	public double getAdouble() {
@@ -162,7 +162,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property adouble.
-	 * 
+	 *
 	 * @param adouble New value of property adouble.
 	 */
 	public void setAdouble(double adouble) {
@@ -172,7 +172,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property achar.
-	 * 
+	 *
 	 * @return Value of property achar.
 	 */
 	public char getAchar() {
@@ -182,7 +182,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property achar.
-	 * 
+	 *
 	 * @param achar New value of property achar.
 	 */
 	public void setAchar(char achar) {
@@ -192,7 +192,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property aboolean.
-	 * 
+	 *
 	 * @return Value of property aboolean.
 	 */
 	public boolean isAboolean() {
@@ -202,7 +202,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property aboolean.
-	 * 
+	 *
 	 * @param aboolean New value of property aboolean.
 	 */
 	public void setAboolean(boolean aboolean) {
@@ -212,7 +212,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property astring.
-	 * 
+	 *
 	 * @return Value of property astring.
 	 */
 	public String getAstring() {
@@ -222,7 +222,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property astring.
-	 * 
+	 *
 	 * @param astring New value of property astring.
 	 */
 	public void setAstring(String astring) {
@@ -232,7 +232,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property aobject.
-	 * 
+	 *
 	 * @return Value of property aobject.
 	 */
 	public Object getAobject() {
@@ -242,7 +242,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property aobject.
-	 * 
+	 *
 	 * @param aobject New value of property aobject.
 	 */
 	public void setAobject(Object aobject) {
@@ -268,7 +268,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property arrayOne.
-	 * 
+	 *
 	 * @return Value of property arrayOne.
 	 */
 	public Integer[] getArrayOne() {
@@ -278,7 +278,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property arrayOne.
-	 * 
+	 *
 	 * @param arrayOne New value of property arrayOne.
 	 */
 	public void setArrayOne(Integer[] arrayOne) {
@@ -288,7 +288,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Getter for property arrayTwo.
-	 * 
+	 *
 	 * @return Value of property arrayTwo.
 	 */
 	public int[][] getArrayTwo() {
@@ -298,7 +298,7 @@ public class SimpleTestConstruct {
 
 	/**
 	 * Setter for property arrayTwo.
-	 * 
+	 *
 	 * @param arrayTwo New value of property arrayTwo.
 	 */
 	public void setArrayTwo(int[][] arrayTwo) {

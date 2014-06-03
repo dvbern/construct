@@ -11,6 +11,8 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Event indicating that a resource has been changed or removed at all. Event object contains the name of the changed
  * resource.
@@ -19,15 +21,16 @@ public class ResourceChangedEvent extends java.util.EventObject {
 
 	private static final long serialVersionUID = -7039199533056588697L;
 
+	@Nonnull
 	private String resource;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param source Object generating the event
 	 * @param resourceName name of resource that has been changed or removed
 	 */
-	public ResourceChangedEvent(Object source, String resourceName) {
+	public ResourceChangedEvent(@Nonnull Object source, @Nonnull String resourceName) {
 
 		super(source);
 		this.resource = resourceName;
@@ -35,9 +38,10 @@ public class ResourceChangedEvent extends java.util.EventObject {
 
 	/**
 	 * Method returns the name of the resource that has been changed or removed.
-	 * 
+	 *
 	 * @return Name of changed/removed resource
 	 */
+	@Nonnull
 	public String getResourceName() {
 
 		return resource;

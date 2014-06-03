@@ -14,20 +14,25 @@ package ch.dvbern.lib.resource.construct.xml;
 import ch.dvbern.lib.resource.construct.*;
 import java.lang.reflect.*;
 
+import javax.annotation.Nonnull;
+
 /**
  * This class is used for creating objects out of declarations.
  */
 public class Construct {
 
+	@Nonnull
     private Class klass;
 
+	@Nonnull
     private Class[] argClasses;
 
+	@Nonnull
     private Object[] argValues;
 
     /**
      * Constructor.
-     * 
+     *
      * @param klass <code>Class</code> of the object to create.
      * @param argClasses Array of <code>Class</code> instances representing
      *        the types of the parameters of the constructor for
@@ -36,7 +41,7 @@ public class Construct {
      *        the values of the parameters of the constructor for a new instance
      *        of <code>klass</code>
      */
-    public Construct(Class klass, Class[] argClasses, Object[] argValues) {
+    public Construct(@Nonnull Class<?> klass, @Nonnull Class<?>[] argClasses, @Nonnull Object[] argValues) {
         this.klass = klass;
         this.argClasses = argClasses;
         this.argValues = argValues;
@@ -44,23 +49,22 @@ public class Construct {
 
     /**
      * Method returns the <code>klass</code> member
-     * 
+     *
      * @return <code>Class</code>: The type of this <code>Construct</code>
      * @exception ConstructionException Thrown if the object cannot be created
      *            out of the member-values of this <code>Construct</code>
      */
-    public Class getKlass() throws ConstructionException {
+	@Nonnull
+    public Class<?> getKlass() throws ConstructionException {
         return klass;
     }
 
-    private Class[] getArgClasses() throws ClassNotFoundException {
-        //System.out.println("argument dump:");
-        for (int i = 0; i < argClasses.length; i++) {
-            //System.out.println("class: "+argClasses[i]);
-        }
+	@Nonnull
+    private Class<?>[] getArgClasses() throws ClassNotFoundException {
         return argClasses;
     }
 
+	@Nonnull
     private Object[] getInitArgs() {
         return argValues;
     }
@@ -68,17 +72,17 @@ public class Construct {
     /**
      * This method returns the <code>Object</code> represented by this
      * <code>Construct</code>.
-     * 
+     *
      * @return <code>Object</code> represented by this <code>Construct</code>.
      * @exception ConstructionException Thrown if the object cannot be created
      *            out of the member-values of this <code>Construct</code>
      */
     public Object getObject() throws ConstructionException {
         try {
-            Constructor constructor = getKlass()
-                    .getConstructor(getArgClasses());
-            Object obj = constructor.newInstance(getInitArgs());
-            return obj;
+            Constructor<?> constructor;
+			constructor = getKlass()
+					.getConstructor(getArgClasses());
+			return constructor.newInstance(getInitArgs());
         } catch (ClassNotFoundException ex) {
             throw new ConstructionException(ex);
         } catch (NoSuchMethodException ex) {

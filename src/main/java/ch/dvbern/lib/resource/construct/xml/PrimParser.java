@@ -11,6 +11,8 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 import ch.dvbern.lib.resource.construct.ConstructionException;
 
 /**
@@ -19,7 +21,7 @@ import ch.dvbern.lib.resource.construct.ConstructionException;
  * <code>PrimObjectFactory</code>) (for example <code>&lt;int  &gt;</code>).
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
- * 
+ *
  * @see PrimObjectFactory
  * @see ClassFactory
  */
@@ -28,7 +30,7 @@ public class PrimParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -37,7 +39,8 @@ public class PrimParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
         String elementName = element.getNodeName();
         //check element name
@@ -50,21 +53,21 @@ public class PrimParser implements ElementParser {
                             + elementName);
         }
         //primitives and Strings
-        Class klass = null;
-        Object value = null;
+        Class klass;
         try {
-            klass = ClassFactory.getKlass(elementName);
-        } catch (ClassNotFoundException ex) {
-            throw new ElementParserException(
+			klass = ClassFactory.getKlass(elementName);
+		} catch (ClassNotFoundException ex) {
+			throw new ElementParserException(
                     "ClassFactory could NOT load Class with type="
                             + elementName, ex);
-        }
-        String strValue = element.getAttribute("value");
-        if (strValue == null) {
-            throw new ElementParserException(
+		}
+		String strValue = element.getAttribute("value");
+		if (strValue == null) {
+			throw new ElementParserException(
                     "definition of argument NOT correct (value must NOT be null)");
-        }
-        try {
+		}
+		Object value;
+		try {
             value = PrimObjectFactory.getWrapper(elementName, strValue);
         } catch (ConstructionException ex) {
             throw new ElementParserException(ex);

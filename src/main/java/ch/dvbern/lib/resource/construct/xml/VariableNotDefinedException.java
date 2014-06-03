@@ -11,30 +11,25 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exception indicating that a variable with the given name is not stored in a
  * given scope or in a scope of higher levels Used by ScopeParserFactory.
- * 
+ *
  * @see ScopeParserFactory
  */
 public class VariableNotDefinedException extends java.lang.Exception {
 
 	private static final long serialVersionUID = 3523634640300494355L;
 
-	/**
-     * Creates a new instance of <code>VariableNotDefinedException</code>
-     * without detail message.
-     */
-    public VariableNotDefinedException() {
-    }
-
     /**
      * Constructs an instance of <code>VariableNotDefinedException</code> with
      * the specified detail message.
-     * 
+     *
      * @param msg the detail message.
      */
-    public VariableNotDefinedException(String msg) {
+    public VariableNotDefinedException(@Nonnull String msg) {
         super(msg);
     }
 }

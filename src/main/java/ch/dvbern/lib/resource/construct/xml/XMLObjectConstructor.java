@@ -15,6 +15,7 @@ import ch.dvbern.lib.resource.construct.*;
 import java.io.*;
 import java.util.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,14 +32,16 @@ import org.xml.sax.SAXException;
  */
 public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeListener {
 
-	private Map cachedObjects = null;
+	@Nonnull
+	private final Map<String, Object> cachedObjects;
 
+	@Nonnull
 	private final ParserFactory factory;
 
 	/**
 	 * Standard constructor. <br>
 	 * Instantiates <code>ParserFactory</code> with <code>ClassLoaderResourceLocator</code>
-	 * 
+	 *
 	 * @see ParserFactory
 	 * @see ClassLoaderResourceLocator
 	 */
@@ -49,18 +52,14 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 
 	/**
 	 * 22 * Constructor.
-	 * 
+	 *
 	 * @param factory ParserFactory returning the tag-parsers; must not be null
 	 * @see ParserFactory
 	 * @see ResourceLocator
 	 * @see FilePathResourceLocator
 	 */
-	public XMLObjectConstructor(ParserFactory factory) {
-
-		if (factory == null) {
-			throw new IllegalArgumentException("factory must not be null");
-		}
-		cachedObjects = new HashMap();
+	public XMLObjectConstructor(@Nonnull ParserFactory factory) {
+		cachedObjects = new HashMap<String, Object>();
 		this.factory = factory;
 
 		factory.getResourceLocator().addResourceChangeListener(this);
@@ -78,7 +77,7 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	 * If the <code>XMLObjectConstructor</code> uses a <code>ParserFactory</code> with a
 	 * <code>ClassLoaderResourceLocator</code>, the xml-files must be located in the CLASSPATH, else according to the
 	 * requirements of the used <code>ResourceLocator</code> (see descriptions of the constructors).
-	 * 
+	 *
 	 * @param objectId The name of the xml-file, in which the object is declared.
 	 * @param newInstance boolean, indicating whether a new instance should be created (true) or if already created (and
 	 *            cached) instances should be returned.
@@ -89,7 +88,8 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	 * @see ConstructParser
 	 * @see ParserFactory
 	 */
-	public Object construct(String objectId, boolean newInstance) throws ConstructionException {
+	@Nonnull
+	public Object construct(@Nonnull String objectId, boolean newInstance) throws ConstructionException {
 
 		// if NOT newInstance: try to get from cache
 		Object obj = null;
@@ -111,14 +111,19 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 		return obj;
 	}
 
-	private Object parse(String objectId, ParserFactory parserFactory) throws ConstructionException {
+	@Nonnull
+	private Object parse(@Nonnull String objectId, @Nonnull ParserFactory parserFactory) throws ConstructionException {
 
 		try {
 			InputStream ins = parserFactory.getResourceLocator().getResourceAsStream(objectId);
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());
-			return parserFactory.getParser(root.getNodeName()).parse(root, parserFactory).getObject();
+			Object value = parserFactory.getParser(root.getNodeName()).parse(root, parserFactory).getObject();
+			if (value == null) {
+				throw new ConstructionException("Could not construct root, parser returned null");
+			}
+			return value;
 		} catch (SAXException ex) {
 			throw new ConstructionException("parsing of file with id=" + objectId + " NOT successfull", ex);
 		} catch (IOException ex) {
@@ -137,10 +142,10 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	/**
 	 * Implementation of <code>ResourceChangeListener</code>. Method is called, when a resource has been changed. It
 	 * simply removes the name of the changed resource from the cache.
-	 * 
+	 *
 	 * @param event <code>ResourceChangedEvent</code>: object containing the information about changed resource.
 	 */
-	public void resourceChanged(ResourceChangedEvent event) {
+	public void resourceChanged(@Nonnull ResourceChangedEvent event) {
 
 		// System.out.println("=================XMLObjectConstructor: received
 		// event");
@@ -159,10 +164,10 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	/**
 	 * Implementation of <code>ResourceChangeListener</code>. Method is called, when a resource has been removed. It
 	 * simply removes the name of the removed resource from the cache.
-	 * 
+	 *
 	 * @param event <code>ResourceChangedEvent</code>: object containing the information about removed resource.
 	 */
-	public void resourceRemoved(ResourceChangedEvent event) {
+	public void resourceRemoved(@Nonnull ResourceChangedEvent event) {
 
 		// System.out.println("===================received removeEvent");
 		resourceChanged(event);

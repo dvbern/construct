@@ -11,12 +11,14 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nullable;
+
 /**
  * This exception indicates that no parser is registered for a given name.
- * 
+ *
  * @see ParserFactory
  */
-public class ParserNotRegisteredException extends java.lang.Exception {
+public class ParserNotRegisteredException extends Exception {
 
 	private static final long serialVersionUID = -8685141376596179827L;
 
@@ -30,10 +32,10 @@ public class ParserNotRegisteredException extends java.lang.Exception {
     /**
      * Constructs an instance of <code>ParserNotRegisteredException</code>
      * with the specified detail message.
-     * 
+     *
      * @param msg the detail message.
      */
-    public ParserNotRegisteredException(String msg) {
+    public ParserNotRegisteredException(@Nullable String msg) {
         super(msg);
     }
 }

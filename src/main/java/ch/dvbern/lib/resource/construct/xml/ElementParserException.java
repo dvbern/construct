@@ -11,7 +11,7 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import java.io.*;
+import javax.annotation.Nonnull;
 
 /**
  * This exception indicates that an <code>ElementParser</code> was not able to
@@ -21,95 +21,45 @@ public class ElementParserException extends java.lang.Exception {
 
 	private static final long serialVersionUID = -7590476829224567457L;
 
-	private final Throwable nested;
-
     /**
      * Creates a new instance of <code>ElementParserException</code> without
      * detail message.
      */
     public ElementParserException() {
         super();
-        nested = null;
     }
 
     /**
      * Creates a new instance of <code>ElementParserException</code> with the
      * passed nested exception.
-     * 
-     * @param nested Throwable, which is beeing wrapped by this exception and
+     *
+     * @param cause Throwable, which is beeing wrapped by this exception and
      *        included in the stack trace.
      */
-    public ElementParserException(Throwable nested) {
-        super();
-        this.nested = nested;
+    public ElementParserException(@Nonnull Throwable cause) {
+        super(cause);
     }
 
     /**
      * Constructs an instance of <code>ElementParserException</code> with the
      * specified detail message
-     * 
+     *
      * @param msg the detail message.
      */
-    public ElementParserException(String msg) {
+    public ElementParserException(@Nonnull String msg) {
         super(msg);
-        nested = null;
     }
 
     /**
      * Constructs an instance of <code>ElementParserException</code> with the
      * specified detail message and the passed nested exception.
-     * 
+     *
      * @param msg the detail message.
-     * @param nested Throwable, which is beeing wrapped by this exception and
+     * @param cause Throwable, which is beeing wrapped by this exception and
      *        included in the stack trace.
      */
-    public ElementParserException(String msg, Throwable nested) {
-        super(msg);
-        this.nested = nested;
+    public ElementParserException(@Nonnull String msg, @Nonnull Throwable cause) {
+        super(msg, cause);
     }
 
-    /**
-     * Returns the nested (wrapped) exception,
-     * 
-     * @return Throwable: nested (wrapped) exception
-     */
-    public Throwable getNestedException() {
-        return nested;
-    }
-
-    /**
-     * Call of printStackTrace(PrintWriter)
-     * 
-     * @param stream rintWriter to which the stack trace is beeing printed.
-     * @see #printStackTrace(PrintWriter)
-     */
-    public void printStackTrace(PrintStream stream) {
-
-        PrintWriter writer = new PrintWriter(stream);
-        printStackTrace(writer);
-        writer.close();
-    }
-
-    /**
-     * Prints the stack trace of the actual exception and then the stack trace
-     * of the nested exception.
-     * 
-     * @param writer PrintWriter to which the stack trace is beeing printed.
-     */
-    public void printStackTrace(PrintWriter writer) {
-
-        super.printStackTrace(writer);
-        if (nested != null) {
-            writer.write("\nNESTED EXCEPTION:: ");
-            nested.printStackTrace(writer);
-        }
-
-    }
-
-    /**
-     * Prints StackTrace to System.out.
-     */
-    public void printStackTrace() {
-        printStackTrace(System.out);
-    }
 }

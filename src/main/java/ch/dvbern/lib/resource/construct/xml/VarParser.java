@@ -11,6 +11,8 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of <code>ElementParser</code>. Responsible for parsing
  * xml-tags with the element-name "var" (<code>&lt;var  &gt;</code>). The
@@ -24,7 +26,7 @@ public class VarParser implements ElementParser {
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
-     * 
+     *
      * @param element containing the information of the parsed xml-element
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
@@ -33,11 +35,15 @@ public class VarParser implements ElementParser {
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
-    public ClassObjectPair parse(Element element, ParserFactory factory)
+    @Nonnull
+	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
 
         // get the name of the variable
         String varName = element.getAttribute("name");
+		if (varName == null || varName.isEmpty()) {
+			throw new ElementParserException("attribute 'name' may not be null or empty");
+		}
 
         //retrieve the ClassObjectPair from the scope and return it
         if (!(factory instanceof ScopeParserFactory))

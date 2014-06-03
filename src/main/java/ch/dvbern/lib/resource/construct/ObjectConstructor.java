@@ -11,12 +11,14 @@
  */
 package ch.dvbern.lib.resource.construct;
 
+import javax.annotation.Nonnull;
+
 /**
  * Abstraction of object constuctors. Implementations create and return objects,
  * identified by the passed <code>objectId</code>. They should chache created
  * objects and return the already created instances if <code>newInstance</code>
  * is false.
- *  
+ *
  */
 public interface ObjectConstructor {
 
@@ -26,7 +28,7 @@ public interface ObjectConstructor {
 	 * If there is no definition for the object with the passed
 	 * <code>objectId</code> or if the object can not be created, a
 	 * <code>ConstructionException</code> is thrown.
-	 * 
+	 *
 	 * @param objectId
 	 *            The id of the object, which should be created/returned.
 	 * @param newInstance
@@ -40,6 +42,7 @@ public interface ObjectConstructor {
 	 *                passed <code>objectId</code> or if the object can not be
 	 *                created
 	 */
-	public Object construct(String objectId, boolean newInstance)
+	@Nonnull
+	public Object construct(@Nonnull String objectId, boolean newInstance)
 			throws ConstructionException;
 }
