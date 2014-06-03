@@ -10,17 +10,17 @@
 	<bannerRight>
 		<name>${project.name}</name>
 	</bannerRight>
-	<version position="left" />
+	<version position="left"/>
 	<body>
 		<links>
-			<item name="DVB Maven Repo" href="http://nexus" />
+			<item name="DVB Maven Repo" href="http://nexus"/>
 			<item name="DVB Komponenten" href="http://wiki/wiki/Wiki.jsp?page=Komponenten"/>
 		</links>
 		<menu name="${project.name}">
 			<item name="Getting started" href="constructDocumentation.html"/>
 			<item name="Releases" href="changes-report.html"/>
 		</menu>
-		<menu ref="reports" />
+		<menu ref="reports"/>
 	</body>
 	<skin>
 		<artifactId>dvbern-default-skin</artifactId>

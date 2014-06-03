@@ -47,7 +47,7 @@ public class Element {
 	@Nonnull
 	public Map<String, String> getAttributes() {
 		Map<String, String> result = new HashMap<String, String>();
-		NamedNodeMap nnm =  nestedElement.getAttributes();
+		NamedNodeMap nnm = nestedElement.getAttributes();
 		for (int i = 0; i < nnm.getLength(); i++) {
 			Node node = nnm.item(i);
 			result.put(node.getNodeName(), node.getNodeValue());

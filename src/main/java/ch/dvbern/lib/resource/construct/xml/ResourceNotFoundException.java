@@ -23,13 +23,13 @@ public class ResourceNotFoundException extends Exception {
 
 	private static final long serialVersionUID = -1502396802449310508L;
 
-    /**
-     * Constructs an instance of <code>ResourceNotFoundException</code> with
-     * the specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public ResourceNotFoundException(@Nonnull String msg) {
-        super(msg);
-    }
+	/**
+	 * Constructs an instance of <code>ResourceNotFoundException</code> with
+	 * the specified detail message.
+	 *
+	 * @param msg the detail message.
+	 */
+	public ResourceNotFoundException(@Nonnull String msg) {
+		super(msg);
+	}
 }

@@ -11,7 +11,7 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
 
 import javax.annotation.Nonnull;
 
@@ -41,47 +41,47 @@ import javax.annotation.Nonnull;
  */
 public final class ClassFactory {
 
-    private ClassFactory() {
-    }
+	private ClassFactory() {
+	}
 
-    /**
-     * Returns a <code>Class</code> instance for the specified
-     * <code>type</code>, never null. See description of class.
-     *
-     * @param type String, see description of this <code>ClassFactory</code>.
-     * @return Returns a <code>Class</code> instance for the specified
-     *         <code>type</code>, never null
-     * @exception ClassNotFoundException Thrown, if no <code>Class</code> has
-     *            been found for the specified <code>type</code>.
-     * @see ClassFactory
-     */
+	/**
+	 * Returns a <code>Class</code> instance for the specified
+	 * <code>type</code>, never null. See description of class.
+	 *
+	 * @param type String, see description of this <code>ClassFactory</code>.
+	 * @return Returns a <code>Class</code> instance for the specified
+	 *         <code>type</code>, never null
+	 * @exception ClassNotFoundException Thrown, if no <code>Class</code> has
+	 *            been found for the specified <code>type</code>.
+	 * @see ClassFactory
+	 */
 	@Nonnull
-    public static Class getKlass(@Nonnull String type) throws ClassNotFoundException {
-        Class retVal;
-        if (type.equalsIgnoreCase("string")) {
-            retVal = String.class;
-        } else if (type.equalsIgnoreCase("int")) {
-            retVal = Integer.TYPE;
-        } else if (type.equalsIgnoreCase("long")) {
-            retVal = Long.TYPE;
-        } else if (type.equalsIgnoreCase("short")) {
-            retVal = Short.TYPE;
-        } else if (type.equalsIgnoreCase("float")) {
-            retVal = Float.TYPE;
-        } else if (type.equalsIgnoreCase("double")) {
-            retVal = Double.TYPE;
-        } else if (type.equalsIgnoreCase("boolean")) {
-            retVal = Boolean.TYPE;
-        } else if (type.equalsIgnoreCase("char")) {
-            retVal = Character.TYPE;
-        } else if (type.endsWith("[]")) {
-            String baseType = type.substring(0, type.length() - 2);
-            Class baseClass = ClassFactory.getKlass(baseType);
-            retVal = Array.newInstance(baseClass, 0).getClass();
-        } else {
-            retVal = Class.forName(type);
-        }
-        return retVal;
-    }
+	public static Class getKlass(@Nonnull String type) throws ClassNotFoundException {
+		Class retVal;
+		if (type.equalsIgnoreCase("string")) {
+			retVal = String.class;
+		} else if (type.equalsIgnoreCase("int")) {
+			retVal = Integer.TYPE;
+		} else if (type.equalsIgnoreCase("long")) {
+			retVal = Long.TYPE;
+		} else if (type.equalsIgnoreCase("short")) {
+			retVal = Short.TYPE;
+		} else if (type.equalsIgnoreCase("float")) {
+			retVal = Float.TYPE;
+		} else if (type.equalsIgnoreCase("double")) {
+			retVal = Double.TYPE;
+		} else if (type.equalsIgnoreCase("boolean")) {
+			retVal = Boolean.TYPE;
+		} else if (type.equalsIgnoreCase("char")) {
+			retVal = Character.TYPE;
+		} else if (type.endsWith("[]")) {
+			String baseType = type.substring(0, type.length() - 2);
+			Class baseClass = ClassFactory.getKlass(baseType);
+			retVal = Array.newInstance(baseClass, 0).getClass();
+		} else {
+			retVal = Class.forName(type);
+		}
+		return retVal;
+	}
 
 }

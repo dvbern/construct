@@ -35,7 +35,7 @@ public class PrimParser implements ElementParser {
 
 	static {
 		Set<String> names = new HashSet<String>();
-		names.add("string") ;
+		names.add("string");
 		names.add("int");
 		names.add("long");
 		names.add("short");
@@ -46,50 +46,50 @@ public class PrimParser implements ElementParser {
 		ALLOWED_ELEMENT_NAMES = Collections.unmodifiableSet(names);
 	}
 
-    /**
-     * Method parses the passed xml-element and creates an object based on the
-     * information defined by the xml-tag.
-     *
-     * @param element containing the information of the parsed xml-element
-     * @param factory ParserFactory returning the parsers for parsing nested
-     *            tags
-     * @return ClassObjectPair: parsed xml-data, never null.
-     * @throws ElementParserException if a problem occurs while
-     *                parsing the xml-tag and creating the class/object
-     *                instances.
-     */
-    @Nonnull
+	/**
+	 * Method parses the passed xml-element and creates an object based on the
+	 * information defined by the xml-tag.
+	 *
+	 * @param element containing the information of the parsed xml-element
+	 * @param factory ParserFactory returning the parsers for parsing nested
+	 *            tags
+	 * @return ClassObjectPair: parsed xml-data, never null.
+	 * @throws ElementParserException if a problem occurs while
+	 *                parsing the xml-tag and creating the class/object
+	 *                instances.
+	 */
+	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-            throws ElementParserException {
-        String elementName = element.getNodeName();
+					throws ElementParserException {
+		String elementName = element.getNodeName();
 		if (!ALLOWED_ELEMENT_NAMES.contains(elementName)) {
 			throw new ElementParserException(
 							"PrimParser can not handle elements with the name="
 											+ elementName);
 		}
 
-        //primitives and Strings
-        Class klass;
-        try {
+		//primitives and Strings
+		Class klass;
+		try {
 			klass = ClassFactory.getKlass(elementName);
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException(
-                    "ClassFactory could NOT load Class with type="
-                            + elementName, ex);
+							"ClassFactory could NOT load Class with type="
+											+ elementName, ex);
 		}
 		String strValue = element.getAttribute("value");
 		if (strValue == null) {
 			throw new ElementParserException(
-                    "definition of argument NOT correct (value must NOT be null)");
+							"definition of argument NOT correct (value must NOT be null)");
 		}
 		Object value;
 		try {
-            value = PrimObjectFactory.getWrapper(elementName, strValue);
-        } catch (ConstructionException ex) {
-            throw new ElementParserException(ex);
-        }
-        return new ClassObjectPair(klass, value);
+			value = PrimObjectFactory.getWrapper(elementName, strValue);
+		} catch (ConstructionException ex) {
+			throw new ElementParserException(ex);
+		}
+		return new ClassObjectPair(klass, value);
 
-    }
+	}
 
 }

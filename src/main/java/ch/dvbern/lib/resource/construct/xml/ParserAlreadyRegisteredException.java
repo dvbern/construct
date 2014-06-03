@@ -23,13 +23,13 @@ public class ParserAlreadyRegisteredException extends Exception {
 
 	private static final long serialVersionUID = 4404585566412735102L;
 
-    /**
-     * Constructs an instance of <code>ParserAlreadyRegisteredException</code>
-     * with the specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public ParserAlreadyRegisteredException(@Nonnull String msg) {
-        super(msg);
-    }
+	/**
+	 * Constructs an instance of <code>ParserAlreadyRegisteredException</code>
+	 * with the specified detail message.
+	 *
+	 * @param msg the detail message.
+	 */
+	public ParserAlreadyRegisteredException(@Nonnull String msg) {
+		super(msg);
+	}
 }

@@ -11,7 +11,7 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import java.io.*;
+import java.io.InputStream;
 
 import javax.annotation.Nonnull;
 
@@ -29,61 +29,61 @@ import javax.annotation.Nonnull;
 public class ClassLoaderResourceLocator implements ResourceLocator {
 
 	@Nonnull
-    private ClassLoader cl;
+	private ClassLoader cl;
 
-    /**
-     * Default constructor. Uses class loader of this class for locating the
-     * resources
-     */
-    public ClassLoaderResourceLocator() {
-        cl = ClassLoaderResourceLocator.class.getClassLoader();
-    }
+	/**
+	 * Default constructor. Uses class loader of this class for locating the
+	 * resources
+	 */
+	public ClassLoaderResourceLocator() {
+		cl = ClassLoaderResourceLocator.class.getClassLoader();
+	}
 
-    /**
-     * Alternate constructor. Uses specified ClassLoader for locating the
-     * resources.
-     *
-     * @param cl ClassLoader used for locating the resources; never null.
-     */
-    public ClassLoaderResourceLocator(@Nonnull ClassLoader cl) {
-        this.cl = cl;
-    }
+	/**
+	 * Alternate constructor. Uses specified ClassLoader for locating the
+	 * resources.
+	 *
+	 * @param cl ClassLoader used for locating the resources; never null.
+	 */
+	public ClassLoaderResourceLocator(@Nonnull ClassLoader cl) {
+		this.cl = cl;
+	}
 
-    /**
-     * Method returns specified resource as inputStream.
-     *
-     * @param resource name of resource, e.g. name of xml-file
-     * @return InputStream of specified resource, never null.
-     * @throws ResourceNotFoundException if resource could not have been located
-     */
+	/**
+	 * Method returns specified resource as inputStream.
+	 *
+	 * @param resource name of resource, e.g. name of xml-file
+	 * @return InputStream of specified resource, never null.
+	 * @throws ResourceNotFoundException if resource could not have been located
+	 */
 	@Nonnull
-    public InputStream getResourceAsStream(@Nonnull String resource)
-            throws ResourceNotFoundException {
-        InputStream ins = cl.getResourceAsStream(resource);
-        if (ins == null) {
-            throw new ResourceNotFoundException("resource with objectId="
-                    + resource + " not found");
-        } else {
-            return ins;
-        }
-    }
+	public InputStream getResourceAsStream(@Nonnull String resource)
+					throws ResourceNotFoundException {
+		InputStream ins = cl.getResourceAsStream(resource);
+		if (ins == null) {
+			throw new ResourceNotFoundException("resource with objectId="
+							+ resource + " not found");
+		} else {
+			return ins;
+		}
+	}
 
-    /**
-     * Empty implementation of ResourceLocator-method. (Method should register
-     * listeners interested in changes or removals of resources.)
-     *
-     * @param listener listener interested in changes or removals of resources
-     */
-    public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
-    }
+	/**
+	 * Empty implementation of ResourceLocator-method. (Method should register
+	 * listeners interested in changes or removals of resources.)
+	 *
+	 * @param listener listener interested in changes or removals of resources
+	 */
+	public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+	}
 
-    /**
-     * Empty implementation of ResourceLocator-method. (Method should
-     * de-register listeners.)
-     *
-     * @param listener registered listener that has to be removed
-     */
-    public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
-    }
+	/**
+	 * Empty implementation of ResourceLocator-method. (Method should
+	 * de-register listeners.)
+	 *
+	 * @param listener registered listener that has to be removed
+	 */
+	public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+	}
 
 }

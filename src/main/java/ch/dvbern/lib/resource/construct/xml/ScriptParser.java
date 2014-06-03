@@ -25,28 +25,28 @@ import javax.annotation.Nonnull;
  */
 public class ScriptParser implements ElementParser {
 
-    /**
-     * Method parses the passed xml-element and creates an object based on the
-     * information defined by the xml-tag.
-     *
-     * @param element containing the information of the parsed xml-element
-     * @param factory ParserFactory returning the parsers for parsing nested
-     *            tags
-     * @return ClassObjectPair: parsed xml-data, never null.
-     * @exception ElementParserException Thrown, if a problem occurs while
-     *                parsing the xml-tag and creating the class/object
-     *                instances.
-     */
-    @Nonnull
+	/**
+	 * Method parses the passed xml-element and creates an object based on the
+	 * information defined by the xml-tag.
+	 *
+	 * @param element containing the information of the parsed xml-element
+	 * @param factory ParserFactory returning the parsers for parsing nested
+	 *            tags
+	 * @return ClassObjectPair: parsed xml-data, never null.
+	 * @exception ElementParserException Thrown, if a problem occurs while
+	 *                parsing the xml-tag and creating the class/object
+	 *                instances.
+	 */
+	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-            throws ElementParserException {
+					throws ElementParserException {
 
-        /** * process all the children ** */
-        ClassObjectPair lastCOP = null;
-        List<Element> children = element.getChildElements();
-        if (children.size() > 0) {
-            //create new ScopeParserFactory for storage of variables
-            ScopeParserFactory scopeFactory = new ScopeParserFactory(factory);
+		/** * process all the children ** */
+		ClassObjectPair lastCOP = null;
+		List<Element> children = element.getChildElements();
+		if (children.size() > 0) {
+			//create new ScopeParserFactory for storage of variables
+			ScopeParserFactory scopeFactory = new ScopeParserFactory(factory);
 			for (Element child : children) {
 				String tagName = child.getNodeName();
 				if (tagName.equals("return")) {
@@ -73,14 +73,14 @@ public class ScriptParser implements ElementParser {
 					}
 				}
 			}
-        }
+		}
 
 		if (lastCOP == null) {
 			throw new ElementParserException("no child elements defined for element " + element.getNodeName());
 		}
 
-        //if there has not been a return-tag, return the last created
-        // ClassObjectPair
-        return lastCOP;
-    }
+		//if there has not been a return-tag, return the last created
+		// ClassObjectPair
+		return lastCOP;
+	}
 }

@@ -11,7 +11,7 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ public class ArrayParser implements ElementParser {
 			arrayClass = ClassFactory.getKlass(type);
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException("ArrayParser: ClassFactory could NOT create array-class for type=" + type,
-					ex);
+							ex);
 		}
 		// get children
 		List arrayChildren = element.getChildElements();

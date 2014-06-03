@@ -23,48 +23,48 @@ import javax.annotation.Nonnull;
  */
 public class VardefParser implements ElementParser {
 
-    /**
-     * Method parses the passed xml-element and creates an object based on the
-     * information defined by the xml-tag.
-     *
-     * @param element containing the information of the parsed xml-element
-     * @param factory ParserFactory returning the parsers for parsing nested
-     *            tags
-     * @return ClassObjectPair: parsed xml-data, never null.
-     * @exception ElementParserException Thrown, if a problem occurs while
-     *                parsing the xml-tag and creating the class/object
-     *                instances.
-     */
-    @Nonnull
+	/**
+	 * Method parses the passed xml-element and creates an object based on the
+	 * information defined by the xml-tag.
+	 *
+	 * @param element containing the information of the parsed xml-element
+	 * @param factory ParserFactory returning the parsers for parsing nested
+	 *            tags
+	 * @return ClassObjectPair: parsed xml-data, never null.
+	 * @exception ElementParserException Thrown, if a problem occurs while
+	 *                parsing the xml-tag and creating the class/object
+	 *                instances.
+	 */
+	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-            throws ElementParserException {
-        /** * get variable name ** */
-        String varName = element.getAttribute("name");
+					throws ElementParserException {
+		/** * get variable name ** */
+		String varName = element.getAttribute("name");
 		if (varName == null || varName.isEmpty()) {
 			throw new ElementParserException("attribute 'name' may not be null or empty");
 		}
 
-        /** * get class object pair for variable value ** */
-        Element objectElement = element.getChildElements().get(0);
-        ClassObjectPair cop;
-        try {
-            cop = factory.getParser(objectElement.getNodeName()).parse(
-                    objectElement, factory);
-        } catch (ParserNotRegisteredException ex) {
-            throw new ElementParserException(ex);
-        }
+		/** * get class object pair for variable value ** */
+		Element objectElement = element.getChildElements().get(0);
+		ClassObjectPair cop;
+		try {
+			cop = factory.getParser(objectElement.getNodeName()).parse(
+							objectElement, factory);
+		} catch (ParserNotRegisteredException ex) {
+			throw new ElementParserException(ex);
+		}
 
-        /** * set variable into ScopeParserFactory ** */
-        if (!(factory instanceof ScopeParserFactory)) {
-            throw new ElementParserException(
-                    "passed factory must be of type 'ScopeParserFactory'");
-        }
-        try {
-            ((ScopeParserFactory) factory).setVariableCOP(varName, cop);
-        } catch (VariableAlreadyDefinedException ex) {
-            throw new ElementParserException(ex);
-        }
+		/** * set variable into ScopeParserFactory ** */
+		if (!(factory instanceof ScopeParserFactory)) {
+			throw new ElementParserException(
+							"passed factory must be of type 'ScopeParserFactory'");
+		}
+		try {
+			((ScopeParserFactory) factory).setVariableCOP(varName, cop);
+		} catch (VariableAlreadyDefinedException ex) {
+			throw new ElementParserException(ex);
+		}
 
-        return cop;
-    }
+		return cop;
+	}
 }

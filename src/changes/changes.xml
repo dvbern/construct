@@ -4,9 +4,15 @@
 		<author email="thomas.meister@dvbern.ch">Thomas Meister</author>
 	</properties>
 	<body>
+		<release version="2.0.1" date="2014-06-03">
+			<action dev="lich" type="add">
+				Code-Reformat
+			</action>
+		</release>
 		<release version="2.0.0" date="2014-06-03">
 			<action dev="lich" type="add">
 				Exception-Handling verbessert, so dass im normalen Stacktrace nun auch sinnvolle Messages stehen.
+				API-Changes: der InvokeParser gibt jetzt ggf. ClassObjectPair(Object.class, null) anstatt ClassObjectPair(null, null) zurueck
 				JSR305 (Nonnull/Nullable) eingebaut
 				Cleanup/Sonar love
 			</action>

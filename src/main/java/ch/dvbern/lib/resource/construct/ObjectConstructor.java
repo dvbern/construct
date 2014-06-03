@@ -44,5 +44,5 @@ public interface ObjectConstructor {
 	 */
 	@Nonnull
 	public Object construct(@Nonnull String objectId, boolean newInstance)
-			throws ConstructionException;
+					throws ConstructionException;
 }

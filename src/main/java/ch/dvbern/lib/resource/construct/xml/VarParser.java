@@ -23,39 +23,39 @@ import javax.annotation.Nonnull;
  */
 public class VarParser implements ElementParser {
 
-    /**
-     * Method parses the passed xml-element and creates an object based on the
-     * information defined by the xml-tag.
-     *
-     * @param element containing the information of the parsed xml-element
-     * @param factory ParserFactory returning the parsers for parsing nested
-     *            tags
-     * @return ClassObjectPair: parsed xml-data, never null.
-     * @exception ElementParserException Thrown, if a problem occurs while
-     *                parsing the xml-tag and creating the class/object
-     *                instances.
-     */
-    @Nonnull
+	/**
+	 * Method parses the passed xml-element and creates an object based on the
+	 * information defined by the xml-tag.
+	 *
+	 * @param element containing the information of the parsed xml-element
+	 * @param factory ParserFactory returning the parsers for parsing nested
+	 *            tags
+	 * @return ClassObjectPair: parsed xml-data, never null.
+	 * @exception ElementParserException Thrown, if a problem occurs while
+	 *                parsing the xml-tag and creating the class/object
+	 *                instances.
+	 */
+	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-            throws ElementParserException {
+					throws ElementParserException {
 
-        // get the name of the variable
-        String varName = element.getAttribute("name");
+		// get the name of the variable
+		String varName = element.getAttribute("name");
 		if (varName == null || varName.isEmpty()) {
 			throw new ElementParserException("attribute 'name' may not be null or empty");
 		}
 
-        //retrieve the ClassObjectPair from the scope and return it
-        if (!(factory instanceof ScopeParserFactory)) {
+		//retrieve the ClassObjectPair from the scope and return it
+		if (!(factory instanceof ScopeParserFactory)) {
 			throw new ElementParserException(
 							"VarParser needs a ScopeParserFactory");
 		}
 
-        try {
-            return ((ScopeParserFactory) factory).getVariableCOP(varName);
-        } catch (VariableNotDefinedException ex) {
-            throw new ElementParserException(ex);
-        }
+		try {
+			return ((ScopeParserFactory) factory).getVariableCOP(varName);
+		} catch (VariableNotDefinedException ex) {
+			throw new ElementParserException(ex);
+		}
 
-    }
+	}
 }

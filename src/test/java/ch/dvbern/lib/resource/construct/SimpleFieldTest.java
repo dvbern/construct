@@ -11,40 +11,42 @@
  */
 package ch.dvbern.lib.resource.construct;
 
-import ch.dvbern.lib.resource.construct.xml.*;
+import ch.dvbern.lib.resource.construct.xml.FilePathResourceLocator;
+import ch.dvbern.lib.resource.construct.xml.ParserFactory;
+import ch.dvbern.lib.resource.construct.xml.XMLObjectConstructor;
 
 /**
  * A field test class.
  */
 public class SimpleFieldTest {
 
-    /**
-     * the first field
-     */
-    public String field1 = "field 1";
-    
-    /**
-     * the second field
-     */
-    public String field2 = "field 2";
-    
-    public String toString() {
-        return "field1="+field1+" field2="+field2;
-    }
-    
-    /**
-     * Main method.
-     * @param args main method arguments
-     * @throws Exception execution failure
-     */
-    public static void main(String[] args) throws Exception {
-        FilePathResourceLocator loc = new FilePathResourceLocator("/home/loue/project/dvbern-lib-forms/construct", 3000);
-        XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(loc));
-        
-        SimpleFieldTest test = (SimpleFieldTest)constructor.construct("myField.xml", false);
-        System.out.println(test);
-        
-        loc.stopResourceChecker();
-    }
+	/**
+	 * the first field
+	 */
+	public String field1 = "field 1";
+
+	/**
+	 * the second field
+	 */
+	public String field2 = "field 2";
+
+	public String toString() {
+		return "field1=" + field1 + " field2=" + field2;
+	}
+
+	/**
+	 * Main method.
+	 * @param args main method arguments
+	 * @throws Exception execution failure
+	 */
+	public static void main(String[] args) throws Exception {
+		FilePathResourceLocator loc = new FilePathResourceLocator("/home/loue/project/dvbern-lib-forms/construct", 3000);
+		XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(loc));
+
+		SimpleFieldTest test = (SimpleFieldTest) constructor.construct("myField.xml", false);
+		System.out.println(test);
+
+		loc.stopResourceChecker();
+	}
 
 }

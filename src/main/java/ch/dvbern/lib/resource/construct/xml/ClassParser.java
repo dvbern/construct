@@ -23,27 +23,27 @@ import javax.annotation.Nonnull;
  */
 public class ClassParser implements ElementParser {
 
-    /**
-     * Method parses the passed xml-element and creates an object based on the
-     * information defined by the xml-tag.
-     *
-     * @param element containing the information of the parsed xml-element
-     * @param factory ParserFactory returning the parsers for parsing nested
-     *            tags
-     * @return ClassObjectPair: parsed xml-data, never null.
-     * @exception ElementParserException Thrown, if a problem occurs while
-     *                parsing the xml-tag and creating the class/object
-     *                instances.
-     */
-    @Nonnull
+	/**
+	 * Method parses the passed xml-element and creates an object based on the
+	 * information defined by the xml-tag.
+	 *
+	 * @param element containing the information of the parsed xml-element
+	 * @param factory ParserFactory returning the parsers for parsing nested
+	 *            tags
+	 * @return ClassObjectPair: parsed xml-data, never null.
+	 * @exception ElementParserException Thrown, if a problem occurs while
+	 *                parsing the xml-tag and creating the class/object
+	 *                instances.
+	 */
+	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-            throws ElementParserException {
-        String className = element.getAttribute("name");
-        try {
-            Class klass = Class.forName(className);
-            return new ClassObjectPair(Class.class, klass);
-        } catch (ClassNotFoundException ex) {
-            throw new ElementParserException(ex);
-        }
-    }
+					throws ElementParserException {
+		String className = element.getAttribute("name");
+		try {
+			Class klass = Class.forName(className);
+			return new ClassObjectPair(Class.class, klass);
+		} catch (ClassNotFoundException ex) {
+			throw new ElementParserException(ex);
+		}
+	}
 }

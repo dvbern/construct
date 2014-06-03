@@ -11,7 +11,7 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import java.io.*;
+import java.io.InputStream;
 
 import javax.annotation.Nonnull;
 

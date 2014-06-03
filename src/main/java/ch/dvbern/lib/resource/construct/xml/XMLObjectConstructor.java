@@ -11,9 +11,10 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import ch.dvbern.lib.resource.construct.*;
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +23,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import ch.dvbern.lib.resource.construct.ConstructionException;
+import ch.dvbern.lib.resource.construct.ObjectConstructor;
 
 /**
  * This implementation of <code>ObjectConstructor</code> uses xml-files as definitions for the objects (resources). It

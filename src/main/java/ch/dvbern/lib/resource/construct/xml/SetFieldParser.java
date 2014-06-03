@@ -11,7 +11,7 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -26,67 +26,67 @@ import javax.annotation.Nonnull;
  */
 public class SetFieldParser implements ElementParser {
 
-    /**
-     * Method parses the passed xml-element and creates an object based on the
-     * information defined by the xml-tag.
-     *
-     * @param element containing the information of the parsed xml-element
-     * @param factory ParserFactory returning the parsers for parsing nested
-     *            tags
-     * @return ClassObjectPair: parsed xml-data, never null.
-     * @exception ElementParserException Thrown, if a problem occurs while
-     *                parsing the xml-tag and creating the class/object
-     *                instances.
-     */
-    @Nonnull
+	/**
+	 * Method parses the passed xml-element and creates an object based on the
+	 * information defined by the xml-tag.
+	 *
+	 * @param element containing the information of the parsed xml-element
+	 * @param factory ParserFactory returning the parsers for parsing nested
+	 *            tags
+	 * @return ClassObjectPair: parsed xml-data, never null.
+	 * @exception ElementParserException Thrown, if a problem occurs while
+	 *                parsing the xml-tag and creating the class/object
+	 *                instances.
+	 */
+	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-            throws ElementParserException {
+					throws ElementParserException {
 
-        /** * get name of field ** */
-        String fieldName = element.getAttribute("name");
+		/** * get name of field ** */
+		String fieldName = element.getAttribute("name");
 
-        /** ** get object, on which field is to set ** */
-        List objectElChildren = element.getElementsByTagName("target");
-        if (objectElChildren.size() != 1) {
-            throw new ElementParserException(
-                    "object must have exactly on child (construct or ref or cast...)");
-        }
-        Element objectElToParse = (Element) objectElChildren.get(0);
-        ClassObjectPair cop;
-        Object myObject;
-        Class myClass;
-        try {
-            cop = factory.getParser(objectElToParse.getNodeName()).parse(
-                    objectElToParse, factory);
-            myObject = cop.getObject();
-            myClass = cop.getKlass();
-        } catch (ParserNotRegisteredException ex) {
-            throw new ElementParserException(ex);
-        }
+		/** ** get object, on which field is to set ** */
+		List objectElChildren = element.getElementsByTagName("target");
+		if (objectElChildren.size() != 1) {
+			throw new ElementParserException(
+							"object must have exactly on child (construct or ref or cast...)");
+		}
+		Element objectElToParse = (Element) objectElChildren.get(0);
+		ClassObjectPair cop;
+		Object myObject;
+		Class myClass;
+		try {
+			cop = factory.getParser(objectElToParse.getNodeName()).parse(
+							objectElToParse, factory);
+			myObject = cop.getObject();
+			myClass = cop.getKlass();
+		} catch (ParserNotRegisteredException ex) {
+			throw new ElementParserException(ex);
+		}
 
-        /** * get value to set ** */
-        Element valueEl = element.getElementsByTagName("value")
-                .get(0);
-        Object newValue;
-        try {
-            ClassObjectPair tmp = factory.getParser(valueEl.getNodeName())
-                    .parse(valueEl, factory);
-            newValue = tmp.getObject();
-        } catch (ParserNotRegisteredException ex) {
-            throw new ElementParserException(ex);
-        }
+		/** * get value to set ** */
+		Element valueEl = element.getElementsByTagName("value")
+						.get(0);
+		Object newValue;
+		try {
+			ClassObjectPair tmp = factory.getParser(valueEl.getNodeName())
+							.parse(valueEl, factory);
+			newValue = tmp.getObject();
+		} catch (ParserNotRegisteredException ex) {
+			throw new ElementParserException(ex);
+		}
 
-        /** * get Field and set value ** */
-        try {
-            Field field = myClass.getField(fieldName);
-            field.set(myObject, newValue);
-        } catch (NoSuchFieldException ex) {
-            throw new ElementParserException(ex);
-        } catch (IllegalAccessException ex) {
-            throw new ElementParserException(ex);
-        }
+		/** * get Field and set value ** */
+		try {
+			Field field = myClass.getField(fieldName);
+			field.set(myObject, newValue);
+		} catch (NoSuchFieldException ex) {
+			throw new ElementParserException(ex);
+		} catch (IllegalAccessException ex) {
+			throw new ElementParserException(ex);
+		}
 
-        return cop;
+		return cop;
 
-    }
+	}
 }

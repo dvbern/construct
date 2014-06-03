@@ -23,13 +23,13 @@ public class VariableNotDefinedException extends java.lang.Exception {
 
 	private static final long serialVersionUID = 3523634640300494355L;
 
-    /**
-     * Constructs an instance of <code>VariableNotDefinedException</code> with
-     * the specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public VariableNotDefinedException(@Nonnull String msg) {
-        super(msg);
-    }
+	/**
+	 * Constructs an instance of <code>VariableNotDefinedException</code> with
+	 * the specified detail message.
+	 *
+	 * @param msg the detail message.
+	 */
+	public VariableNotDefinedException(@Nonnull String msg) {
+		super(msg);
+	}
 }

@@ -23,13 +23,13 @@ public class VariableAlreadyDefinedException extends Exception {
 
 	private static final long serialVersionUID = -3083483453012984072L;
 
-    /**
-     * Constructs an instance of <code>VariableAlreadyDefinedException</code>
-     * with the specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public VariableAlreadyDefinedException(@Nonnull String msg) {
-        super(msg);
-    }
+	/**
+	 * Constructs an instance of <code>VariableAlreadyDefinedException</code>
+	 * with the specified detail message.
+	 *
+	 * @param msg the detail message.
+	 */
+	public VariableAlreadyDefinedException(@Nonnull String msg) {
+		super(msg);
+	}
 }

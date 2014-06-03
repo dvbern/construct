@@ -23,19 +23,19 @@ public class ParserNotRegisteredException extends Exception {
 	private static final long serialVersionUID = -8685141376596179827L;
 
 	/**
-     * Creates a new instance of <code>ParserNotRegisteredException</code>
-     * without detail message.
-     */
-    public ParserNotRegisteredException() {
-    }
+	 * Creates a new instance of <code>ParserNotRegisteredException</code>
+	 * without detail message.
+	 */
+	public ParserNotRegisteredException() {
+	}
 
-    /**
-     * Constructs an instance of <code>ParserNotRegisteredException</code>
-     * with the specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public ParserNotRegisteredException(@Nullable String msg) {
-        super(msg);
-    }
+	/**
+	 * Constructs an instance of <code>ParserNotRegisteredException</code>
+	 * with the specified detail message.
+	 *
+	 * @param msg the detail message.
+	 */
+	public ParserNotRegisteredException(@Nullable String msg) {
+		super(msg);
+	}
 }

@@ -37,6 +37,6 @@ public interface ElementParser {
 	 */
 	@Nonnull
 	ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-			throws ElementParserException;
+					throws ElementParserException;
 
 }

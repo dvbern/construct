@@ -21,45 +21,45 @@ public class ElementParserException extends java.lang.Exception {
 
 	private static final long serialVersionUID = -7590476829224567457L;
 
-    /**
-     * Creates a new instance of <code>ElementParserException</code> without
-     * detail message.
-     */
-    public ElementParserException() {
-        super();
-    }
+	/**
+	 * Creates a new instance of <code>ElementParserException</code> without
+	 * detail message.
+	 */
+	public ElementParserException() {
+		super();
+	}
 
-    /**
-     * Creates a new instance of <code>ElementParserException</code> with the
-     * passed nested exception.
-     *
-     * @param cause Throwable, which is beeing wrapped by this exception and
-     *        included in the stack trace.
-     */
-    public ElementParserException(@Nonnull Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * Creates a new instance of <code>ElementParserException</code> with the
+	 * passed nested exception.
+	 *
+	 * @param cause Throwable, which is beeing wrapped by this exception and
+	 *        included in the stack trace.
+	 */
+	public ElementParserException(@Nonnull Throwable cause) {
+		super(cause);
+	}
 
-    /**
-     * Constructs an instance of <code>ElementParserException</code> with the
-     * specified detail message
-     *
-     * @param msg the detail message.
-     */
-    public ElementParserException(@Nonnull String msg) {
-        super(msg);
-    }
+	/**
+	 * Constructs an instance of <code>ElementParserException</code> with the
+	 * specified detail message
+	 *
+	 * @param msg the detail message.
+	 */
+	public ElementParserException(@Nonnull String msg) {
+		super(msg);
+	}
 
-    /**
-     * Constructs an instance of <code>ElementParserException</code> with the
-     * specified detail message and the passed nested exception.
-     *
-     * @param msg the detail message.
-     * @param cause Throwable, which is beeing wrapped by this exception and
-     *        included in the stack trace.
-     */
-    public ElementParserException(@Nonnull String msg, @Nonnull Throwable cause) {
-        super(msg, cause);
-    }
+	/**
+	 * Constructs an instance of <code>ElementParserException</code> with the
+	 * specified detail message and the passed nested exception.
+	 *
+	 * @param msg the detail message.
+	 * @param cause Throwable, which is beeing wrapped by this exception and
+	 *        included in the stack trace.
+	 */
+	public ElementParserException(@Nonnull String msg, @Nonnull Throwable cause) {
+		super(msg, cause);
+	}
 
 }

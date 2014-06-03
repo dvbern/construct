@@ -1,43 +1,49 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8"/>
 </head>
 
 
 <body>
 
-<hr />
+<hr/>
 <h2>Content</h2>
 <ul>
-<li><a href="#Prerequisites">Prerequisites</a></li>
-<li><a href="#Usage1">Usage part 1: Object factory</a></li>
-<li><a href="#Usage2">Usage part 2: Object definitions in XML</a></li>
-    <ul>
-    <li><a href="#constr">construct</a></li>
-    <li><a href="#script">script</a></li>
-    </ul>
-<li><a href="#Element_Index">Element Index</a></li>
-<li><a href="#DTD">DTD</a></li>
+	<li><a href="#Prerequisites">Prerequisites</a></li>
+	<li><a href="#Usage1">Usage part 1: Object factory</a></li>
+	<li><a href="#Usage2">Usage part 2: Object definitions in XML</a></li>
+	<ul>
+		<li><a href="#constr">construct</a></li>
+		<li><a href="#script">script</a></li>
+	</ul>
+	<li><a href="#Element_Index">Element Index</a></li>
+	<li><a href="#DTD">DTD</a></li>
 </ul>
 
-<hr />
+<hr/>
 
 <h2><a name="Prerequisites"></a>Prerequisites</h2>
 <ul>
-<li>(...libs in the classpath...)</li>
+	<li>(...libs in the classpath...)</li>
 </ul>
 
-<hr />
+<hr/>
 
 <h2><a name="Usage1"></a>Usage part 1: Object factory</h2>
+
 <p>The following descriptions explain how to use <code>ObjectConstructor</code> and its related classes.</p>
+
 <p>The UML diagram below shows the core classes:</p>
 <img src="ObjectConstructor.gif">
 <br>
-<p><b><code>XMLObjectConstructor</code></b> is an implementation of <code>ObjectConstructor</code> that uses xml-files as definitions of objects.
-<p>The following example shows the usage of the default <code>XMLObjectConstructor</code>. When using the default version, the xml-files with the object definitions must be located in the CLASSPATH of the application:
+
+<p><b><code>XMLObjectConstructor</code></b> is an implementation of <code>ObjectConstructor</code> that uses xml-files
+	as definitions of objects.
+
+<p>The following example shows the usage of the default <code>XMLObjectConstructor</code>. When using the default
+	version, the xml-files with the object definitions must be located in the CLASSPATH of the application:
 <pre>
     //create default XMLObjectConstructor
     XMLObjectConstructor constructor = new XMLObjectConstructor();
@@ -54,25 +60,37 @@
         //... handle exception
     }
 </pre>
-<p>As the example shows, the usage of the <code>XMLObjectConstructor</code> is very simple. It's method <code>construct()</code> returns an object, that has to be casted.
-<p>The method <code>construct()</code> throws a <b><code>ConstructionException</code></b>, if the 
-definition in the indicated xml-file is not correct or the file can not be located.
-The stack trace of the exception may include the stack trace of nested exceptions.
-<p>As the <code>XMLObjectConstructor</code> has caching function, always the same instance of it must be used for retrieving the same objects.
+<p>As the example shows, the usage of the <code>XMLObjectConstructor</code> is very simple. It's method <code>construct()</code>
+	returns an object, that has to be casted.
+
+<p>The method <code>construct()</code> throws a <b><code>ConstructionException</code></b>, if the
+	definition in the indicated xml-file is not correct or the file can not be located.
+	The stack trace of the exception may include the stack trace of nested exceptions.
+
+<p>As the <code>XMLObjectConstructor</code> has caching function, always the same instance of it must be used for
+	retrieving the same objects.
 
 <p>Internally the <code>XMLObjectConstructor</code> uses a <code>ParserFactory</code> which optionally accepts a <code>ResourceLocator</code>.
-<br>The <code>ResourceLocator</code> is responsible for finding the xml-files that define the objects. By default (as shown in the example above), <code>XMLObjectConstructor</code>
-uses a <code>ClassLoaderResourceLocator</code>. In that case, the xml-files must be located in the CLASSPATH. 
-(But a <code>ClassLoaderResourceLocator</code> can be created with a specific <code>ClassLoader</code>).
-<p>The other solution is the use of a <code>FilePathResourceLocator</code> which is able to find the resources (xml-files) in the specified "path".
-If you want to use a <code>FilePathResourceLocator</code>, you must pass an instance of it to the <code>ParserFactory</code>.
-The <code>FilePathResourceLocator</code> requires the definition of a "path" (representing the directory where the files are stored) and
-optionally of a long-value (<code>resChangeCheckPeriod</code>) that defines the interval in ms at which the files are being rechecked for changes.
-<p>The advantage of the <code>FilePathResourceLocator</code> is the automatic detection of changes in the xml-files. If the content of a xml-file changes, 
-the parsed information is removed from the cache and reparsed at the next request.
+	<br>The <code>ResourceLocator</code> is responsible for finding the xml-files that define the objects. By default
+	(as shown in the example above), <code>XMLObjectConstructor</code>
+	uses a <code>ClassLoaderResourceLocator</code>. In that case, the xml-files must be located in the CLASSPATH.
+	(But a <code>ClassLoaderResourceLocator</code> can be created with a specific <code>ClassLoader</code>).
+
+<p>The other solution is the use of a <code>FilePathResourceLocator</code> which is able to find the resources
+	(xml-files) in the specified "path".
+	If you want to use a <code>FilePathResourceLocator</code>, you must pass an instance of it to the <code>ParserFactory</code>.
+	The <code>FilePathResourceLocator</code> requires the definition of a "path" (representing the directory where the
+	files are stored) and
+	optionally of a long-value (<code>resChangeCheckPeriod</code>) that defines the interval in ms at which the files
+	are being rechecked for changes.
+
+<p>The advantage of the <code>FilePathResourceLocator</code> is the automatic detection of changes in the xml-files. If
+	the content of a xml-file changes,
+	the parsed information is removed from the cache and reparsed at the next request.
+
 <p>Example:
 <pre>
-    //create a locator which looks for xml-files in the directory "/myResourcePath" and 
+    //create a locator which looks for xml-files in the directory "/myResourcePath" and
     //checks every minute, whether the xml-files have been changed
     FilePathResourceLocator locator = new FilePathResourceLocator("/myResourcePath", 60000);
     XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(locator));
@@ -82,13 +100,18 @@ the parsed information is removed from the cache and reparsed at the next reques
 </pre>
 
 
-<hr />
+<hr/>
 <h2><a name="Usage2"></a>Usage part 2: Object definitions in XML</h2>
-<p>There are to ways to define an object. 
-The <a href="#construct">first</a> is defining an object by declaring a constructor-call, 
-the <a href="#script">second</a> is defining an object by declaring a program-flow.
+
+<p>There are to ways to define an object.
+	The <a href="#construct">first</a> is defining an object by declaring a constructor-call,
+	the <a href="#script">second</a> is defining an object by declaring a program-flow.
+
 <h3><a name="constr"></a>construct</h3>
-<p>If an object has to be instantiated simply by calling a constructor, the declaration in the xml-file is fairly simple.
+
+<p>If an object has to be instantiated simply by calling a constructor, the declaration in the xml-file is fairly
+	simple.
+
 <p><a name="hero"></a>Let's assume we have the following JAVA class:
 <pre>
     package xyz;
@@ -114,41 +137,46 @@ the <a href="#script">second</a> is defining an object by declaring a program-fl
         &lt;int value="33" />
     &lt;/construct>
 </pre>
-<p><code>&lt;construct></code> is the root-tag, representing a constructor of an object. 
-All the constructor arguments must be placed as nested tags.
-<p>The following tags are allowed as nested "argument" tags (for details see <a href="#Element_Index">Element descriptions</a>):
+<p><code>&lt;construct></code> is the root-tag, representing a constructor of an object.
+	All the constructor arguments must be placed as nested tags.
+
+<p>The following tags are allowed as nested "argument" tags (for details see <a href="#Element_Index">Element
+	descriptions</a>):
+
 <p>"Primitive" types and java.lang.String:
 <ul>
-<li><code>&lt;string value="..." /><code></li>
-<li><code>&lt;int value="..." /><code></li>
-<li><code>&lt;short value="..." /><code></li>
-<li><code>&lt;long  value="..." /><code></li>
-<li><code>&lt;float  value="..." /><code></li>
-<li><code>&lt;double value="..." /><code></li>
-<li><code>&lt;char value="..." /><code></li>
-<li><code>&lt;boolean value="..." /><code></li>
+	<li><code>&lt;string value="..." /><code></li>
+	<li><code>&lt;int value="..." /><code></li>
+	<li><code>&lt;short value="..." /><code></li>
+	<li><code>&lt;long value="..." /><code></li>
+	<li><code>&lt;float value="..." /><code></li>
+	<li><code>&lt;double value="..." /><code></li>
+	<li><code>&lt;char value="..." /><code></li>
+	<li><code>&lt;boolean value="..." /><code></li>
 </ul>
 <p>Nested construct tags:
 <ul>
-<li><code>&lt;construct class="...">...&lt;/construct><code></li>
+	<li><code>&lt;construct class="...">...&lt;/construct><code></li>
 </ul>
 <p>Class definitions:
 <ul>
-<li><code>&lt;class name="..." /><code>
-<p>Returns the class with the indicated name.
-</li>
+	<li><code>&lt;class name="..." /><code>
+		<p>Returns the class with the indicated name.
+	</li>
 </ul>
 <p>References to other xml-files:
 <ul>
-<li><code>&lt;ref id="..." /><code>
-<p>If the name of another xml-file is set as value of <code>id</code>, the <code>&lt;ref></code> tag returns the object that is defined in that xml-file.
-</li>
+	<li><code>&lt;ref id="..." /><code>
+		<p>If the name of another xml-file is set as value of <code>id</code>, the <code>&lt;ref></code> tag returns the
+			object that is defined in that xml-file.
+	</li>
 </ul>
 <p>Arrays:
 <ul>
-<li><code>&lt;array elementtype="..."><code>
-<p>Examples for array definitions:
-<p>The definition
+	<li><code>&lt;array elementtype="..."><code>
+		<p>Examples for array definitions:
+
+		<p>The definition
 <pre>
     &lt;array elementtype="int">
         &lt;int value="1"/>
@@ -156,29 +184,31 @@ All the constructor arguments must be placed as nested tags.
         &lt;int value="3"/>
      &lt;/array>
 </pre>
-represents an <code>int</code> array with one dimension and a length of 3 
-(equivalent in JAVA for example: <code>int[] myArray = {1, 2, 3}</code>)
-<p>An array with two dimensions and String elements could be defined the following way:
+		represents an <code>int</code> array with one dimension and a length of 3
+		(equivalent in JAVA for example: <code>int[] myArray = {1, 2, 3}</code>)
+		<p>An array with two dimensions and String elements could be defined the following way:
 <pre>
     &lt;array elementtype="java.lang.String[]">
         &lt;array elementtype="java.lang.String">
             &lt;string value="a string"/>
-            &lt;string value="another string"/>            
+            &lt;string value="another string"/>
         &lt;/array>
         &lt;array elementtype="java.lang.String">
             &lt;string value="yet a string"/>
-            &lt;string value="yet another string"/>            
+            &lt;string value="yet another string"/>
         &lt;/array>
     &lt;/array>
 </pre>
-Arrays of any dimension and type can be defined that way. Of course the use of nested <code>&lt;construct></code> tags is also allowed.
-</li>
+		Arrays of any dimension and type can be defined that way. Of course the use of nested <code>
+		&lt;construct></code> tags is also allowed.
+	</li>
 </ul>
 <p>Sometimes a definition has to be casted. The following tag exists for this purpose:
 <ul>
-<li><code>&lt;cast class="...">...&lt;/cast><code></li>
-<p>Example:
-<p><a name="mycontainer"></a>Let's assume we have the following class:
+	<li><code>&lt;cast class="...">...&lt;/cast><code></li>
+	<p>Example:
+
+	<p><a name="mycontainer"></a>Let's assume we have the following class:
 <pre>
     package xyz;
 
@@ -191,77 +221,97 @@ Arrays of any dimension and type can be defined that way. Of course the use of n
         public Object getObject() {
             return object;
         }
-        
+
         ...
     }
 </pre>
-<p>The object can be defined as follows:
+	<p>The object can be defined as follows:
 <pre>
     &lt;construct class="xyz.MyContainer">
         &lt;cast class="java.lang.Object">&lt;string value="my string" />&lt;/cast>
     &lt;/construct>
 </pre>
-Because the constructor of <code>MyContainer</code> requires an object of type <code>java.lang.Object</code> 
-and we want to pass a <code>java.lang.String</code>, we have to cast the argument to <code>java.lang.Object</code>.
+	Because the constructor of <code>MyContainer</code> requires an object of type <code>java.lang.Object</code>
+	and we want to pass a <code>java.lang.String</code>, we have to cast the argument to <code>java.lang.Object</code>.
 </ul>
 
 <h3><a name="script"></a>script</h3>
-<p>Sometimes calling a constructor is not enough for instantiating a concrete object. 
-In that case, the following tag is used instead of <code>&lt;construct>...&lt;/construct></code>:
+
+<p>Sometimes calling a constructor is not enough for instantiating a concrete object.
+	In that case, the following tag is used instead of <code>&lt;construct>...&lt;/construct></code>:
 <ul>
-<li><code>&lt;script>...&lt;/script><code></li>
+	<li><code>&lt;script>...&lt;/script><code></li>
 </ul>
 <p>Within <code>&lt;script></code> tags the additional use of the following tags is possible:
 <ul>
-<li><code>&lt;vardef name="..." >...&lt;/vardef><code>
-<p>Stores an object with a variable name, i.e. stores the object, that is declared by the nested tag(s), with the indicated <code>name</code> attribute. 
-All the tags described in the <a href="#construct">previous chapter</a> plus <code>&lt;script></code> can be used as nested tags.
-<br>Nested <code>&lt;script></code> tags have its own scope; therefore variables can be "overriden" in nested <code>&lt;script></code> areas without changing variable definitions from embedding <code>&lt;script></code> tags.
-</li>
-<li><code>&lt;var name="..." /><code>
-<p>Returns the object that is stored with the <code>name</code> in the actual <code>&lt;script></code> scope or, if not found, in a scope of embedding <code>&lt;script></code> tags.
-<br>I.e. an object must have been defined by <code>&lt;vardef name="..." >...&lt;/vardef><code> with the same value of <code>name</code> before.
-</li>
-<li><code>&lt;invoke methodName="..." >...&lt;/invoke><code>
-<p>Invokes the method with the name indicated by <code>methodName</code> on the object or class defined by the nested <code>&lt;target>...&lt;/target></code> tag
-with the parameters defined by the nested &lt;parameters>...&lt;/parameters> tag and returns the return value of the method.
-<br>The invoked method must be public.
-</li>
-<li><code>&lt;getfield name="..." >...&lt;/getfield><code>
-<p>Returns the value stored in the field with the name indicated by <code>name</code> of the object or class defined by the nested <code>&lt;target>...&lt;/target></code> tag.
-<br>The field must be public.
-</li>
-<li><code>&lt;setfield name="..." >...&lt;/setfield><code>
-<p>Stores the value defined by the nested <code>&lt;value>...&lt;/value></code> tag in the field with the name indicated by <code>name</code> of the object or class defined by the nested <code>&lt;target>...&lt;/target></code> tag.
-<br>The field must be public.
-</li>
-<li><code>&lt;return>...&lt;/return><code>
-<p>Defines the object returned by a <code>&lt;script>...&lt;/script></code> definition. Can contain any tags described in this documentation.
-<br>Should be at the end of a <code>&lt;script>...&lt;/script></code> definition.
-<p>If there is no <code>&lt;return>...&lt;/return> tag in a <code>&lt;script>...&lt;/script></code> definition, the last defined object is returned.
-</li>
+	<li><code>&lt;vardef name="..." >...&lt;/vardef><code>
+		<p>Stores an object with a variable name, i.e. stores the object, that is declared by the nested tag(s), with
+			the indicated <code>name</code> attribute.
+			All the tags described in the <a href="#construct">previous chapter</a> plus <code>&lt;script></code> can be
+			used as nested tags.
+			<br>Nested <code>&lt;script></code> tags have its own scope; therefore variables can be "overriden" in
+			nested <code>&lt;script></code> areas without changing variable definitions from embedding <code>
+				&lt;script></code> tags.
+	</li>
+	<li><code>&lt;var name="..." /><code>
+		<p>Returns the object that is stored with the <code>name</code> in the actual <code>&lt;script></code> scope or,
+			if not found, in a scope of embedding <code>&lt;script></code> tags.
+			<br>I.e. an object must have been defined by <code>&lt;vardef name="..." >...&lt;/vardef><code> with the
+				same value of <code>name</code> before.
+	</li>
+	<li><code>&lt;invoke methodName="..." >...&lt;/invoke><code>
+		<p>Invokes the method with the name indicated by <code>methodName</code> on the object or class defined by the
+			nested <code>&lt;target>...&lt;/target></code> tag
+			with the parameters defined by the nested &lt;parameters>...&lt;/parameters> tag and returns the return
+			value of the method.
+			<br>The invoked method must be public.
+	</li>
+	<li><code>&lt;getfield name="..." >...&lt;/getfield><code>
+		<p>Returns the value stored in the field with the name indicated by <code>name</code> of the object or class
+			defined by the nested <code>&lt;target>...&lt;/target></code> tag.
+			<br>The field must be public.
+	</li>
+	<li><code>&lt;setfield name="..." >...&lt;/setfield><code>
+		<p>Stores the value defined by the nested <code>&lt;value>...&lt;/value></code> tag in the field with the name
+			indicated by <code>name</code> of the object or class defined by the nested <code>
+				&lt;target>...&lt;/target></code> tag.
+			<br>The field must be public.
+	</li>
+	<li><code>&lt;return>...&lt;/return><code>
+		<p>Defines the object returned by a <code>&lt;script>...&lt;/script></code> definition. Can contain any tags
+			described in this documentation.
+			<br>Should be at the end of a <code>&lt;script>...&lt;/script></code> definition.
+
+		<p>If there is no <code>&lt;return>...&lt;/return> tag in a <code>&lt;script>...&lt;/script></code> definition,
+			the last defined object is returned.
+	</li>
 </ul>
 
 <p><b>Example:</b>
+
 <p>Let's assume the following scenario:
-<p>We have a xml definition of a <a href="#mycontainer"><code>MyContainer</code></a> instance in a file named "lastname.xml":
+
+<p>We have a xml definition of a <a href="#mycontainer"><code>MyContainer</code></a> instance in a file named
+	"lastname.xml":
 <pre>
     &lt;?xml version="1.0" encoding="UTF-8"?>
-    &lt;construct class="xyz.MyContainer"> 
+    &lt;construct class="xyz.MyContainer">
         &lt;cast class="java.lang.Object">&lt;string value="Weissmueller" />&lt;/cast>
     &lt;/construct>
 </pre>
-<p>and another definition of a <a href="#mycontainer"><code>MyContainer</code></a> instance in a file named "firstname.xml":
+<p>and another definition of a <a href="#mycontainer"><code>MyContainer</code></a> instance in a file named
+	"firstname.xml":
 <pre>
     &lt;?xml version="1.0" encoding="UTF-8"?>
-    &lt;construct class="xyz.MyContainer"> 
+    &lt;construct class="xyz.MyContainer">
         &lt;cast class="java.lang.Object">&lt;string value="Johnny" />&lt;/cast>
     &lt;/construct>
 </pre>
-<p>We can now create a definition of a <a href="#hero"><code>Hero</code></a> instance in the file "myHero.xml" using the defined objects:
+<p>We can now create a definition of a <a href="#hero"><code>Hero</code></a> instance in the file "myHero.xml" using the
+	defined objects:
 <pre>
 &lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;script> 
+&lt;script>
     &lt;vardef name="firstname">
         &lt;cast class="java.lang.String">
             &lt;invoke methodName="getObject">
@@ -296,296 +346,459 @@ with the parameters defined by the nested &lt;parameters>...&lt;/parameters> tag
     &lt;/return>
 &lt;/script>
 </pre>
-<p>The following code would then print "Johnny Weissmueller" to the System.out (assuming that the 3 xml-files and the classes <code>MyContainer</code> and <code>Hero</code> are in the CLASSPATH):
+<p>The following code would then print "Johnny Weissmueller" to the System.out (assuming that the 3 xml-files and the
+	classes <code>MyContainer</code> and <code>Hero</code> are in the CLASSPATH):
 <pre>
     XMLObjectConstructor constructor = new XMLObjectConstructor();
     Hero hero = (Hero)constructor.construct("myHero.xml", true);
     System.out.println(hero.getName());
 </pre>
 
-<hr />
-<hr />
+<hr/>
+<hr/>
 
 <h2><a name="Element_Index"></a>Element Index</h2>
-<ul><li><tt><a href="#array">array</a></tt></li>
-<li><tt><a href="#boolean">boolean</a></tt></li>
-<li><tt><a href="#cast">cast</a></tt></li>
-<li><tt><a href="#char">char</a></tt></li>
-<li><tt><a href="#class">class</a></tt></li>
-<li><tt><a href="#construct">construct</a></tt></li>
-<li><tt><a href="#double">double</a></tt></li>
-<li><tt><a href="#float">float</a></tt></li>
-<li><tt><a href="#getfield">getfield</a></tt></li>
-<li><tt><a href="#int">int</a></tt></li>
-<li><tt><a href="#invoke">invoke</a></tt></li>
-<li><tt><a href="#long">long</a></tt></li>
-<li><tt><a href="#parameters">parameters</a></tt></li>
-<li><tt><a href="#ref">ref</a></tt></li>
-<li><tt><a href="#return">return</a></tt></li>
-<li><tt><a href="#script">script</a></tt></li>
-<li><tt><a href="#setfield">setfield</a></tt></li>
-<li><tt><a href="#short">short</a></tt></li>
-<li><tt><a href="#string">string</a></tt></li>
-<li><tt><a href="#target">target</a></tt></li>
-<li><tt><a href="#value">value</a></tt></li>
-<li><tt><a href="#var">var</a></tt></li>
-<li><tt><a href="#vardef">vardef</a></tt></li>
+<ul>
+	<li><tt><a href="#array">array</a></tt></li>
+	<li><tt><a href="#boolean">boolean</a></tt></li>
+	<li><tt><a href="#cast">cast</a></tt></li>
+	<li><tt><a href="#char">char</a></tt></li>
+	<li><tt><a href="#class">class</a></tt></li>
+	<li><tt><a href="#construct">construct</a></tt></li>
+	<li><tt><a href="#double">double</a></tt></li>
+	<li><tt><a href="#float">float</a></tt></li>
+	<li><tt><a href="#getfield">getfield</a></tt></li>
+	<li><tt><a href="#int">int</a></tt></li>
+	<li><tt><a href="#invoke">invoke</a></tt></li>
+	<li><tt><a href="#long">long</a></tt></li>
+	<li><tt><a href="#parameters">parameters</a></tt></li>
+	<li><tt><a href="#ref">ref</a></tt></li>
+	<li><tt><a href="#return">return</a></tt></li>
+	<li><tt><a href="#script">script</a></tt></li>
+	<li><tt><a href="#setfield">setfield</a></tt></li>
+	<li><tt><a href="#short">short</a></tt></li>
+	<li><tt><a href="#string">string</a></tt></li>
+	<li><tt><a href="#target">target</a></tt></li>
+	<li><tt><a href="#value">value</a></tt></li>
+	<li><tt><a href="#var">var</a></tt></li>
+	<li><tt><a href="#vardef">vardef</a></tt></li>
 </ul>
 
-<hr />
+<hr/>
 <h2>Element Details</h2>
 
 
-<hr />
+<hr/>
 <h2><a name="construct"></a>construct</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA class</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA class</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a
+		href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a
+		href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a
+		href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a
+		href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a
+		href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="cast"></a>cast</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA class</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA class</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)</tt></p>
+
+<p><tt>(<a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a
+		href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a
+		href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#construct">construct</a>&nbsp;|
+	<a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a
+			href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;|
+	<a href="#var">var</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>,
+	<a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="int"></a>int</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="float"></a>float</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="short"></a>short</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="long"></a>long</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="boolean"></a>boolean</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="char"></a>char</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="double"></a>double</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt>
+</p>
 
 
-<hr />
+<hr/>
 <h2><a name="string"></a>string</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA value</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA value</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="ref"></a>ref</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA id</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA id</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="array"></a>array</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA elementtype</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA elementtype</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a
+		href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a
+		href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a
+		href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a
+		href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a
+		href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="script"></a>script</h2>
 
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#vardef">vardef</a>&nbsp;| <a href="#var">var</a>&nbsp;| <a href="#return">return</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>)*</tt></p>
+
+<p><tt>(<a href="#vardef">vardef</a>&nbsp;| <a href="#var">var</a>&nbsp;| <a href="#return">return</a>&nbsp;| <a
+		href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#cast">cast</a>&nbsp;| <a
+		href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;|
+	<a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a
+			href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;|
+	<a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a
+			href="#setfield">setfield</a>)*</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="vardef"></a>vardef</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA name</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA name</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a
+		href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a
+		href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a
+		href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a
+		href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a
+		href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
 <p><b>Referenced by</b></p>
+
 <p><tt><a href="#script">script</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="var"></a>var</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA name</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA name</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>EMPTY</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="invoke"></a>invoke</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA methodName</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA methodName</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>(<a href="#target">target</a>&nbsp;| <a href="#parameters">parameters</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="target"></a>target</h2>
 
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#var">var</a>&nbsp;| <a href="#class">class</a>)</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a
+		href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a
+		href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#var">var</a>&nbsp;| <a
+		href="#class">class</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
+
 <p><tt><a href="#invoke">invoke</a>, <a href="#getfield">getfield</a>, <a href="#setfield">setfield</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="parameters"></a>parameters</h2>
 
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a
+		href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a
+		href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a
+		href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a
+		href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a
+		href="#getfield">getfield</a>&nbsp;| <a href="#var">var</a>)*</tt></p>
+
 <p><b>Referenced by</b></p>
+
 <p><tt><a href="#invoke">invoke</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="return"></a>return</h2>
 
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#var">var</a>)</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a
+		href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a
+		href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a
+		href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a
+		href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a
+		href="#var">var</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
+
 <p><tt><a href="#script">script</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="getfield"></a>getfield</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA name</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA name</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>(<a href="#target">target</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#target">target</a>, <a href="#parameters">parameters</a>, <a href="#return">return</a>,
+	<a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="setfield"></a>setfield</h2>
 
 <p><b>Declared Attributes</b></p>
-<ul><li><tt>#REQUIRED CDATA name</tt></li>
+<ul>
+	<li><tt>#REQUIRED CDATA name</tt></li>
 </ul>
 <p><b>Element Content Model</b></p>
+
 <p><tt>(<a href="#target">target</a>&nbsp;| <a href="#value">value</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
-<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>, <a href="#vardef">vardef</a>, <a href="#value">value</a></tt></p>
+
+<p><tt><a href="#construct">construct</a>, <a href="#cast">cast</a>, <a href="#array">array</a>, <a href="#script">script</a>,
+	<a href="#vardef">vardef</a>, <a href="#value">value</a></tt></p>
 
 
-<hr />
+<hr/>
 <h2><a name="value"></a>value</h2>
 
 <p><b>Element Content Model</b></p>
-<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)</tt></p>
+
+<p><tt>(<a href="#cast">cast</a>&nbsp;| <a href="#int">int</a>&nbsp;| <a href="#float">float</a>&nbsp;| <a
+		href="#short">short</a>&nbsp;| <a href="#long">long</a>&nbsp;| <a href="#boolean">boolean</a>&nbsp;| <a
+		href="#char">char</a>&nbsp;| <a href="#double">double</a>&nbsp;| <a href="#string">string</a>&nbsp;| <a
+		href="#class">class</a>&nbsp;| <a href="#construct">construct</a>&nbsp;| <a href="#array">array</a>&nbsp;| <a
+		href="#ref">ref</a>&nbsp;| <a href="#script">script</a>&nbsp;| <a href="#invoke">invoke</a>&nbsp;| <a
+		href="#getfield">getfield</a>&nbsp;| <a href="#setfield">setfield</a>&nbsp;| <a href="#var">var</a>)</tt></p>
+
 <p><b>Referenced by</b></p>
+
 <p><tt><a href="#setfield">setfield</a></tt></p>
-<hr />
+<hr/>
 
 <h2><a name="DTD"></a>DTD</h2>
+
 <p><a href="dtd.dtd">(download)</a>
 <pre>
 &lt;!ELEMENT construct (cast|int|float|short|long|boolean|char|double|string|class
@@ -635,7 +848,7 @@ with the parameters defined by the nested &lt;parameters>...&lt;/parameters> tag
 &lt;!ATTLIST double
     value CDATA #REQUIRED
 >
-  
+
 &lt;!ELEMENT string EMPTY>
 &lt;!ATTLIST string
     value CDATA #REQUIRED

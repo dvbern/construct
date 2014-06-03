@@ -11,11 +11,11 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
-import ch.dvbern.lib.resource.construct.*;
-import java.lang.reflect.*;
-import java.util.Arrays;
+import java.lang.reflect.Constructor;
 
 import javax.annotation.Nonnull;
+
+import ch.dvbern.lib.resource.construct.ConstructionException;
 
 /**
  * This class is used for creating objects out of declarations.
@@ -23,73 +23,73 @@ import javax.annotation.Nonnull;
 public class Construct {
 
 	@Nonnull
-    private Class klass;
+	private Class klass;
 
 	@Nonnull
-    private Class[] argClasses;
+	private Class[] argClasses;
 
 	@Nonnull
-    private Object[] argValues;
+	private Object[] argValues;
 
-    /**
-     * Constructor.
-     *
-     * @param klass <code>Class</code> of the object to create.
-     * @param argClasses Array of <code>Class</code> instances representing
-     *        the types of the parameters of the constructor for
-     *        <code>klass</code>
-     * @param argValues Array of <code>Object</code> instances representing
-     *        the values of the parameters of the constructor for a new instance
-     *        of <code>klass</code>
-     */
-    public Construct(@Nonnull Class<?> klass, @Nonnull Class<?>[] argClasses, @Nonnull Object[] argValues) {
-        this.klass = klass;
-        this.argClasses = argClasses.clone();
-        this.argValues = argValues.clone();
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param klass <code>Class</code> of the object to create.
+	 * @param argClasses Array of <code>Class</code> instances representing
+	 *        the types of the parameters of the constructor for
+	 *        <code>klass</code>
+	 * @param argValues Array of <code>Object</code> instances representing
+	 *        the values of the parameters of the constructor for a new instance
+	 *        of <code>klass</code>
+	 */
+	public Construct(@Nonnull Class<?> klass, @Nonnull Class<?>[] argClasses, @Nonnull Object[] argValues) {
+		this.klass = klass;
+		this.argClasses = argClasses.clone();
+		this.argValues = argValues.clone();
+	}
 
-    /**
-     * Method returns the <code>klass</code> member
-     *
-     * @return <code>Class</code>: The type of this <code>Construct</code>
-     * @exception ConstructionException Thrown if the object cannot be created
-     *            out of the member-values of this <code>Construct</code>
-     */
+	/**
+	 * Method returns the <code>klass</code> member
+	 *
+	 * @return <code>Class</code>: The type of this <code>Construct</code>
+	 * @exception ConstructionException Thrown if the object cannot be created
+	 *            out of the member-values of this <code>Construct</code>
+	 */
 	@Nonnull
-    public Class<?> getKlass() throws ConstructionException {
-        return klass;
-    }
-
-	@Nonnull
-    private Class<?>[] getArgClasses() throws ClassNotFoundException {
-        return argClasses;
-    }
+	public Class<?> getKlass() throws ConstructionException {
+		return klass;
+	}
 
 	@Nonnull
-    private Object[] getInitArgs() {
-        return argValues;
-    }
+	private Class<?>[] getArgClasses() throws ClassNotFoundException {
+		return argClasses;
+	}
 
-    /**
-     * This method returns the <code>Object</code> represented by this
-     * <code>Construct</code>.
-     *
-     * @return <code>Object</code> represented by this <code>Construct</code>.
-     * @exception ConstructionException Thrown if the object cannot be created
-     *            out of the member-values of this <code>Construct</code>
-     */
-    public Object getObject() throws ConstructionException {
-        try {
-            Constructor<?> constructor;
+	@Nonnull
+	private Object[] getInitArgs() {
+		return argValues;
+	}
+
+	/**
+	 * This method returns the <code>Object</code> represented by this
+	 * <code>Construct</code>.
+	 *
+	 * @return <code>Object</code> represented by this <code>Construct</code>.
+	 * @exception ConstructionException Thrown if the object cannot be created
+	 *            out of the member-values of this <code>Construct</code>
+	 */
+	public Object getObject() throws ConstructionException {
+		try {
+			Constructor<?> constructor;
 			constructor = getKlass()
-					.getConstructor(getArgClasses());
+							.getConstructor(getArgClasses());
 			return constructor.newInstance(getInitArgs());
-        } catch (ClassNotFoundException ex) {
-            throw new ConstructionException(ex);
-        } catch (NoSuchMethodException ex) {
-            throw new ConstructionException(ex);
-        } catch (Exception ex) {
-            throw new ConstructionException(ex);
-        }
-    }
+		} catch (ClassNotFoundException ex) {
+			throw new ConstructionException(ex);
+		} catch (NoSuchMethodException ex) {
+			throw new ConstructionException(ex);
+		} catch (Exception ex) {
+			throw new ConstructionException(ex);
+		}
+	}
 }

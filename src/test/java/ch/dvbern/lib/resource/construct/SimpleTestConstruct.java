@@ -40,7 +40,7 @@ public class SimpleTestConstruct {
 	private int[][] arrayTwo;
 
 	/**
- 	 * Constructor with member initialization.
+	 * Constructor with member initialization.
 	 *
 	 * @param ashort short value
 	 * @param aint int value
@@ -55,7 +55,7 @@ public class SimpleTestConstruct {
 	 * @param arrayTwo array two
 	 */
 	public SimpleTestConstruct(short ashort, int aint, long along, float afloat, double adouble, char achar,
-			boolean aboolean, String astring, Object aobject, Integer[] arrayOne, int[][] arrayTwo) {
+					boolean aboolean, String astring, Object aobject, Integer[] arrayOne, int[][] arrayTwo) {
 
 		setAshort(ashort);
 		setAint(aint);
