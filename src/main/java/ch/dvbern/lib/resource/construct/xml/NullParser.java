@@ -45,9 +45,10 @@ public class NullParser implements ElementParser {
         }
         String className = element.getAttribute("class");
 
-        if (className == null)
-            throw new ElementParserException(
-                    "could not find attribute with name class");
+        if (className == null) {
+			throw new ElementParserException(
+							"could not find attribute with name class");
+		}
 
         try {
             Class clazz = ClassFactory.getKlass(className);

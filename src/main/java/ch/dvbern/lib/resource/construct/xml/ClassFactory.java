@@ -39,7 +39,7 @@ import javax.annotation.Nonnull;
  * </li>
  * </ul>
  */
-public class ClassFactory {
+public final class ClassFactory {
 
     private ClassFactory() {
     }

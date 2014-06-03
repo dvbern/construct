@@ -49,7 +49,7 @@ public class RefParser implements ElementParser {
         String elementName = element.getNodeName();
         if (!elementName.equals("ref")) {
             throw new ElementParserException(
-                    "null-parser can not handle elements with the name="
+                    "RefParser can not handle elements with the name="
                             + elementName);
         }
         String objectId = element.getAttribute("id");

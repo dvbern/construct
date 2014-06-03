@@ -59,7 +59,7 @@ public final class PrimObjectFactory {
      *            supported or if a wrapper of type <code>type</code> cannot
      *            be created for the value <code>strValue</code>
      */
-	//CHECKSTYLE.OFF: CyclomaticComplexityCheck laesst sich hier leider nicht verhindern :(
+	//CSOFF: CyclomaticComplexityCheck laesst sich hier leider nicht verhindern :(
 	@Nonnull
     public static Object getWrapper(@Nonnull String type, @Nonnull String strValue)
             throws ConstructionException {
@@ -97,6 +97,6 @@ public final class PrimObjectFactory {
         }
         return returnVal;
     }
-	//CHECKSTYLE.ON
+	//CSON: CyclomaticComplexityCheck
 
 }

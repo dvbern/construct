@@ -46,9 +46,10 @@ public class VarParser implements ElementParser {
 		}
 
         //retrieve the ClassObjectPair from the scope and return it
-        if (!(factory instanceof ScopeParserFactory))
-            throw new ElementParserException(
-                    "VarParser needs a ScopeParserFactory");
+        if (!(factory instanceof ScopeParserFactory)) {
+			throw new ElementParserException(
+							"VarParser needs a ScopeParserFactory");
+		}
 
         try {
             return ((ScopeParserFactory) factory).getVariableCOP(varName);

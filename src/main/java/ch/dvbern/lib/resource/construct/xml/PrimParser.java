@@ -64,7 +64,7 @@ public class PrimParser implements ElementParser {
         String elementName = element.getNodeName();
 		if (!ALLOWED_ELEMENT_NAMES.contains(elementName)) {
 			throw new ElementParserException(
-							"null-parser can not handle elements with the name="
+							"PrimParser can not handle elements with the name="
 											+ elementName);
 		}
 
