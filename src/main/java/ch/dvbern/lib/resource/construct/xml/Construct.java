@@ -13,6 +13,7 @@ package ch.dvbern.lib.resource.construct.xml;
 
 import ch.dvbern.lib.resource.construct.*;
 import java.lang.reflect.*;
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
@@ -43,8 +44,8 @@ public class Construct {
      */
     public Construct(@Nonnull Class<?> klass, @Nonnull Class<?>[] argClasses, @Nonnull Object[] argValues) {
         this.klass = klass;
-        this.argClasses = argClasses;
-        this.argValues = argValues;
+        this.argClasses = argClasses.clone();
+        this.argValues = argValues.clone();
     }
 
     /**

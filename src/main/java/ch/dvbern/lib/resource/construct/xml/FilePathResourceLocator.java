@@ -16,6 +16,9 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Implementation of ResourceLocator. Needs a file-path-information for locating the resources.
  * <br>As <code>ResourceLocator</code> this class acts as event source for <code>ResourceChangedEvent</code>s
@@ -25,11 +28,15 @@ import javax.annotation.Nonnull;
  */
 public class FilePathResourceLocator implements ResourceLocator {
 
+	private static final Logger LOG = LoggerFactory.getLogger(FilePathResourceLocator.class);
+
 	@Nonnull
-    private final String path;
+	private final String path;
 	@Nonnull
+	@SuppressWarnings("PMD.LooseCoupling")
     private final HashSet<ResourceChangeListener> listeners;
 	@Nonnull
+	@SuppressWarnings("PMD.LooseCoupling")
     private final HashSet<File> files;
 	@Nonnull
     private final ResourceChecker resourceChecker;
@@ -68,6 +75,7 @@ public class FilePathResourceLocator implements ResourceLocator {
      * @throws ResourceNotFoundException if specified resource could not have been found
      */
 	@Nonnull
+	@SuppressWarnings("PMD.PreserveStackTrace")
 	public InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException {
         try {
 
@@ -127,7 +135,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 			try {
 				listener.resourceChanged(event);
 			} catch (RuntimeException ex) {
-				ex.printStackTrace();
+				LOG.error("Error while notifying listener: " + listener, ex);
 			}
 		}
     }
@@ -149,7 +157,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 			try {
 				listener.resourceRemoved(event);
 			} catch (RuntimeException ex) {
-				ex.printStackTrace();
+				LOG.error("Error while notifying listener: " + listener, ex);
 			}
 		}
     }
@@ -196,7 +204,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 				Set<File> clone;
 				synchronized (files) {
 					@SuppressWarnings("unchecked")
-					Set<File> tmp = (Set<File>) (files).clone();
+					Set<File> tmp = (Set<File>) files.clone();
 					clone = tmp;
 				}
 
@@ -212,7 +220,7 @@ public class FilePathResourceLocator implements ResourceLocator {
                 try {
                     Thread.sleep(checkPeriod);
                 } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+					LOG.warn("Interrupted while waiting for checkPeriod of " + checkPeriod + "ms", ex);
                 }
             }
         }

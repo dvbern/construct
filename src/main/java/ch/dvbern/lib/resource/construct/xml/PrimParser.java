@@ -11,6 +11,10 @@
  */
 package ch.dvbern.lib.resource.construct.xml;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 
 import ch.dvbern.lib.resource.construct.ConstructionException;
@@ -27,6 +31,21 @@ import ch.dvbern.lib.resource.construct.ConstructionException;
  */
 public class PrimParser implements ElementParser {
 
+	private static final Set<String> ALLOWED_ELEMENT_NAMES;
+
+	static {
+		Set<String> names = new HashSet<String>();
+		names.add("string") ;
+		names.add("int");
+		names.add("long");
+		names.add("short");
+		names.add("float");
+		names.add("double");
+		names.add("boolean");
+		names.add("char");
+		ALLOWED_ELEMENT_NAMES = Collections.unmodifiableSet(names);
+	}
+
     /**
      * Method parses the passed xml-element and creates an object based on the
      * information defined by the xml-tag.
@@ -35,7 +54,7 @@ public class PrimParser implements ElementParser {
      * @param factory ParserFactory returning the parsers for parsing nested
      *            tags
      * @return ClassObjectPair: parsed xml-data, never null.
-     * @exception ElementParserException Thrown, if a problem occurs while
+     * @throws ElementParserException if a problem occurs while
      *                parsing the xml-tag and creating the class/object
      *                instances.
      */
@@ -43,15 +62,12 @@ public class PrimParser implements ElementParser {
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
             throws ElementParserException {
         String elementName = element.getNodeName();
-        //check element name
-        if (!(elementName.equals("string") || elementName.equals("int")
-                || elementName.equals("long") || elementName.equals("short")
-                || elementName.equals("float") || elementName.equals("double")
-                || elementName.equals("boolean") || elementName.equals("char"))) {
-            throw new ElementParserException(
-                    "null-parser can not handle elements with the name="
-                            + elementName);
-        }
+		if (!ALLOWED_ELEMENT_NAMES.contains(elementName)) {
+			throw new ElementParserException(
+							"null-parser can not handle elements with the name="
+											+ elementName);
+		}
+
         //primitives and Strings
         Class klass;
         try {

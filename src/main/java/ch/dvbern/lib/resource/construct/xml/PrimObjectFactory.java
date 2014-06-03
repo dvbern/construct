@@ -29,7 +29,7 @@ import ch.dvbern.lib.resource.construct.*;
  * <li>"char"</li>
  * </ul>
  */
-public class PrimObjectFactory {
+public final class PrimObjectFactory {
 
     private PrimObjectFactory() {
     }
@@ -59,6 +59,7 @@ public class PrimObjectFactory {
      *            supported or if a wrapper of type <code>type</code> cannot
      *            be created for the value <code>strValue</code>
      */
+	//CHECKSTYLE.OFF: CyclomaticComplexityCheck laesst sich hier leider nicht verhindern :(
 	@Nonnull
     public static Object getWrapper(@Nonnull String type, @Nonnull String strValue)
             throws ConstructionException {
@@ -96,5 +97,6 @@ public class PrimObjectFactory {
         }
         return returnVal;
     }
+	//CHECKSTYLE.ON
 
 }
