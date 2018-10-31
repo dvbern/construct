@@ -14,7 +14,7 @@
 	</parent>
 	<scm>
 		<connection>
-			scm:svn:http://svn/repos/dvbern/lib/construct/trunk
+            scm:git:http://git/repos/dvbern/lib/construct.git
 		</connection>
 	</scm>
 	<issueManagement>
