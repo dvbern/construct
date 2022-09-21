@@ -1,11 +1,11 @@
 /*
- * Copyright � 2006 DV Bern AG, Switzerland
+ * Copyright Â© 2006 DV Bern AG, Switzerland
  *
  * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
- * gesch�tzt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzul�ssig. Dies gilt
- * insbesondere f�r Vervielf�ltigungen, die Einspeicherung und Verarbeitung in
+ * geschÃ¼tzt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulÃ¤ssig. Dies gilt
+ * insbesondere fÃ¼r VervielfÃ¤ltigungen, die Einspeicherung und Verarbeitung in
  * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
- * Ansicht �bergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
+ * Ansicht Ã¼bergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
  *
  * $Date: 2006/07/19 15:14:23 $ - $Author: meth $ - $Revision: 1.3 $
  */
