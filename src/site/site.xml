@@ -13,7 +13,7 @@
 	<version position="left"/>
 	<body>
 		<links>
-			<item name="DVB Maven Repo" href="http://nexus"/>
+			<item name="DVB Maven Repo" href="https://nexus.dvbern.ch"/>
 			<item name="DVB Komponenten" href="http://wiki/wiki/Wiki.jsp?page=Komponenten"/>
 		</links>
 		<menu name="${project.name}">
