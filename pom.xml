@@ -5,7 +5,7 @@
 	<artifactId>dvbern-lib-construct</artifactId>
 	<packaging>jar</packaging>
 	<name>dvbern-lib-construct</name>
-	<version>2.0.1</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<description>Instanzieren von Java Objekten aus einer XML Struktur heraus</description>
 	<parent>
 		<groupId>ch.dvbern.maven</groupId>
@@ -14,7 +14,7 @@
 	</parent>
 	<scm>
 		<connection>
-            scm:git:http://git/repos/dvbern/lib/construct.git
+			scm:git:http://git/repos/dvbern/lib/construct.git
 		</connection>
 	</scm>
 	<issueManagement>
