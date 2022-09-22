@@ -1,14 +1,52 @@
 # construct
 
-Instanzieren von Java Objekten aus einer XML Struktur heraus
+**This library was mainly put up for archival purposes**
+
+Instantiate and manipulate Java objects parsed from an Xml structure.
 
 ## Getting Started
 
-FIXME: TBD
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<script>
+	<vardef name="myObject">
+		<!-- instantiate the Java class with a no-args constructor -->
+		<construct class="ch.dvbern.lib.resource.construct.SimpleFieldFixture"/>
+	</vardef>
+	<vardef name="field1">
+		<getfield name="field1">
+			<target>
+				<var name="myObject"/>
+			</target>
+		</getfield>
+	</vardef>
+	<setfield name="field2">
+		<target>
+			<var name="myObject"/>
+		</target>
+		<value>
+			<var name="field1"/>
+		</value>
+	</setfield>
+	<return>
+		<var name="myObject"/>
+	</return>
+</script>
+```
 
 ### Installing
 
-FIXME: TBD
+Using maven:
+
+```xml
+
+<dependency>
+	<groupId>ch.dvbern.oss.construct</groupId>
+	<artifactId>construct</artifactId>
+	<!-- see tags/master branch -->
+	<version>x.y.z</version>
+</dependency>
+```
 
 ## Built With
 
