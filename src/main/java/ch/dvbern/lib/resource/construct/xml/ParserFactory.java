@@ -1,13 +1,17 @@
 /*
- * Copyright © 2006 DV Bern AG, Switzerland
+ * Copyright (C) 2022 DV Bern AG, Switzerland
  *
- * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
- * geschützt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulässig. Dies gilt
- * insbesondere für Vervielfältigungen, die Einspeicherung und Verarbeitung in
- * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
- * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * $Date: 2006/07/19 10:28:09 $ - $Author: meth $ - $Revision: 1.1 $
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -29,7 +33,7 @@ import javax.annotation.Nonnull;
 public class ParserFactory {
 
 	@Nonnull
-	private final Map<String, ElementParser> parsers = new HashMap<String, ElementParser>();
+	private final Map<String, ElementParser> parsers = new HashMap<>();
 
 	@Nonnull
 	private final ResourceLocator locator;
@@ -48,7 +52,7 @@ public class ParserFactory {
 	 * Constructor.
 	 *
 	 * @param locator <code>ResourceLocator</code> for locating resources;
-	 *        never null
+	 * never null
 	 * @see ResourceLocator
 	 */
 	public ParserFactory(@Nonnull ResourceLocator locator) {
@@ -87,19 +91,19 @@ public class ParserFactory {
 	 *
 	 * @param elementName identifier of the element
 	 * @return <code>ElementParser</code> for the given
-	 *         <code>element-name</code>. Never null.
-	 * @exception ParserNotRegisteredException Thrown if there is no parser
-	 *            registered for the given <code>elementName</code>.
+	 * <code>element-name</code>. Never null.
+	 * @throws ParserNotRegisteredException Thrown if there is no parser
+	 *                                      registered for the given <code>elementName</code>.
 	 */
 	@Nonnull
 	public ElementParser getParser(@Nonnull String elementName)
-					throws ParserNotRegisteredException {
+			throws ParserNotRegisteredException {
 		String lowerCaseName = elementName.toLowerCase();
 		ElementParser parser = parsers.get(lowerCaseName);
 		if (parser == null) {
 			throw new ParserNotRegisteredException(
-							"there is no parser registered for elementName="
-											+ lowerCaseName);
+					"there is no parser registered for elementName="
+							+ lowerCaseName);
 		}
 		return parser;
 	}
@@ -111,20 +115,20 @@ public class ParserFactory {
 	 * designed.
 	 *
 	 * @param elementName Name, under which the parser is registered. Should
-	 *        correspond to the element-name of the tag, for which the parser is
-	 *        designed.
+	 * correspond to the element-name of the tag, for which the parser is
+	 * designed.
 	 * @param parser Implementation of <code>ElementParser</code>.
-	 * @exception ParserAlreadyRegisteredException Thrown, if there is already a
-	 *            parser registered with <code>elementName</code>
+	 * @throws ParserAlreadyRegisteredException Thrown, if there is already a
+	 *                                          parser registered with <code>elementName</code>
 	 */
 	public void registerParser(@Nonnull String elementName, @Nonnull ElementParser parser)
-					throws ParserAlreadyRegisteredException {
+			throws ParserAlreadyRegisteredException {
 		String lowerCaseName = elementName.toLowerCase();
 		synchronized (parsers) {
 			if (parsers.containsKey(lowerCaseName)) {
 				throw new ParserAlreadyRegisteredException(
-								"there is already a parser registered for elementName="
-												+ lowerCaseName);
+						"there is already a parser registered for elementName="
+								+ lowerCaseName);
 			}
 			parsers.put(lowerCaseName, parser);
 		}

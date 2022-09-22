@@ -1,13 +1,17 @@
 /*
- * Copyright © 2006 DV Bern AG, Switzerland
+ * Copyright (C) 2022 DV Bern AG, Switzerland
  *
- * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
- * geschützt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulässig. Dies gilt
- * insbesondere für Vervielfältigungen, die Einspeicherung und Verarbeitung in
- * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
- * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * $Date: 2006/07/19 10:28:09 $ - $Author: meth $ - $Revision: 1.1 $
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -50,9 +54,9 @@ public final class ClassFactory {
 	 *
 	 * @param type String, see description of this <code>ClassFactory</code>.
 	 * @return Returns a <code>Class</code> instance for the specified
-	 *         <code>type</code>, never null
-	 * @exception ClassNotFoundException Thrown, if no <code>Class</code> has
-	 *            been found for the specified <code>type</code>.
+	 * <code>type</code>, never null
+	 * @throws ClassNotFoundException Thrown, if no <code>Class</code> has
+	 *                                been found for the specified <code>type</code>.
 	 * @see ClassFactory
 	 */
 	@Nonnull

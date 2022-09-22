@@ -1,13 +1,17 @@
 /*
- * Copyright © 2006 DV Bern AG, Switzerland
+ * Copyright (C) 2022 DV Bern AG, Switzerland
  *
- * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
- * geschützt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulässig. Dies gilt
- * insbesondere für Vervielfältigungen, die Einspeicherung und Verarbeitung in
- * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
- * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * $Date: 2006/07/19 15:14:23 $ - $Author: meth $ - $Revision: 1.2 $
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -38,50 +42,52 @@ public class RefParser implements ElementParser {
 	 *
 	 * @param element containing the information of the parsed xml-element
 	 * @param factory ParserFactory returning the parsers for parsing nested
-	 *            tags
+	 * tags
 	 * @return ClassObjectPair: parsed xml-data, never null.
-	 * @exception ElementParserException Thrown, if a problem occurs while
-	 *                parsing the xml-tag and creating the class/object
-	 *                instances.
+	 * @throws ElementParserException Thrown, if a problem occurs while
+	 *                                parsing the xml-tag and creating the class/object
+	 *                                instances.
 	 */
+	@Override
 	@Nonnull
 	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
-					throws ElementParserException {
+			throws ElementParserException {
 		String elementName = element.getNodeName();
 		if (!elementName.equals("ref")) {
 			throw new ElementParserException(
-							"RefParser can not handle elements with the name="
-											+ elementName);
+					"RefParser can not handle elements with the name="
+							+ elementName);
 		}
 		String objectId = element.getAttribute("id");
 		if (objectId == null || objectId.equals("")) {
 			throw new ElementParserException(
-							"id of ref tag must be the name of a xml-file");
+					"id of ref tag must be the name of a xml-file");
 		}
 		try {
 			InputStream ins = factory.getResourceLocator().getResourceAsStream(
-							objectId);
+					objectId);
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-							.newDocumentBuilder();
+					.newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());
 
 			return factory.getParser(root.getNodeName()).parse(
-							root, factory);
+					root, factory);
 		} catch (SAXException ex) {
 			throw new ElementParserException("parsing of file with id="
-							+ objectId + " NOT successfull", ex);
+					+ objectId + " NOT successfull", ex);
 		} catch (IOException ex) {
 			throw new ElementParserException("parsing of file with id="
-							+ objectId + " NOT successfull", ex);
+					+ objectId + " NOT successfull", ex);
 		} catch (ParserConfigurationException ex) {
 			throw new ElementParserException("parsing of file with id="
-							+ objectId + " NOT successfull", ex);
+					+ objectId + " NOT successfull", ex);
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException("no parser found", ex);
 		} catch (ResourceNotFoundException ex) {
-			throw new ElementParserException("ref parser: resource not foung",
-							ex);
+			throw new ElementParserException(
+					"ref parser: resource not foung",
+					ex);
 		}
 	}
 

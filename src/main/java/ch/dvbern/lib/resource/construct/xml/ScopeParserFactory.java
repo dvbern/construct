@@ -1,13 +1,17 @@
 /*
- * Copyright © 2006 DV Bern AG, Switzerland
+ * Copyright (C) 2022 DV Bern AG, Switzerland
  *
- * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
- * geschützt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulässig. Dies gilt
- * insbesondere für Vervielfältigungen, die Einspeicherung und Verarbeitung in
- * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
- * Ansicht übergeben ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * $Date: 2006/07/19 10:28:09 $ - $Author: meth $ - $Revision: 1.1 $
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package ch.dvbern.lib.resource.construct.xml;
 
@@ -42,7 +46,7 @@ public class ScopeParserFactory extends ParserFactory {
 	 */
 	public ScopeParserFactory(@Nonnull ParserFactory factory) {
 		this.factory = factory;
-		this.varScope = new HashMap<String, ClassObjectPair>();
+		varScope = new HashMap<>();
 	}
 
 	/**
@@ -50,16 +54,17 @@ public class ScopeParserFactory extends ParserFactory {
 	 * <code>element-name</code>.
 	 *
 	 * @param elementName Name under which the parser is registered. Should
-	 *        correspond to the element-name of the tag, for which the parser is
-	 *        designed.
+	 * correspond to the element-name of the tag, for which the parser is
+	 * designed.
 	 * @return <code>ElementParser</code> for the given
-	 *         <code>element-name</code>. Never null.
-	 * @exception ParserNotRegisteredException Thrown if there is no parser
-	 *            registered for the given <code>element-name</code>.
+	 * <code>element-name</code>. Never null.
+	 * @throws ParserNotRegisteredException Thrown if there is no parser
+	 *                                      registered for the given <code>element-name</code>.
 	 */
+	@Override
 	@Nonnull
 	public ElementParser getParser(@Nonnull String elementName)
-					throws ParserNotRegisteredException {
+			throws ParserNotRegisteredException {
 		return factory.getParser(elementName);
 	}
 
@@ -70,14 +75,15 @@ public class ScopeParserFactory extends ParserFactory {
 	 * designed.
 	 *
 	 * @param elementName Name, under which the parser is registered. Should
-	 *        correspond to the element-name of the tag, for which the parser is
-	 *        designed.
+	 * correspond to the element-name of the tag, for which the parser is
+	 * designed.
 	 * @param parser Implementation of <code>ElementParser</code>.
-	 * @exception ParserAlreadyRegisteredException there is already a registered
-	 *            parser
+	 * @throws ParserAlreadyRegisteredException there is already a registered
+	 *                                          parser
 	 */
+	@Override
 	public void registerParser(@Nonnull String elementName, @Nonnull ElementParser parser)
-					throws ParserAlreadyRegisteredException {
+			throws ParserAlreadyRegisteredException {
 		factory.registerParser(elementName, parser);
 	}
 
@@ -89,13 +95,13 @@ public class ScopeParserFactory extends ParserFactory {
 	 *
 	 * @param varName Name of the variable
 	 * @return ClassObjectPair containing class and object of the variable with
-	 *         the name=varName; never null
-	 * @exception VariableNotDefinedException Thrown if no variable-definition
-	 *            with the varNmae is found in this scope or in a "higher" scope
+	 * the name=varName; never null
+	 * @throws VariableNotDefinedException Thrown if no variable-definition
+	 *                                     with the varNmae is found in this scope or in a "higher" scope
 	 */
 	@Nonnull
 	public ClassObjectPair getVariableCOP(@Nonnull String varName)
-					throws VariableNotDefinedException {
+			throws VariableNotDefinedException {
 		ClassObjectPair value = varScope.get(varName);
 		if (value == null) {
 			if (factory instanceof ScopeParserFactory) {
@@ -104,7 +110,7 @@ public class ScopeParserFactory extends ParserFactory {
 		}
 		if (value == null) {
 			throw new VariableNotDefinedException("variable with name="
-							+ varName + " not defined");
+					+ varName + " not defined");
 		}
 		return value;
 	}
@@ -114,19 +120,19 @@ public class ScopeParserFactory extends ParserFactory {
 	 *
 	 * @param varName Name under which the variable is to store
 	 * @param cop ClassObjectPair containing class and object of the variable to
-	 *        store
-	 * @exception VariableAlreadyDefinedException Thrown if a variable with
-	 *            name=varName is already stored in the scope of this
-	 *            ScopeParserFactory. (Variable with the same varName may be
-	 *            stored in "higher" scopes.)
+	 * store
+	 * @throws VariableAlreadyDefinedException Thrown if a variable with
+	 *                                         name=varName is already stored in the scope of this
+	 *                                         ScopeParserFactory. (Variable with the same varName may be
+	 *                                         stored in "higher" scopes.)
 	 */
 	public void setVariableCOP(@Nonnull String varName, @Nonnull ClassObjectPair cop)
-					throws VariableAlreadyDefinedException {
+			throws VariableAlreadyDefinedException {
 		synchronized (varScope) {
 			if (varScope.get(varName) != null) {
 				throw new VariableAlreadyDefinedException(
-								"A variable with name=" + varName
-												+ " is already defined");
+						"A variable with name=" + varName
+								+ " is already defined");
 			}
 			varScope.put(varName, cop);
 		}
