@@ -1,6 +1,6 @@
 # construct
 
-**This library was mainly put up for archival purposes**
+**⚠️This library was mainly released for archival purposes ⚠️**
 
 Instantiate and manipulate Java objects parsed from an Xml structure.
 
@@ -11,7 +11,7 @@ Instantiate and manipulate Java objects parsed from an Xml structure.
 <script>
 	<vardef name="myObject">
 		<!-- instantiate the Java class with a no-args constructor -->
-		<construct class="ch.dvbern.lib.resource.construct.SimpleFieldFixture"/>
+		<construct class="ch.dvbern.oss.construct.SimpleFieldFixture"/>
 	</vardef>
 	<vardef name="field1">
 		<getfield name="field1">
