@@ -15,12 +15,13 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "vardef" (<code>&lt;vardef  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "vardef" ({@code <vardef  >}).
+ * The parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -40,16 +41,16 @@ public class VardefParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+    @NonNull
+    public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
-		/** * get variable name ** */
+        //  get variable name
 		String varName = element.getAttribute("name");
 		if (varName == null || varName.isEmpty()) {
 			throw new ElementParserException("attribute 'name' may not be null or empty");
 		}
 
-		/** * get class object pair for variable value ** */
+        // get class object pair for variable value
 		Element objectElement = element.getChildElements().get(0);
 		ClassObjectPair cop;
 		try {
@@ -59,7 +60,7 @@ public class VardefParser implements ElementParser {
 			throw new ElementParserException(ex);
 		}
 
-		/** * set variable into ScopeParserFactory ** */
+        // set variable into ScopeParserFactory
 		if (!(factory instanceof ScopeParserFactory)) {
 			throw new ElementParserException(
 					"passed factory must be of type 'ScopeParserFactory'");

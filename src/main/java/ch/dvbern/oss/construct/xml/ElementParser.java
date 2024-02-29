@@ -15,7 +15,8 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 
 /**
  * Abstraction of ElementParser. Its implementations are responsible for parsing
@@ -36,8 +37,8 @@ public interface ElementParser {
 	 * @throws ElementParserException Thrown, if a problem occurs while parsing the xml-tag and
 	 *                                creating the class/object instances.
 	 */
-	@Nonnull
-	ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+    @NonNull
+    ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException;
 
 }

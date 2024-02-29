@@ -15,12 +15,13 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "class" (<code>&lt;class  &gt;</code>). The
- * parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "class" ({@code <class  >}). The
+ * parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -40,12 +41,12 @@ public class ClassParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+    @NonNull
+    public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 		String className = element.getAttribute("name");
 		try {
-			Class klass = Class.forName(className);
+            var klass = Class.forName(className);
 			return new ClassObjectPair(Class.class, klass);
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException(ex);

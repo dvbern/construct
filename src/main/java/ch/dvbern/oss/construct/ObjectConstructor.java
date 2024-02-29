@@ -15,34 +15,35 @@
  */
 package ch.dvbern.oss.construct;
 
-import javax.annotation.Nonnull;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Abstraction of object constuctors. Implementations create and return objects,
- * identified by the passed <code>objectId</code>. They should chache created
- * objects and return the already created instances if <code>newInstance</code>
+ * identified by the passed {@code objectId}. They should chache created
+ * objects and return the already created instances if {@code newInstance}
  * is false.
  */
 public interface ObjectConstructor {
 
 	/**
-	 * This method returns an object identified by <code>objectId</code>. A
-	 * cached instance may be returned, if <code>newInstance</code> is false.
+	 * This method returns an object identified by {@code objectId}. A
+	 * cached instance may be returned, if {@code newInstance} is false.
 	 * If there is no definition for the object with the passed
-	 * <code>objectId</code> or if the object can not be created, a
-	 * <code>ConstructionException</code> is thrown.
+	 * {@code objectId} or if the object can not be created, a
+	 * {@code ConstructionException} is thrown.
 	 *
 	 * @param objectId The id of the object, which should be created/returned.
 	 * @param newInstance boolean, indicating whether a new instance should be created
 	 * (true) or if already created (and cached) instances should be
 	 * returned.
-	 * @return Object according to the paramter <code>objectId</code>. The
+	 * @return Object according to the paramter {@code objectId}. The
 	 * return value is never null.
 	 * @throws ConstructionException Thrown, if there is no definition for the object with the
-	 *                               passed <code>objectId</code> or if the object can not be
+	 *                               passed {@code objectId} or if the object can not be
 	 *                               created
 	 */
-	@Nonnull
-	public Object construct(@Nonnull String objectId, boolean newInstance)
+	@NonNull
+	Object construct(@NonNull String objectId, boolean newInstance)
 			throws ConstructionException;
 }

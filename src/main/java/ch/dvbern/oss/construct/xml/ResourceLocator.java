@@ -15,13 +15,14 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.io.InputStream;
 
-import javax.annotation.Nonnull;
 
 /**
  * Abstraction of resource locator. Used by XMLObjectConstructor resp. ParserFactory. Event source for
- * <code>ResourceChangedEvent</code>s
+ * {@code ResourceChangedEvent}s
  *
  * @see ClassLoaderResourceLocator
  * @see ParserFactory
@@ -37,20 +38,20 @@ public interface ResourceLocator {
 	 * @return InputStream: resource as InputStream; never null.
 	 * @throws ResourceNotFoundException if specified resource could not have been found
 	 */
-	@Nonnull
-	InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException;
+    @NonNull
+    InputStream getResourceAsStream(@NonNull String resourceName) throws ResourceNotFoundException;
 
 	/**
 	 * Method registers listeners interested in changes or removals of resources.
 	 *
 	 * @param listener listener interested in changes or removals of resources
 	 */
-	void addResourceChangeListener(@Nonnull ResourceChangeListener listener);
+    void addResourceChangeListener(@NonNull ResourceChangeListener listener);
 
 	/**
 	 * Method de-registers listeners.
 	 *
 	 * @param listener registered listener that has to be removed
 	 */
-	void removeResourceChangeListener(@Nonnull ResourceChangeListener listener);
+    void removeResourceChangeListener(@NonNull ResourceChangeListener listener);
 }

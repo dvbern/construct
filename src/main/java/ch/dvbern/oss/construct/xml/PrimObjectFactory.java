@@ -15,13 +15,13 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
 
 import ch.dvbern.oss.construct.ConstructionException;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * This class is responsible for creating wrappers of the primitive types (inkl.
- * "java.lang.String"). As <code>type</code> it uses the following Strings:
+ * "java.lang.String"). As {@code type} it uses the following Strings:
  * <ul>
  * <li>"string"</li>
  * <li>"int"</li>
@@ -39,8 +39,8 @@ public final class PrimObjectFactory {
 	}
 
 	/**
-	 * This method returns a wrapper of the specified <code>type</code> for
-	 * the <code>strValue</code>. As <code>type</code> the following
+     * This method returns a wrapper of the specified {@code type} for
+     * the {@code strValue}. As {@code type} the following
 	 * Strings are supported:
 	 * <ul>
 	 * <li>"string"</li>
@@ -53,19 +53,18 @@ public final class PrimObjectFactory {
 	 * <li>"char"</li>
 	 * </ul>
 	 *
-	 * @param type <code>java.lang.String</code> indicating the type of the
+     * @param type {@code java.lang.String} indicating the type of the
 	 * wrapper
-	 * @param strValue <code>java.lang.String</code> containing the value to
+     * @param strValue {@code java.lang.String} containing the value to
 	 * wrap.
-	 * @return returns a wrapper of the specified <code>type</code> for the
-	 * <code>strValue</code>
+     * @return returns a wrapper of the specified {@code type} for the
+     * {@code strValue}
 	 * @throws ConstructionException Thrown, if the specified type is not
-	 *                               supported or if a wrapper of type <code>type</code> cannot
-	 *                               be created for the value <code>strValue</code>
+     *                               supported or if a wrapper of type {@code type} cannot
+     *                               be created for the value {@code strValue}
 	 */
-	//CSOFF: CyclomaticComplexityCheck laesst sich hier leider nicht verhindern :(
-	@Nonnull
-	public static Object getWrapper(@Nonnull String type, @Nonnull String strValue)
+    @NonNull
+    public static Object getWrapper(@NonNull String type, @NonNull String strValue)
 			throws ConstructionException {
 		Object returnVal = null;
 		try {
@@ -85,14 +84,12 @@ public final class PrimObjectFactory {
 				returnVal = Boolean.valueOf(strValue);
 			} else if (type.equalsIgnoreCase("char")) {
 				if (strValue.length() != 1) {
-					throw new ConstructionException(strValue
-							+ " is NOT a valid Character");
+                    throw new ConstructionException(strValue + " is NOT a valid Character");
 				}
 				returnVal = strValue.charAt(0);
 			}
 		} catch (Exception ex) {
-			throw new ConstructionException(
-					"error while trying to create wrapper", ex);
+            throw new ConstructionException("error while trying to create wrapper", ex);
 		}
 		if (returnVal == null) {
 			throw new ConstructionException(
@@ -101,6 +98,5 @@ public final class PrimObjectFactory {
 		}
 		return returnVal;
 	}
-	//CSON: CyclomaticComplexityCheck
 
 }

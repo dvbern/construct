@@ -15,14 +15,15 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.util.List;
 
-import javax.annotation.Nonnull;
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "script" (<code>&lt;script  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "script" ({@code <script  >}).
+ * The parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -42,40 +43,39 @@ public class ScriptParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	@NonNull
+	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
-		/** * process all the children ** */
-		ClassObjectPair lastCOP = null;
+		// process all the children
 		List<Element> children = element.getChildElements();
-		if (children.size() > 0) {
-			//create new ScopeParserFactory for storage of variables
-			ScopeParserFactory scopeFactory = new ScopeParserFactory(factory);
-			for (Element child : children) {
-				String tagName = child.getNodeName();
-				if (tagName.equals("return")) {
-					//always return the object created by a return-tag
-					Element objTag = child.getChildElements().get(0);
-					try {
-						lastCOP = scopeFactory.getParser(objTag.getNodeName())
-								.parse(objTag, scopeFactory);
-						return lastCOP;
-					} catch (ParserNotRegisteredException ex) {
-						throw new ElementParserException(ex);
-					}
-				} else {
-					/***********************************************************
-					 * * let the VardefParser parse and define the variables
-					 * (for tags with name 'vardef') or let the parsers do the
-					 * business (for tags with name 'invoke')
-					 **********************************************************/
-					try {
-						lastCOP = scopeFactory.getParser(child.getNodeName())
-								.parse(child, scopeFactory);
-					} catch (ParserNotRegisteredException ex) {
-						throw new ElementParserException(ex);
-					}
+		if (children.isEmpty()) {
+			throw new ElementParserException("no child elements defined for element " + element.getNodeName());
+		}
+		ClassObjectPair lastCOP = null;
+		// create new ScopeParserFactory for storage of variables
+		ScopeParserFactory scopeFactory = new ScopeParserFactory(factory);
+		for (Element child : children) {
+			String tagName = child.getNodeName();
+			if (tagName.equals("return")) {
+				//always return the object created by a return-tag
+				Element objTag = child.getChildElements().get(0);
+				try {
+					lastCOP = scopeFactory.getParser(objTag.getNodeName())
+						.parse(objTag, scopeFactory);
+					return lastCOP;
+				} catch (ParserNotRegisteredException ex) {
+					throw new ElementParserException(ex);
+				}
+			} else {
+				// let the VardefParser parse and define the variables
+				// (for tags with name 'vardef') or let the parsers do the
+				// business (for tags with name 'invoke')
+				try {
+					lastCOP = scopeFactory.getParser(child.getNodeName())
+						.parse(child, scopeFactory);
+				} catch (ParserNotRegisteredException ex) {
+					throw new ElementParserException(ex);
 				}
 			}
 		}
@@ -84,8 +84,7 @@ public class ScriptParser implements ElementParser {
 			throw new ElementParserException("no child elements defined for element " + element.getNodeName());
 		}
 
-		//if there has not been a return-tag, return the last created
-		// ClassObjectPair
+		// if there has not been a return-tag, return the last created ClassObjectPair
 		return lastCOP;
 	}
 }

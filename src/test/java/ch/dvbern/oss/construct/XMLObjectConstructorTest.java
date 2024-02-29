@@ -15,6 +15,18 @@
  */
 package ch.dvbern.oss.construct;
 
+import ch.dvbern.oss.construct.xml.FilePathResourceLocator;
+import ch.dvbern.oss.construct.xml.ParserFactory;
+import ch.dvbern.oss.construct.xml.ResourceChangeListener;
+import ch.dvbern.oss.construct.xml.ResourceChangedEvent;
+import ch.dvbern.oss.construct.xml.ResourceLocator;
+import ch.dvbern.oss.construct.xml.ResourceNotFoundException;
+import ch.dvbern.oss.construct.xml.XMLObjectConstructor;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,25 +38,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
-import ch.dvbern.oss.construct.xml.FilePathResourceLocator;
-import ch.dvbern.oss.construct.xml.ParserFactory;
-import ch.dvbern.oss.construct.xml.ResourceChangeListener;
-import ch.dvbern.oss.construct.xml.ResourceChangedEvent;
-import ch.dvbern.oss.construct.xml.ResourceLocator;
-import ch.dvbern.oss.construct.xml.ResourceNotFoundException;
-import ch.dvbern.oss.construct.xml.XMLObjectConstructor;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings({ "ResultOfMethodCallIgnored", "LocalVariableHidesMemberVariable" })
-public class XMLObjectConstructorTest {
+class XMLObjectConstructorTest {
 
 	private static String filenameSimplSTC = null;
 	private File fileSTC;
@@ -265,45 +264,44 @@ public class XMLObjectConstructorTest {
 		DataOutputStream dout = new DataOutputStream(fout);
 		dout.writeChars("<?xml version=\"1.0\"?>");
 		dout.writeChars("<class name=\"java.lang.String\" />");
-
 		dout.close();
 		fout.close();
 		return file;
 	}
 
 	@Test
-	public void testInitValues() throws Exception {
+	void testInitValues() throws Exception {
 		SimpleTestConstruct construct = (SimpleTestConstruct) objConstructor.construct(filenameSimplSTC, false);
 		assertThat(construct.getAshort()).isEqualTo((short) 1);
 		assertThat(construct.getAint()).isEqualTo(2);
 		assertThat(construct.getAlong()).isEqualTo(3);
-		assertThat(4.4f).isEqualTo(construct.getAfloat());
-		assertThat(5.5).isEqualTo(construct.getAdouble());
+		assertThat(construct.getAfloat()).isEqualTo(4.4f);
+		assertThat(construct.getAdouble()).isEqualTo(5.5);
 		assertThat(construct.getAchar()).isEqualTo('c');
-		assertThat(construct.isAboolean()).isEqualTo(true);
+		assertThat(construct.isAboolean()).isTrue();
 		assertThat(construct.getAstring()).isEqualTo("a string");
 	}
 
 	@Test
-	public void testRefParser() throws Exception {
+	void testRefParser() throws Exception {
 		SimpleTestConstruct construct = (SimpleTestConstruct) objConstructor.construct(filenameSimplSTC, false);
 		Map<?, ?> map = (Map<?, ?>) construct.getAobject();
 		assertThat(map.get("key 2")).isEqualTo("value 2");
 	}
 
 	@Test
-	public void testArrayParser() throws Exception {
+	void testArrayParser() throws Exception {
 		SimpleTestConstruct construct = (SimpleTestConstruct) objConstructor.construct(filenameSimplSTC, false);
 		Integer[] arrayOne = construct.getArrayOne();
-		assertThat(arrayOne[1].equals(new Integer("2"))).isTrue();
+		assertThat(arrayOne[1]).isEqualTo(2);
 		int[][] arrayTwo = construct.getArrayTwo();
-		assertThat(arrayTwo[0][2] == 13).isTrue();
-		assertThat(arrayTwo[1][1] == 22).isTrue();
-		assertThat(arrayTwo[2][0] == 31).isTrue();
+		assertThat(arrayTwo[0][2]).isSameAs(13);
+		assertThat(arrayTwo[1][1]).isSameAs(22);
+		assertThat(arrayTwo[2][0]).isSameAs(31);
 	}
 
 	@Test
-	public void testRemoveEvent() throws Exception {
+	void testRemoveEvent() throws Exception {
 		assertDoesNotThrow(() -> objConstructor.construct(filenameSimplSTC, false));
 
 		fileSTC.delete();
@@ -322,7 +320,7 @@ public class XMLObjectConstructorTest {
 	}
 
 	@Test
-	public void testChangeEvent() throws Exception {
+	void testChangeEvent() throws Exception {
 		TestFilePathResourceLocator locator =
 				new TestFilePathResourceLocator(fileSTC.getParent());
 		XMLObjectConstructor constructor = new XMLObjectConstructor(new ParserFactory(locator));
@@ -330,7 +328,7 @@ public class XMLObjectConstructorTest {
 		SimpleTestConstruct construct = (SimpleTestConstruct) constructor.construct(filenameSimplSTC, false);
 		assertThat(construct.getAshort()).isEqualTo((short) 1);
 		Integer[] arrayOne = construct.getArrayOne();
-		assertThat(arrayOne[1].equals(new Integer("2"))).isTrue();
+		assertThat(arrayOne[1]).isEqualTo(2);
 		//assertEquals(construct.getAStaticInteger(), new Integer("333"));
 
 		changeFile();
@@ -341,25 +339,25 @@ public class XMLObjectConstructorTest {
 				false);
 		assertThat(constructAfterChange.getAshort()).isEqualTo((short) 100);
 		Integer[] arrayOneAfterChange = constructAfterChange.getArrayOne();
-		assertThat(arrayOneAfterChange[1].equals(new Integer("200"))).isTrue();
+		assertThat(arrayOneAfterChange[1]).isEqualTo(200);
 		//assertEquals(construct.getAStaticInteger(), new Integer("999"));
 
 	}
 
 	@Test
-	public void testClass() throws Exception {
+	void testClass() throws Exception {
 		File file = constructMyClass();
 		fprl = new FilePathResourceLocator(file.getParent(), 500);
 		XMLObjectConstructor objConstructor = new XMLObjectConstructor(new ParserFactory(fprl));
 		Class<?> klass = (Class<?>) objConstructor.construct(file.getName(), false);
-		assertThat(klass.getName().equals("".getClass().getName())).isTrue();
+		assertThat(klass.getName()).isEqualTo("".getClass().getName());
 
 		fprl.stopResourceChecker();
 		file.delete();
 	}
 
 	@Test
-	public void testScript() throws Exception {
+	void testScript() throws Exception {
 		File file1 = File.createTempFile("script", ".xml");
 		FileOutputStream fout1 = new FileOutputStream(file1);
 		DataOutputStream dout1 = new DataOutputStream(fout1);
@@ -451,7 +449,7 @@ public class XMLObjectConstructorTest {
 	}
 
 	@Test
-	public void testFieldAccess() throws Exception {
+	void testFieldAccess() throws Exception {
 		File file = File.createTempFile("field", ".xml");
 		try (FileOutputStream fout = new FileOutputStream(file)) {
 
@@ -480,7 +478,7 @@ public class XMLObjectConstructorTest {
 		XMLObjectConstructor objConstructor = new XMLObjectConstructor(new ParserFactory(fprl));
 
 		SimpleFieldFixture test = (SimpleFieldFixture) objConstructor.construct(file.getName(), false);
-		assertThat(test.field2.equals("field 1")).isTrue();
+		assertThat(test.field2).isEqualTo("field 1");
 
 		file.delete();
 		fprl.stopResourceChecker();
@@ -506,7 +504,7 @@ public class XMLObjectConstructorTest {
 		 * @param listener: registered listener that has to be removed
 		 */
 		@Override
-		public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+		public void removeResourceChangeListener(@NonNull ResourceChangeListener listener) {
 			synchronized (listeners) {
 				listeners.remove(listener);
 			}
@@ -520,8 +518,8 @@ public class XMLObjectConstructorTest {
 		 * @throws ResourceNotFoundException : Thrown if specified resource could not have been found
 		 */
 		@Override
-		@Nonnull
-		public InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException {
+		@NonNull
+		public InputStream getResourceAsStream(@NonNull String resourceName) throws ResourceNotFoundException {
 			try {
 
 				File file = new File(path, resourceName);
@@ -537,7 +535,7 @@ public class XMLObjectConstructorTest {
 		 * @param listener: listener interested in changes or removals of resources
 		 */
 		@Override
-		public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+		public void addResourceChangeListener(@NonNull ResourceChangeListener listener) {
 			if (listener == null) {
 				throw new IllegalArgumentException("listener must not be null");
 			}

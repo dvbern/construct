@@ -15,10 +15,13 @@
  */
 package ch.dvbern.oss.construct;
 
-import javax.annotation.Nullable;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.io.Serial;
 
 /**
- * This exception indicates that an <code>ObjectConstructor</code> was not
+ * This exception indicates that an {@code ObjectConstructor} was not
  * able to create/return an object. A detail message and/or a nested exception
  * may be passed to the constructor of this exception, which are included in the
  * stack trace of this exception.
@@ -27,10 +30,11 @@ import javax.annotation.Nullable;
  */
 public class ConstructionException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = -5362684009744647564L;
 
 	/**
-	 * Creates a new instance of <code>ConstructionException</code> without
+	 * Creates a new instance of {@code ConstructionException} without
 	 * detail message.
 	 */
 	public ConstructionException() {
@@ -38,7 +42,7 @@ public class ConstructionException extends Exception {
 	}
 
 	/**
-	 * Constructs an instance of <code>ConstructionException</code> with the
+	 * Constructs an instance of {@code ConstructionException} with the
 	 * passed nested exception.
 	 *
 	 * @param cause Throwable, which is beeing wrapped by this exception and
@@ -49,7 +53,7 @@ public class ConstructionException extends Exception {
 	}
 
 	/**
-	 * Constructs an instance of <code>ConstructionException</code> with the
+	 * Constructs an instance of {@code ConstructionException} with the
 	 * specified detail message.
 	 *
 	 * @param msg the detail message.
@@ -59,7 +63,7 @@ public class ConstructionException extends Exception {
 	}
 
 	/**
-	 * Constructs an instance of <code>ConstructionException</code> with the
+	 * Constructs an instance of {@code ConstructionException} with the
 	 * specified detail message and the passed nested exception.
 	 *
 	 * @param msg the detail message.

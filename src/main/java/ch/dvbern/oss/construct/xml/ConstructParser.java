@@ -15,17 +15,16 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import ch.dvbern.oss.construct.ConstructionException;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
-import ch.dvbern.oss.construct.ConstructionException;
-
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "construct" (<code>&lt;construct  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "construct" ({@code <construct  >}).
+ * The parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -45,8 +44,8 @@ public class ConstructParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+    @NonNull
+    public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		ClassObjectPair retVal;
@@ -54,7 +53,7 @@ public class ConstructParser implements ElementParser {
 		if (className == null || className.isEmpty()) {
 			throw new ElementParserException("attribute 'class' may not be null on " + element.getNodeName());
 		}
-		Class klass;
+        Class<?> klass = null;
 		try {
 			klass = ClassFactory.getKlass(className);
 		} catch (ClassNotFoundException ex) {
@@ -71,8 +70,8 @@ public class ConstructParser implements ElementParser {
 			try {
 				ClassObjectPair cop = factory.getParser(el.getNodeName())
 						.parse(el, factory);
-				argClasses.add(cop.getKlass());
-				initArgs.add(cop.getObject());
+                argClasses.add(cop.klass());
+                initArgs.add(cop.object());
 			} catch (ParserNotRegisteredException ex) {
 				throw new ElementParserException(
 						"no parser found for element name=" + el.getNodeName(),

@@ -15,7 +15,10 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.Serial;
 
 /**
  * Exception indicating that a variable with the given name is not stored in a
@@ -23,17 +26,18 @@ import javax.annotation.Nonnull;
  *
  * @see ScopeParserFactory
  */
-public class VariableNotDefinedException extends java.lang.Exception {
+public class VariableNotDefinedException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = 3523634640300494355L;
 
 	/**
-	 * Constructs an instance of <code>VariableNotDefinedException</code> with
+	 * Constructs an instance of {@code VariableNotDefinedException} with
 	 * the specified detail message.
 	 *
 	 * @param msg the detail message.
 	 */
-	public VariableNotDefinedException(@Nonnull String msg) {
+	public VariableNotDefinedException(@NonNull String msg) {
 		super(msg);
 	}
 }

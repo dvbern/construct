@@ -15,14 +15,13 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-import javax.annotation.Nonnull;
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing xml-tags with the element-name "cast"
- * (<code>&lt;cast  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing nested elements.
+ * Implementation of {@code ElementParser}. Responsible for parsing xml-tags with the element-name "cast"
+ * ({@code <cast  >}).
+ * The parser may use other {@code ElementParser} instances for parsing nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
  */
@@ -38,8 +37,8 @@ public class CastParser implements ElementParser {
 	 *                                class/object instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+    @NonNull
+    public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		String elementName = element.getNodeName();
@@ -52,15 +51,15 @@ public class CastParser implements ElementParser {
 			throw new ElementParserException("attribute 'class' may not be null or empty on element "
 					+ element.getNodeName());
 		}
-		List children = element.getChildElements();
+        var children = element.getChildElements();
 		if (children.size() != 1) {
 			throw new ElementParserException("a cast-tag must have exactly ONE child");
 		}
-		Element child = (Element) children.get(0);
+        Element child = children.get(0);
 		try {
 			ClassObjectPair cop = factory.getParser(child.getNodeName()).parse(child, factory);
-			Class klass = ClassFactory.getKlass(className);
-			retVal = new ClassObjectPair(klass, cop.getObject());
+            var klass = ClassFactory.getKlass(className);
+            retVal = new ClassObjectPair(klass, cop.object());
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException("could not find class for name=" + className, ex);
 		} catch (ParserNotRegisteredException ex) {
