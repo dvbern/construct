@@ -60,30 +60,22 @@ if (params.performRelease) {
 			String branch = env.BRANCH_NAME.toString()
 			currentBuild.displayName = "${branch}-${dvbMaven.pomVersion()}-${env.BUILD_NUMBER}"
 
-			stage('Maven build') {
+			stage('Maven build and deploy') {
 				// in develop and master branches attempt to deploy the artifacts, otherwise only run to the verify
 				// phase.
 				def branchSpecificGoal = {
 					if (branch.startsWith(developBranchName) || branch.startsWith(masterBranchName)) {
-						return "install"
+						return "deploy"
 					}
 
 					return "verify"
 				}
 
 				withMaven(jdk: jdk) {
-					dvbUtil.genericSh('./mvnw -B -U clean ' + branchSpecificGoal())
+					dvbUtil.genericSh('./mvnw -B -U -Pdvbern.oss clean ' + branchSpecificGoal())
 				}
 				if (currentBuild.result == "UNSTABLE") {
 					handleFailures("build is unstable")
-				}
-			}
-
-			if (branch.startsWith(developBranchName) || branch.startsWith(masterBranchName)) {
-				stage('Deploy DV Nexus') {
-					withMaven(jdk: jdk) {
-						dvbUtil.genericSh('./mvnw -Pdvbern.oss -Pdevelopment-mode deploy')
-					}
 				}
 			}
 		}
