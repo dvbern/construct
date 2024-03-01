@@ -16,6 +16,7 @@
 package ch.dvbern.oss.construct.xml;
 
 
+import lombok.NoArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.Serial;
@@ -24,18 +25,11 @@ import java.io.Serial;
  * This exception indicates that an {@code ElementParser} was not able to
  * parse a xml-element an create class/object instances.
  */
+@NoArgsConstructor
 public class ElementParserException extends Exception {
 
     @Serial
 	private static final long serialVersionUID = -7590476829224567457L;
-
-	/**
-     * Creates a new instance of {@code ElementParserException} without
-	 * detail message.
-	 */
-	public ElementParserException() {
-		super();
-	}
 
 	/**
      * Creates a new instance of {@code ElementParserException} with the
@@ -69,5 +63,4 @@ public class ElementParserException extends Exception {
     public ElementParserException(@NonNull String msg, @NonNull Throwable cause) {
 		super(msg, cause);
 	}
-
 }

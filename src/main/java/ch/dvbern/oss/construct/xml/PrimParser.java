@@ -54,8 +54,7 @@ public class PrimParser implements ElementParser {
 		String elementName = element.getNodeName();
 		if (!ALLOWED_ELEMENT_NAMES.contains(elementName)) {
 			throw new ElementParserException(
-					"PrimParser can not handle elements with the name="
-							+ elementName);
+					"PrimParser can not handle elements with the name=" + elementName);
 		}
 
 		//primitives and Strings
@@ -64,13 +63,11 @@ public class PrimParser implements ElementParser {
 			klass = ClassFactory.getKlass(elementName);
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException(
-					"ClassFactory could NOT load Class with type="
-							+ elementName, ex);
+					"ClassFactory could NOT load Class with type=" + elementName, ex);
 		}
 		String strValue = element.getAttribute("value");
 		if (strValue == null) {
-			throw new ElementParserException(
-					"definition of argument NOT correct (value must NOT be null)");
+			throw new ElementParserException("definition of argument NOT correct (value must NOT be null)");
 		}
 		Object value;
 		try {

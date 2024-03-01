@@ -38,8 +38,7 @@ public interface ResourceLocator {
 	 * @return InputStream: resource as InputStream; never null.
 	 * @throws ResourceNotFoundException if specified resource could not have been found
 	 */
-    @NonNull
-    InputStream getResourceAsStream(@NonNull String resourceName) throws ResourceNotFoundException;
+    @NonNull InputStream getResourceAsStream(@NonNull String resourceName) throws ResourceNotFoundException;
 
 	/**
 	 * Method registers listeners interested in changes or removals of resources.

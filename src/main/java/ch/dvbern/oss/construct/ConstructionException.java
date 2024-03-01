@@ -16,6 +16,7 @@
 package ch.dvbern.oss.construct;
 
 
+import lombok.NoArgsConstructor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serial;
@@ -28,18 +29,11 @@ import java.io.Serial;
  *
  * @see ObjectConstructor
  */
+@NoArgsConstructor
 public class ConstructionException extends Exception {
 
 	@Serial
 	private static final long serialVersionUID = -5362684009744647564L;
-
-	/**
-	 * Creates a new instance of {@code ConstructionException} without
-	 * detail message.
-	 */
-	public ConstructionException() {
-		super();
-	}
 
 	/**
 	 * Constructs an instance of {@code ConstructionException} with the

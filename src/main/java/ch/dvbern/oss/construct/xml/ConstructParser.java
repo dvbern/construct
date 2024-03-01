@@ -19,7 +19,6 @@ import ch.dvbern.oss.construct.ConstructionException;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implementation of {@code ElementParser}. Responsible for parsing
@@ -44,8 +43,7 @@ public class ConstructParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-    @NonNull
-    public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
+    public @NonNull ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		ClassObjectPair retVal;
@@ -62,16 +60,16 @@ public class ConstructParser implements ElementParser {
 					ex);
 		}
 
-		List<Element> argChildren = element.getChildElements();
-		List<Class<?>> argClasses = new ArrayList<>(argChildren.size());
-		List<Object> initArgs = new ArrayList<>(argChildren.size());
+		var argChildren = element.getChildElements();
+		var argClasses = new ArrayList<>(argChildren.size());
+		var initArgs = new ArrayList<>(argChildren.size());
 		for (Element el : argChildren) {
 			//add constructor argument
 			try {
 				ClassObjectPair cop = factory.getParser(el.getNodeName())
 						.parse(el, factory);
-                argClasses.add(cop.klass());
-                initArgs.add(cop.object());
+                argClasses.add(cop.getKlass());
+                initArgs.add(cop.getObject());
 			} catch (ParserNotRegisteredException ex) {
 				throw new ElementParserException(
 						"no parser found for element name=" + el.getNodeName(),

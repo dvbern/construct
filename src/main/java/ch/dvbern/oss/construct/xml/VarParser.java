@@ -41,8 +41,7 @@ public class VarParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@NonNull
-	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
+	public @NonNull ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		// get the name of the variable
@@ -53,8 +52,7 @@ public class VarParser implements ElementParser {
 
 		//retrieve the ClassObjectPair from the scope and return it
 		if (!(factory instanceof ScopeParserFactory)) {
-			throw new ElementParserException(
-					"VarParser needs a ScopeParserFactory");
+			throw new ElementParserException("VarParser needs a ScopeParserFactory");
 		}
 
 		try {

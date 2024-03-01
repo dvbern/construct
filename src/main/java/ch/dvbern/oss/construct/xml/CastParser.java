@@ -59,7 +59,7 @@ public class CastParser implements ElementParser {
 		try {
 			ClassObjectPair cop = factory.getParser(child.getNodeName()).parse(child, factory);
             var klass = ClassFactory.getKlass(className);
-            retVal = new ClassObjectPair(klass, cop.object());
+            retVal = new ClassObjectPair(klass, cop.getObject());
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException("could not find class for name=" + className, ex);
 		} catch (ParserNotRegisteredException ex) {

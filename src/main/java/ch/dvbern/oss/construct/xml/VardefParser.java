@@ -41,8 +41,7 @@ public class VardefParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-    @NonNull
-    public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
+    public @NonNull ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
         //  get variable name
 		String varName = element.getAttribute("name");
@@ -54,16 +53,15 @@ public class VardefParser implements ElementParser {
 		Element objectElement = element.getChildElements().get(0);
 		ClassObjectPair cop;
 		try {
-			cop = factory.getParser(objectElement.getNodeName()).parse(
-					objectElement, factory);
+			cop = factory.getParser(objectElement.getNodeName())
+				.parse(objectElement, factory);
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException(ex);
 		}
 
         // set variable into ScopeParserFactory
 		if (!(factory instanceof ScopeParserFactory)) {
-			throw new ElementParserException(
-					"passed factory must be of type 'ScopeParserFactory'");
+			throw new ElementParserException("passed factory must be of type 'ScopeParserFactory'");
 		}
 		try {
 			((ScopeParserFactory) factory).setVariableCOP(varName, cop);

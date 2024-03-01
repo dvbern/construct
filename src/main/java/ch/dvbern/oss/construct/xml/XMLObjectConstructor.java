@@ -94,8 +94,7 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	 * @see ParserFactory
 	 */
 	@Override
-	@NonNull
-	public Object construct(@NonNull String objectId, boolean newInstance) throws ConstructionException {
+	public @NonNull Object construct(@NonNull String objectId, boolean newInstance) throws ConstructionException {
 
 		// if NOT newInstance: try to get from cache
 		Object obj = null;
@@ -117,13 +116,13 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 
 	@NonNull
 	private Object parse(@NonNull String objectId, @NonNull ParserFactory parserFactory) throws ConstructionException {
-
 		try {
 			InputStream ins = parserFactory.getResourceLocator().getResourceAsStream(objectId);
 			DocumentBuilder builder = DocumentBuildFactoryWrapper.newInstance().newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());
-			Object value = parserFactory.getParser(root.getNodeName()).parse(root, parserFactory).object();
+			Object value = parserFactory.getParser(root.getNodeName())
+				.parse(root, parserFactory).getObject();
 			if (value == null) {
 				throw new ConstructionException("Could not construct root, parser returned null");
 			}

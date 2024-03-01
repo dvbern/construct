@@ -44,8 +44,7 @@ public class SetFieldParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@NonNull
-	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
+	public @NonNull ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		// get name of field
@@ -66,8 +65,8 @@ public class SetFieldParser implements ElementParser {
 		try {
 			cop = factory.getParser(objectElToParse.getNodeName()).parse(
 					objectElToParse, factory);
-			myObject = cop.object();
-			myClass = cop.klass();
+			myObject = cop.getObject();
+			myClass = cop.getKlass();
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException(ex);
 		}
@@ -79,7 +78,7 @@ public class SetFieldParser implements ElementParser {
 		try {
 			ClassObjectPair tmp = factory.getParser(valueEl.getNodeName())
 					.parse(valueEl, factory);
-			newValue = tmp.object();
+			newValue = tmp.getObject();
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException(ex);
 		}

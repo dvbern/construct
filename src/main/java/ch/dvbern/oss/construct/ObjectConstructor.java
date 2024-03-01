@@ -43,7 +43,6 @@ public interface ObjectConstructor {
 	 *                               passed {@code objectId} or if the object can not be
 	 *                               created
 	 */
-	@NonNull
-	Object construct(@NonNull String objectId, boolean newInstance)
-			throws ConstructionException;
+	@NonNull Object construct(@NonNull String objectId, boolean newInstance)
+		throws ConstructionException;
 }

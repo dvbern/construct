@@ -67,8 +67,8 @@ public class GetFieldParser implements ElementParser {
 					objectElToParse.getNodeName()).parse(
 					objectElToParse,
 					factory);
-            myObject = tmp.object();
-            myClass = tmp.klass();
+            myObject = tmp.getObject();
+            myClass = tmp.getKlass();
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException(ex);
 		}

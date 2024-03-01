@@ -66,8 +66,8 @@ public class InvokeParser implements ElementParser {
 					objectElToParse.getNodeName()).parse(
 					objectElToParse,
 					factory);
-            myObject = cop.object();
-            myClass = cop.klass();
+            myObject = cop.getObject();
+            myClass = cop.getKlass();
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException(ex);
 		}
@@ -80,8 +80,8 @@ public class InvokeParser implements ElementParser {
 			try {
 				ClassObjectPair cop = factory.getParser(
 						paramEl.getNodeName()).parse(paramEl, factory);
-                classArray[i] = cop.klass();
-                objArray[i] = cop.object();
+                classArray[i] = cop.getKlass();
+                objArray[i] = cop.getObject();
 			} catch (ParserNotRegisteredException ex) {
 				throw new ElementParserException(ex);
 			}

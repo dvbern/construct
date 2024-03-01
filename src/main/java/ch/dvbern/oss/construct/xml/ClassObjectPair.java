@@ -16,6 +16,7 @@
 package ch.dvbern.oss.construct.xml;
 
 
+import lombok.Value;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -23,6 +24,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * This class is a holder of a class-object-pair. The class-information doesn't
  * have to equal the class of the object.
  */
-public record ClassObjectPair(@NonNull Class<?> klass, @Nullable Object object) {
+@Value
+public class ClassObjectPair {
+
+    @NonNull Class<?> klass;
+
+    @Nullable Object object;
+
 
 }

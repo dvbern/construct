@@ -16,6 +16,7 @@
 package ch.dvbern.oss.construct.xml;
 
 import ch.dvbern.oss.construct.ConstructionException;
+import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Constructor;
@@ -23,6 +24,7 @@ import java.lang.reflect.Constructor;
 /**
  * This class is used for creating objects out of declarations.
  */
+@Getter
 public class Construct {
 
     @NonNull
@@ -32,7 +34,7 @@ public class Construct {
     private final Class<?>[] argClasses;
 
     @NonNull
-    private final Object[] argValues;
+    private final Object[] initArgs;
 
 	/**
 	 * Constructor.
@@ -48,30 +50,9 @@ public class Construct {
     public Construct(@NonNull Class<?> klass, @NonNull Class<?>[] argClasses, @NonNull Object[] argValues) {
 		this.klass = klass;
 		this.argClasses = argClasses.clone();
-		this.argValues = argValues.clone();
+		this.initArgs = argValues.clone();
 	}
 
-	/**
-     * Method returns the {@code klass} member
-	 *
-     * @return {@code Class}: The type of this {@code Construct}
-	 * @throws ConstructionException Thrown if the object cannot be created
-     *                               out of the member-values of this {@code Construct}
-	 */
-    @NonNull
-	public Class<?> getKlass() throws ConstructionException {
-		return klass;
-	}
-
-    @NonNull
-    private Class<?>[] getArgClasses() {
-		return argClasses;
-	}
-
-    @NonNull
-	private Object[] getInitArgs() {
-		return argValues;
-	}
 
 	/**
      * This method returns the {@code Object} represented by this

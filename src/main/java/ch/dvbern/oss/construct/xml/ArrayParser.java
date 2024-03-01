@@ -68,7 +68,7 @@ public class ArrayParser implements ElementParser {
             Element el = arrayChildren.get(i);
 			try {
 				ClassObjectPair cop = factory.getParser(el.getNodeName()).parse(el, factory);
-                Array.set(array, i, cop.object());
+                Array.set(array, i, cop.getObject());
 			} catch (ParserNotRegisteredException ex) {
 				throw new ElementParserException(
 						"ArrayParser: could NOT find parser for name=" + el.getNodeName(),

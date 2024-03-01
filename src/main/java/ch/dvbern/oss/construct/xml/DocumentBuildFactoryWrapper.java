@@ -2,13 +2,13 @@ package ch.dvbern.oss.construct.xml;
 
 
 
+import lombok.experimental.UtilityClass;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+@UtilityClass
 public final class DocumentBuildFactoryWrapper {
-
-
-    private DocumentBuildFactoryWrapper() { }
 
     public static DocumentBuilderFactory newInstance() throws ParserConfigurationException {
 
@@ -31,4 +31,5 @@ public final class DocumentBuildFactoryWrapper {
 
         return dbf;
     }
+
 }

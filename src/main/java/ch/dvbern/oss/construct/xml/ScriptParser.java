@@ -17,8 +17,6 @@ package ch.dvbern.oss.construct.xml;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.List;
-
 
 /**
  * Implementation of {@code ElementParser}. Responsible for parsing
@@ -48,7 +46,7 @@ public class ScriptParser implements ElementParser {
 			throws ElementParserException {
 
 		// process all the children
-		List<Element> children = element.getChildElements();
+		var children = element.getChildElements();
 		if (children.isEmpty()) {
 			throw new ElementParserException("no child elements defined for element " + element.getNodeName());
 		}
@@ -67,18 +65,17 @@ public class ScriptParser implements ElementParser {
 				} catch (ParserNotRegisteredException ex) {
 					throw new ElementParserException(ex);
 				}
-			} else {
-				// let the VardefParser parse and define the variables
-				// (for tags with name 'vardef') or let the parsers do the
-				// business (for tags with name 'invoke')
-				try {
-					lastCOP = scopeFactory.getParser(child.getNodeName())
-						.parse(child, scopeFactory);
-				} catch (ParserNotRegisteredException ex) {
-					throw new ElementParserException(ex);
-				}
 			}
-		}
+            // let the VardefParser parse and define the variables
+            // (for tags with name 'vardef') or let the parsers do the
+            // business (for tags with name 'invoke')
+            try {
+                lastCOP = scopeFactory.getParser(child.getNodeName())
+                    .parse(child, scopeFactory);
+            } catch (ParserNotRegisteredException ex) {
+                throw new ElementParserException(ex);
+            }
+        }
 
 		if (lastCOP == null) {
 			throw new ElementParserException("no child elements defined for element " + element.getNodeName());
