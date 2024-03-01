@@ -4,8 +4,8 @@ properties([
 	[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', numToKeepStr: '10']],
 	parameters([
 		booleanParam(defaultValue: false, description: 'Do you want to perform a release?', name: 'performRelease'),
-		string(defaultValue: '', description: 'This release version', name: 'releaseversion', trim: true),
-		string(defaultValue: '', description: 'The next release version', name: 'nextreleaseversion', trim: true)
+		string(defaultValue: '', description: 'This release version (optional)', name: 'releaseversion', trim: true),
+		string(defaultValue: '', description: 'The next release version (optional)', name: 'nextreleaseversion', trim: true)
 	])
 ])
 
