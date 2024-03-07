@@ -9,7 +9,7 @@ properties([
 	])
 ])
 
-def jdk = "OpenJDK_1.8_372-b07"
+def jdk = "Temurin_jdk-17.0.1+12"
 // comma separated list of email addresses of all team members (for notification)
 def recipients = "christoph.linder@dvbern.ch"
 
