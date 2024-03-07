@@ -15,11 +15,10 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.lang.reflect.Field;
-import java.util.Optional;
+import java.util.Objects;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Implementation of {@code ElementParser}. Responsible for parsing
@@ -48,9 +47,10 @@ public class SetFieldParser implements ElementParser {
 			throws ElementParserException {
 
 		// get name of field
-		String fieldName = Optional
-			.ofNullable(element.getAttribute("name"))
-			.orElseThrow(() -> new ElementParserException("name attribute is missing"));
+		String fieldName = Objects.requireNonNull(
+				element.getAttribute("name"),
+				"name attribute is missing"
+		);
 
 		// get object, on which field is to set
 		var objectElChildren = element.getElementsByTagName("target");

@@ -15,10 +15,10 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import java.util.Set;
+
 import ch.dvbern.oss.construct.ConstructionException;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.Set;
 
 /**
  * Implementation of {@code ElementParser}. Responsible for parsing
@@ -32,8 +32,16 @@ import java.util.Set;
  */
 public class PrimParser implements ElementParser {
 
-	private static final Set<String> ALLOWED_ELEMENT_NAMES =
-		Set.of("string", "int", "long", "short", "float", "double", "boolean", "char");
+	private static final Set<String> ALLOWED_ELEMENT_NAMES = Set.of(
+			"string",
+			"int",
+			"long",
+			"short",
+			"float",
+			"double",
+			"boolean",
+			"char"
+	);
 
 	/**
 	 * Method parses the passed xml-element and creates an object based on the
@@ -54,7 +62,7 @@ public class PrimParser implements ElementParser {
 		String elementName = element.getNodeName();
 		if (!ALLOWED_ELEMENT_NAMES.contains(elementName)) {
 			throw new ElementParserException(
-				"PrimParser can not handle elements with the name=" + elementName);
+					"PrimParser can not handle elements with the name=" + elementName);
 		}
 
 		//primitives and Strings
@@ -63,7 +71,7 @@ public class PrimParser implements ElementParser {
 			klass = ClassFactory.getKlass(elementName);
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException(
-				"ClassFactory could NOT load Class with type=" + elementName, ex);
+					"ClassFactory could NOT load Class with type=" + elementName, ex);
 		}
 		String strValue = element.getAttribute("value");
 		if (strValue == null) {

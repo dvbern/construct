@@ -15,18 +15,19 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
 import ch.dvbern.oss.construct.ConstructionException;
 import ch.dvbern.oss.construct.ObjectConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This implementation of {@code ObjectConstructor} uses xml-files as definitions for the objects (resources). It
@@ -118,11 +119,12 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	private Object parse(@NonNull String objectId, @NonNull ParserFactory parserFactory) throws ConstructionException {
 		try {
 			InputStream ins = parserFactory.getResourceLocator().getResourceAsStream(objectId);
-			DocumentBuilder builder = DocumentBuildFactoryWrapper.newInstance().newDocumentBuilder();
+			DocumentBuilder builder = SafeDocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());
 			Object value = parserFactory.getParser(root.getNodeName())
-				.parse(root, parserFactory).getObject();
+					.parse(root, parserFactory).getObject();
 			if (value == null) {
 				throw new ConstructionException("Could not construct root, parser returned null");
 			}

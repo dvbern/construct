@@ -15,14 +15,15 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * Implementation of {@code ElementParser}. Responsible for parsing
@@ -62,7 +63,7 @@ public class RefParser implements ElementParser {
 		try {
 			InputStream ins = factory.getResourceLocator().getResourceAsStream(
 					objectId);
-			DocumentBuilder builder = DocumentBuildFactoryWrapper.newInstance()
+			DocumentBuilder builder = SafeDocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());

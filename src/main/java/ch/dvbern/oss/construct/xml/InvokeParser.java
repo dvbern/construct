@@ -15,12 +15,11 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Optional;
+import java.util.Objects;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Implementation of {@code ElementParser}. Responsible for parsing
@@ -49,9 +48,10 @@ public class InvokeParser implements ElementParser {
 	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
-		String methodName = Optional
-			.ofNullable(element.getAttribute("methodName"))
-			.orElseThrow(() -> new ElementParserException("methodName attribute is missing"));
+		String methodName = Objects.requireNonNull(
+				element.getAttribute("methodName"),
+				"methodName is required"
+		);
 
 		var objectElChildren = element.getElementsByTagName("target");
 		if (objectElChildren.size() != 1) {
