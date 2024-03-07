@@ -15,15 +15,16 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.lang.reflect.Array;
 
-import javax.annotation.Nonnull;
 
 /**
- * This class is responsible for returning <code>Class</code> instances
- * corresponing to the specified <code>type</code>
+ * This class is responsible for returning {@code Class} instances
+ * corresponing to the specified {@code type}
  * <p>
- * The following <code>type</code> parameters are possible:
+ * The following {@code type} parameters are possible:
  * <ul>
  * <li>a class-name (e.g. "java.lang.Integer")</li>
  * <li>a class-name with indication of array-dimension ("[]" for every
@@ -49,19 +50,18 @@ public final class ClassFactory {
 	}
 
 	/**
-	 * Returns a <code>Class</code> instance for the specified
-	 * <code>type</code>, never null. See description of class.
+	 * Returns a {@code Class} instance for the specified
+	 * {@code type}, never null. See description of class.
 	 *
-	 * @param type String, see description of this <code>ClassFactory</code>.
-	 * @return Returns a <code>Class</code> instance for the specified
-	 * <code>type</code>, never null
-	 * @throws ClassNotFoundException Thrown, if no <code>Class</code> has
-	 *                                been found for the specified <code>type</code>.
-	 * @see ClassFactory
+	 * @param type String, see description of this {@code ClassFactory}.
+	 * @return Returns a {@code Class} instance for the specified
+	 * {@code type}, never null
+	 * @throws ClassNotFoundException Thrown, if no {@code Class} has
+	 *                                been found for the specified {@code type}.
 	 */
-	@Nonnull
-	public static Class getKlass(@Nonnull String type) throws ClassNotFoundException {
-		Class retVal;
+	@NonNull
+	public static Class<?> getKlass(@NonNull String type) throws ClassNotFoundException {
+		Class<?> retVal = null;
 		if (type.equalsIgnoreCase("string")) {
 			retVal = String.class;
 		} else if (type.equalsIgnoreCase("int")) {
@@ -80,7 +80,7 @@ public final class ClassFactory {
 			retVal = Character.TYPE;
 		} else if (type.endsWith("[]")) {
 			String baseType = type.substring(0, type.length() - 2);
-			Class baseClass = ClassFactory.getKlass(baseType);
+			var baseClass = ClassFactory.getKlass(baseType);
 			retVal = Array.newInstance(baseClass, 0).getClass();
 		} else {
 			retVal = Class.forName(type);

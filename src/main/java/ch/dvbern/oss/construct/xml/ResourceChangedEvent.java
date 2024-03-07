@@ -15,18 +15,24 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+import lombok.Getter;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.Serial;
+import java.util.EventObject;
 
 /**
  * Event indicating that a resource has been changed or removed at all. Event object contains the name of the changed
  * resource.
  */
-public class ResourceChangedEvent extends java.util.EventObject {
+@Getter
+public class ResourceChangedEvent extends EventObject {
 
+	@Serial
 	private static final long serialVersionUID = -7039199533056588697L;
 
-	@Nonnull
-	private String resource;
+	@NonNull
+	private final String resourceName;
 
 	/**
 	 * Constructor.
@@ -34,21 +40,10 @@ public class ResourceChangedEvent extends java.util.EventObject {
 	 * @param source Object generating the event
 	 * @param resourceName name of resource that has been changed or removed
 	 */
-	public ResourceChangedEvent(@Nonnull Object source, @Nonnull String resourceName) {
+	public ResourceChangedEvent(@NonNull Object source, @NonNull String resourceName) {
 
 		super(source);
-		resource = resourceName;
-	}
-
-	/**
-	 * Method returns the name of the resource that has been changed or removed.
-	 *
-	 * @return Name of changed/removed resource
-	 */
-	@Nonnull
-	public String getResourceName() {
-
-		return resource;
+		this.resourceName = resourceName;
 	}
 
 }

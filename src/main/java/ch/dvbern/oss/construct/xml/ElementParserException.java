@@ -15,55 +15,52 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+
+import lombok.NoArgsConstructor;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.Serial;
 
 /**
- * This exception indicates that an <code>ElementParser</code> was not able to
+ * This exception indicates that an {@code ElementParser} was not able to
  * parse a xml-element an create class/object instances.
  */
-public class ElementParserException extends java.lang.Exception {
+@NoArgsConstructor
+public class ElementParserException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = -7590476829224567457L;
 
 	/**
-	 * Creates a new instance of <code>ElementParserException</code> without
-	 * detail message.
-	 */
-	public ElementParserException() {
-		super();
-	}
-
-	/**
-	 * Creates a new instance of <code>ElementParserException</code> with the
+	 * Creates a new instance of {@code ElementParserException} with the
 	 * passed nested exception.
 	 *
 	 * @param cause Throwable, which is beeing wrapped by this exception and
 	 * included in the stack trace.
 	 */
-	public ElementParserException(@Nonnull Throwable cause) {
+	public ElementParserException(@NonNull Throwable cause) {
 		super(cause);
 	}
 
 	/**
-	 * Constructs an instance of <code>ElementParserException</code> with the
+	 * Constructs an instance of {@code ElementParserException} with the
 	 * specified detail message
 	 *
 	 * @param msg the detail message.
 	 */
-	public ElementParserException(@Nonnull String msg) {
+	public ElementParserException(@NonNull String msg) {
 		super(msg);
 	}
 
 	/**
-	 * Constructs an instance of <code>ElementParserException</code> with the
+	 * Constructs an instance of {@code ElementParserException} with the
 	 * specified detail message and the passed nested exception.
 	 *
 	 * @param msg the detail message.
 	 * @param cause Throwable, which is beeing wrapped by this exception and
 	 * included in the stack trace.
 	 */
-	public ElementParserException(@Nonnull String msg, @Nonnull Throwable cause) {
+	public ElementParserException(@NonNull String msg, @NonNull Throwable cause) {
 		super(msg, cause);
 	}
-
 }

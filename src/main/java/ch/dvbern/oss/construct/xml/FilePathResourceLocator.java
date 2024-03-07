@@ -15,6 +15,10 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,15 +26,10 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Implementation of ResourceLocator. Needs a file-path-information for locating the resources.
- * <br>As <code>ResourceLocator</code> this class acts as event source for <code>ResourceChangedEvent</code>s
- * and implements the methods <code>addResourceChangeListener</code> and <code>removeResourceChangeListener</code>.
+ * <br>As {@code ResourceLocator} this class acts as event source for {@code ResourceChangedEvent}s
+ * and implements the methods {@code addResourceChangeListener} and {@code removeResourceChangeListener}.
  *
  * @see ResourceChangedEvent
  */
@@ -38,15 +37,15 @@ public class FilePathResourceLocator implements ResourceLocator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FilePathResourceLocator.class);
 
-	@Nonnull
+	@NonNull
 	private final String path;
-	@Nonnull
+	@NonNull
 	@SuppressWarnings("PMD.LooseCoupling")
 	private final HashSet<ResourceChangeListener> listeners;
-	@Nonnull
+	@NonNull
 	@SuppressWarnings("PMD.LooseCoupling")
 	private final HashSet<File> files;
-	@Nonnull
+	@NonNull
 	private final ResourceChecker resourceChecker;
 
 	/**
@@ -55,7 +54,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 	 *
 	 * @param path Filepath where the resources are located.
 	 */
-	public FilePathResourceLocator(@Nonnull String path) {
+	public FilePathResourceLocator(@NonNull String path) {
 		this(path, 10000);
 	}
 
@@ -65,7 +64,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 	 * @param path File path where the resources are located.
 	 * @param resChangeCheckPeriod Value (in ms) defining the period of resource-change-check
 	 */
-	public FilePathResourceLocator(@Nonnull String path, long resChangeCheckPeriod) {
+	public FilePathResourceLocator(@NonNull String path, long resChangeCheckPeriod) {
 		this.path = path;
 		listeners = new HashSet<>();
 		files = new HashSet<>();
@@ -83,17 +82,14 @@ public class FilePathResourceLocator implements ResourceLocator {
 	 * @throws ResourceNotFoundException if specified resource could not have been found
 	 */
 	@Override
-	@Nonnull
+	@NonNull
 	@SuppressWarnings("PMD.PreserveStackTrace")
-	public InputStream getResourceAsStream(@Nonnull String resourceName) throws ResourceNotFoundException {
+	public InputStream getResourceAsStream(@NonNull String resourceName) throws ResourceNotFoundException {
 		try {
 
 			File file = new File(path, resourceName);
 			synchronized (files) {
-				if (!files.contains(file)) {
-					files.add(file);
-					//System.out.println("================FilePathResourceLocator: added to files-cache:" +file);
-				}
+				files.add(file);
 			}
 			return new FileInputStream(file);
 		} catch (FileNotFoundException ex) {
@@ -107,11 +103,9 @@ public class FilePathResourceLocator implements ResourceLocator {
 	 * @param listener listener interested in changes or removals of resources; must not be null
 	 */
 	@Override
-	public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+	public void addResourceChangeListener(@NonNull ResourceChangeListener listener) {
 		synchronized (listeners) {
-			if (!listeners.contains(listener)) {
-				listeners.add(listener);
-			}
+			listeners.add(listener);
 		}
 	}
 
@@ -121,20 +115,18 @@ public class FilePathResourceLocator implements ResourceLocator {
 	 * @param listener registered listener that has to be removed
 	 */
 	@Override
-	public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+	public void removeResourceChangeListener(@NonNull ResourceChangeListener listener) {
 		synchronized (listeners) {
-			if (listeners.contains(listener)) {
-				listeners.remove(listener);
-			}
+			listeners.remove(listener);
 		}
 	}
 
 	/**
-	 * Method notifies all registered <code>ResourceChangeListener</code>.
+	 * Method notifies all registered {@code ResourceChangeListener}.
 	 *
 	 * @param resource Name of resource that has been changed
 	 */
-	protected void notifyResourceChange(@Nonnull String resource) {
+	protected void notifyResourceChange(@NonNull String resource) {
 		ResourceChangedEvent event = new ResourceChangedEvent(this, resource);
 		Set<ResourceChangeListener> clone;
 		synchronized (listeners) {
@@ -146,17 +138,17 @@ public class FilePathResourceLocator implements ResourceLocator {
 			try {
 				listener.resourceChanged(event);
 			} catch (RuntimeException ex) {
-				LOG.error("Error while notifying listener: " + listener, ex);
+				LOG.error("Error while notifying listener: {}", listener, ex);
 			}
 		}
 	}
 
 	/**
-	 * Method notifies all registered <code>ResourceChangeListener</code>.
+	 * Method notifies all registered {@code ResourceChangeListener}.
 	 *
 	 * @param resource Name of resource that has been removed
 	 */
-	protected void notifyResourceRemoved(@Nonnull String resource) {
+	protected void notifyResourceRemoved(@NonNull String resource) {
 		ResourceChangedEvent event = new ResourceChangedEvent(this, resource);
 		Set<ResourceChangeListener> clone;
 		synchronized (listeners) {
@@ -168,7 +160,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 			try {
 				listener.resourceRemoved(event);
 			} catch (RuntimeException ex) {
-				LOG.error("Error while notifying listener: " + listener, ex);
+				LOG.error("Error while notifying listener: {}", listener, ex);
 			}
 		}
 	}
@@ -185,8 +177,8 @@ public class FilePathResourceLocator implements ResourceLocator {
 	 */
 	private class ResourceChecker implements Runnable {
 		private long lastCheck;
-		private long checkPeriod;
-		private boolean run;
+		private final long checkPeriod;
+		private volatile boolean run;
 
 		/**
 		 * Constructor of inner class.
@@ -232,7 +224,7 @@ public class FilePathResourceLocator implements ResourceLocator {
 				try {
 					Thread.sleep(checkPeriod);
 				} catch (InterruptedException ex) {
-					LOG.warn("Interrupted while waiting for checkPeriod of " + checkPeriod + "ms", ex);
+					LOG.warn("Interrupted while waiting for checkPeriod of {}ms", checkPeriod, ex);
 				}
 			}
 		}

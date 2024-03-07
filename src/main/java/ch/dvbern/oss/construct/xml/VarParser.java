@@ -15,12 +15,13 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "var" (<code>&lt;var  &gt;</code>). The
- * parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "var" ({@code <var  >}). The
+ * parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -40,8 +41,7 @@ public class VarParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	public @NonNull ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		// get the name of the variable
@@ -52,8 +52,7 @@ public class VarParser implements ElementParser {
 
 		//retrieve the ClassObjectPair from the scope and return it
 		if (!(factory instanceof ScopeParserFactory)) {
-			throw new ElementParserException(
-					"VarParser needs a ScopeParserFactory");
+			throw new ElementParserException("VarParser needs a ScopeParserFactory");
 		}
 
 		try {

@@ -15,26 +15,25 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nullable;
+
+import lombok.NoArgsConstructor;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.io.Serial;
 
 /**
  * This exception indicates that no parser is registered for a given name.
  *
  * @see ParserFactory
  */
+@NoArgsConstructor
 public class ParserNotRegisteredException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = -8685141376596179827L;
 
 	/**
-	 * Creates a new instance of <code>ParserNotRegisteredException</code>
-	 * without detail message.
-	 */
-	public ParserNotRegisteredException() {
-	}
-
-	/**
-	 * Constructs an instance of <code>ParserNotRegisteredException</code>
+	 * Constructs an instance of {@code ParserNotRegisteredException}
 	 * with the specified detail message.
 	 *
 	 * @param msg the detail message.

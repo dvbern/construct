@@ -15,7 +15,9 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.Serial;
 
 /**
  * This exception indicates that a parser is already registerd with a given
@@ -25,15 +27,16 @@ import javax.annotation.Nonnull;
  */
 public class ParserAlreadyRegisteredException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = 4404585566412735102L;
 
 	/**
-	 * Constructs an instance of <code>ParserAlreadyRegisteredException</code>
+	 * Constructs an instance of {@code ParserAlreadyRegisteredException}
 	 * with the specified detail message.
 	 *
 	 * @param msg the detail message.
 	 */
-	public ParserAlreadyRegisteredException(@Nonnull String msg) {
+	public ParserAlreadyRegisteredException(@NonNull String msg) {
 		super(msg);
 	}
 }

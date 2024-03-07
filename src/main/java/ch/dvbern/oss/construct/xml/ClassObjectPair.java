@@ -15,51 +15,23 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import lombok.Value;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * This class is a holder of a class-object-pair. The class-information doesn't
  * have to equal the class of the object.
  */
+@Value
 public class ClassObjectPair {
 
-	@Nonnull
-	private Class klass;
+    @NonNull
+    Class<?> klass;
 
-	@Nullable
-	private Object object;
+    @Nullable
+    Object object;
 
-	/**
-	 * Constructor creates <code>ClassObjectPair</code> with the given
-	 * parameters. <code>class</code> doesn't have to equal the class of the
-	 * <code>object</code>.
-	 *
-	 * @param klass <code>Class</code> of the pair
-	 * @param object Object of the pair.
-	 */
-	public ClassObjectPair(@Nonnull Class klass, @Nullable Object object) {
-		this.klass = klass;
-		this.object = object;
-	}
 
-	/**
-	 * Returns the <code>klass</code> member.
-	 *
-	 * @return <code>klass</code> member
-	 */
-	@Nonnull
-	public Class getKlass() {
-		return klass;
-	}
-
-	/**
-	 * Returns the <code>object</code> member.
-	 *
-	 * @return <code>object</code> member
-	 */
-	@Nullable
-	public Object getObject() {
-		return object;
-	}
 }

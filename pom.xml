@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>ch.dvbern.oss.maven</groupId>
 		<artifactId>parent</artifactId>
-		<version>3.0.5</version>
+		<version>5.0.0</version>
 	</parent>
 
 	<groupId>ch.dvbern.oss.construct</groupId>
@@ -13,14 +13,13 @@
 
 	<name>DVBern Construct</name>
 
-	<version>3.0.0</version>
+	<version>3.0.1</version>
 	<description>Instanzieren von Java Objekten aus einer XML Struktur heraus</description>
 
 	<properties>
-		<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
-		<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>
-
-		<slf4j.version>1.7.36</slf4j.version>
+		<maven-compiler-plugin.source>17</maven-compiler-plugin.source>
+		<maven-compiler-plugin.target>17</maven-compiler-plugin.target>
+		<slf4j.version>2.0.11</slf4j.version>
 	</properties>
 
 	<scm>
@@ -47,14 +46,20 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
+			<groupId>org.checkerframework</groupId>
+			<artifactId>checker-qual</artifactId>
+			<version>3.42.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.30</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- ************************* -->
