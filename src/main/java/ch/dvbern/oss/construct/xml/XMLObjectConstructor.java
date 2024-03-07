@@ -15,45 +15,42 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import ch.dvbern.oss.construct.ConstructionException;
+import ch.dvbern.oss.construct.ObjectConstructor;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import ch.dvbern.oss.construct.ConstructionException;
-import ch.dvbern.oss.construct.ObjectConstructor;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 /**
- * This implementation of <code>ObjectConstructor</code> uses xml-files as definitions for the objects (resources). It
- * caches created objects (resources), see <code>construct()</code>.<br>
- * The <code>XMLObjectConstructor</code> registers itself (in the constructor) as <code>ResourceChangeListener</code>
- * at the <code>ResourceLocator</code> of the factory passed to the constructor. (see methods
- * <code>resourceChanged</code> and <code>resourceRemoved</code>)
+ * This implementation of {@code ObjectConstructor} uses xml-files as definitions for the objects (resources). It
+ * caches created objects (resources), see {@code construct()}.<br>
+ * The {@code XMLObjectConstructor} registers itself (in the constructor) as {@code ResourceChangeListener}
+ * at the {@code ResourceLocator} of the factory passed to the constructor. (see methods
+ * {@code resourceChanged} and {@code resourceRemoved})
  */
 public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeListener {
 
-	@Nonnull
+	@NonNull
 	private final Map<String, Object> cachedObjects;
 
-	@Nonnull
+	@NonNull
 	private final ParserFactory factory;
 
 	/**
 	 * Standard constructor. <br>
-	 * Instantiates <code>ParserFactory</code> with <code>ClassLoaderResourceLocator</code>
+	 * Instantiates {@code ParserFactory} with {@code ClassLoaderResourceLocator}
 	 *
 	 * @see ParserFactory
 	 * @see ClassLoaderResourceLocator
 	 */
 	public XMLObjectConstructor() {
-
 		this(new ParserFactory(new ClassLoaderResourceLocator()));
 	}
 
@@ -65,7 +62,7 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	 * @see ResourceLocator
 	 * @see FilePathResourceLocator
 	 */
-	public XMLObjectConstructor(@Nonnull ParserFactory factory) {
+	public XMLObjectConstructor(@NonNull ParserFactory factory) {
 		cachedObjects = new HashMap<>();
 		this.factory = factory;
 
@@ -73,32 +70,31 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	}
 
 	/**
-	 * This method returns an object for the <code>objectId</code>. <code>objectId</code> equals the name of a
+	 * This method returns an object for the {@code objectId}. {@code objectId} equals the name of a
 	 * xml-file, where the object is defined. The root-element of the xml-file must have the element-name "construct"
 	 * (see ConstructParser) or "script" (see ScriptParser). A cached instance may be returned, if
-	 * <code>newInstance</code> is false. If there is no definition for the object with the passed
-	 * <code>objectId</code> or if the object can not be created, a <code>ConstructionException</code> is thrown.
+	 * {@code newInstance} is false. If there is no definition for the object with the passed
+	 * {@code objectId} or if the object can not be created, a {@code ConstructionException} is thrown.
 	 * <p>
-	 * The parsing of the xml-tags is delegated to various <code>ElementParser</code> (see <code>ParserFactory</code>)
+	 * The parsing of the xml-tags is delegated to various {@code ElementParser} (see {@code ParserFactory})
 	 * <p>
-	 * If the <code>XMLObjectConstructor</code> uses a <code>ParserFactory</code> with a
-	 * <code>ClassLoaderResourceLocator</code>, the xml-files must be located in the CLASSPATH, else according to the
-	 * requirements of the used <code>ResourceLocator</code> (see descriptions of the constructors).
+	 * If the {@code XMLObjectConstructor} uses a {@code ParserFactory} with a
+	 * {@code ClassLoaderResourceLocator}, the xml-files must be located in the CLASSPATH, else according to the
+	 * requirements of the used {@code ResourceLocator} (see descriptions of the constructors).
 	 *
 	 * @param objectId The name of the xml-file, in which the object is declared.
 	 * @param newInstance boolean, indicating whether a new instance should be created (true) or if already created
 	 * (and
 	 * cached) instances should be returned.
-	 * @return Object according to the definition in the xml-file with the name <code>objectId</code>. The return
+	 * @return Object according to the definition in the xml-file with the name {@code objectId}. The return
 	 * value is never null.
 	 * @throws ConstructionException Thrown, if there is no definition for the object with the passed
-	 *                               <code>objectId</code> or if the object can not be created
+	 *                               {@code objectId} or if the object can not be created
 	 * @see ConstructParser
 	 * @see ParserFactory
 	 */
 	@Override
-	@Nonnull
-	public Object construct(@Nonnull String objectId, boolean newInstance) throws ConstructionException {
+	public @NonNull Object construct(@NonNull String objectId, boolean newInstance) throws ConstructionException {
 
 		// if NOT newInstance: try to get from cache
 		Object obj = null;
@@ -113,31 +109,25 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 			synchronized (cachedObjects) {
 				// put into cache; maybe replace old entry
 				cachedObjects.put(objectId, obj);
-				// System.out.println("=======XMLObjectConstructor: added to
-				// cachedObjects:"+objectId);
 			}
 		}
 		return obj;
 	}
 
-	@Nonnull
-	private Object parse(@Nonnull String objectId, @Nonnull ParserFactory parserFactory) throws ConstructionException {
-
+	@NonNull
+	private Object parse(@NonNull String objectId, @NonNull ParserFactory parserFactory) throws ConstructionException {
 		try {
 			InputStream ins = parserFactory.getResourceLocator().getResourceAsStream(objectId);
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			DocumentBuilder builder = DocumentBuildFactoryWrapper.newInstance().newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());
-			Object value = parserFactory.getParser(root.getNodeName()).parse(root, parserFactory).getObject();
+			Object value = parserFactory.getParser(root.getNodeName())
+				.parse(root, parserFactory).getObject();
 			if (value == null) {
 				throw new ConstructionException("Could not construct root, parser returned null");
 			}
 			return value;
-		} catch (SAXException ex) {
-			throw new ConstructionException("parsing of file with id=" + objectId + " NOT successfull", ex);
-		} catch (IOException ex) {
-			throw new ConstructionException("parsing of file with id=" + objectId + " NOT successfull", ex);
-		} catch (ParserConfigurationException ex) {
+		} catch (SAXException | IOException | ParserConfigurationException ex) {
 			throw new ConstructionException("parsing of file with id=" + objectId + " NOT successfull", ex);
 		} catch (ParserNotRegisteredException ex) {
 			throw new ConstructionException("no parser found for root-element", ex);
@@ -149,38 +139,30 @@ public class XMLObjectConstructor implements ObjectConstructor, ResourceChangeLi
 	}
 
 	/**
-	 * Implementation of <code>ResourceChangeListener</code>. Method is called, when a resource has been changed. It
+	 * Implementation of {@code ResourceChangeListener}. Method is called, when a resource has been changed. It
 	 * simply removes the name of the changed resource from the cache.
 	 *
-	 * @param event <code>ResourceChangedEvent</code>: object containing the information about changed resource.
+	 * @param event {@code ResourceChangedEvent}: object containing the information about changed resource.
 	 */
 	@Override
-	public void resourceChanged(@Nonnull ResourceChangedEvent event) {
+	public void resourceChanged(@NonNull ResourceChangedEvent event) {
 
-		// System.out.println("=================XMLObjectConstructor: received
-		// event");
 		String resource = event.getResourceName();
-		// System.out.println("=================XMLObjectConstructor: resource:"
-		// +event.getResourceName());
 		synchronized (cachedObjects) {
 			if (cachedObjects.get(resource) != null) {
 				cachedObjects.remove(resource);
-				// System.out.println("XMLObjectConstructor: resource removed
-				// from cache");
 			}
 		}
 	}
 
 	/**
-	 * Implementation of <code>ResourceChangeListener</code>. Method is called, when a resource has been removed. It
+	 * Implementation of {@code ResourceChangeListener}. Method is called, when a resource has been removed. It
 	 * simply removes the name of the removed resource from the cache.
 	 *
-	 * @param event <code>ResourceChangedEvent</code>: object containing the information about removed resource.
+	 * @param event {@code ResourceChangedEvent}: object containing the information about removed resource.
 	 */
 	@Override
-	public void resourceRemoved(@Nonnull ResourceChangedEvent event) {
-
-		// System.out.println("===================received removeEvent");
+	public void resourceRemoved(@NonNull ResourceChangedEvent event) {
 		resourceChanged(event);
 	}
 }

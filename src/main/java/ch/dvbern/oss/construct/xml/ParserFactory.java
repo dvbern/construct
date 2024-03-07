@@ -15,16 +15,17 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
 
 /**
- * This class is responsible for managing <code>ElementParser</code>. Basic
- * parsers are added in <code>init()</code>, additional ones may be added via
- * <code>registerParser()</code>. The factory stores a
- * <code>ResourceLocator</code> responsible for locating resources
+ * This class is responsible for managing {@code ElementParser}. Basic
+ * parsers are added in {@code init()}, additional ones may be added via
+ * {@code registerParser()}. The factory stores a
+ * {@code ResourceLocator} responsible for locating resources
  * (xml-files).
  *
  * @see ElementParser
@@ -32,14 +33,14 @@ import javax.annotation.Nonnull;
  */
 public class ParserFactory {
 
-	@Nonnull
+	@NonNull
 	private final Map<String, ElementParser> parsers = new HashMap<>();
 
-	@Nonnull
+	@NonNull
 	private final ResourceLocator locator;
 
 	/**
-	 * Default constructor. Sets <code>ClassLoaderResourceLocator</code> as
+	 * Default constructor. Sets {@code ClassLoaderResourceLocator} as
 	 * resource locator.
 	 *
 	 * @see ClassLoaderResourceLocator
@@ -51,11 +52,11 @@ public class ParserFactory {
 	/**
 	 * Constructor.
 	 *
-	 * @param locator <code>ResourceLocator</code> for locating resources;
+	 * @param locator {@code ResourceLocator} for locating resources;
 	 * never null
 	 * @see ResourceLocator
 	 */
-	public ParserFactory(@Nonnull ResourceLocator locator) {
+	public ParserFactory(@NonNull ResourceLocator locator) {
 		this.locator = locator;
 		init();
 	}
@@ -86,17 +87,17 @@ public class ParserFactory {
 	}
 
 	/**
-	 * Method returns <code>ElementParser</code> for a xml-tag with the
-	 * <code>elementName</code>.
+	 * Method returns {@code ElementParser} for a xml-tag with the
+	 * {@code elementName}.
 	 *
 	 * @param elementName identifier of the element
-	 * @return <code>ElementParser</code> for the given
-	 * <code>element-name</code>. Never null.
+	 * @return {@code ElementParser} for the given
+	 * {@code element-name}. Never null.
 	 * @throws ParserNotRegisteredException Thrown if there is no parser
-	 *                                      registered for the given <code>elementName</code>.
+	 *                                      registered for the given {@code elementName}.
 	 */
-	@Nonnull
-	public ElementParser getParser(@Nonnull String elementName)
+	@NonNull
+	public ElementParser getParser(@NonNull String elementName)
 			throws ParserNotRegisteredException {
 		String lowerCaseName = elementName.toLowerCase();
 		ElementParser parser = parsers.get(lowerCaseName);
@@ -109,19 +110,19 @@ public class ParserFactory {
 	}
 
 	/**
-	 * Method registers an implementation of <code>ElementParser</code> under
-	 * the <code>elementName</code>.<code>elementName</code> should
+	 * Method registers an implementation of {@code ElementParser} under
+	 * the {@code elementName}.{@code elementName} should
 	 * correspond to the element-name of the tag, for which the parser is
 	 * designed.
 	 *
 	 * @param elementName Name, under which the parser is registered. Should
 	 * correspond to the element-name of the tag, for which the parser is
 	 * designed.
-	 * @param parser Implementation of <code>ElementParser</code>.
+	 * @param parser Implementation of {@code ElementParser}.
 	 * @throws ParserAlreadyRegisteredException Thrown, if there is already a
-	 *                                          parser registered with <code>elementName</code>
+	 *                                          parser registered with {@code elementName}
 	 */
-	public void registerParser(@Nonnull String elementName, @Nonnull ElementParser parser)
+	public void registerParser(@NonNull String elementName, @NonNull ElementParser parser)
 			throws ParserAlreadyRegisteredException {
 		String lowerCaseName = elementName.toLowerCase();
 		synchronized (parsers) {
@@ -139,7 +140,7 @@ public class ParserFactory {
 	 *
 	 * @return ResourceLocator used by this factory
 	 */
-	@Nonnull
+	@NonNull
 	public ResourceLocator getResourceLocator() {
 		return locator;
 	}

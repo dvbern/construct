@@ -15,15 +15,16 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-import javax.annotation.Nonnull;
+import java.lang.reflect.Field;
+import java.util.Optional;
+
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "setfield" (<code>&lt;setfield  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "setfield" ({@code <setfield  >}).
+ * The parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -43,23 +44,24 @@ public class SetFieldParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	public @NonNull ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
-		/** * get name of field ** */
-		String fieldName = element.getAttribute("name");
+		// get name of field
+		String fieldName = Optional
+			.ofNullable(element.getAttribute("name"))
+			.orElseThrow(() -> new ElementParserException("name attribute is missing"));
 
-		/** ** get object, on which field is to set ** */
-		List objectElChildren = element.getElementsByTagName("target");
+		// get object, on which field is to set
+		var objectElChildren = element.getElementsByTagName("target");
 		if (objectElChildren.size() != 1) {
 			throw new ElementParserException(
 					"object must have exactly on child (construct or ref or cast...)");
 		}
-		Element objectElToParse = (Element) objectElChildren.get(0);
+		Element objectElToParse = objectElChildren.get(0);
 		ClassObjectPair cop;
 		Object myObject;
-		Class myClass;
+		Class<?> myClass = null;
 		try {
 			cop = factory.getParser(objectElToParse.getNodeName()).parse(
 					objectElToParse, factory);
@@ -69,7 +71,7 @@ public class SetFieldParser implements ElementParser {
 			throw new ElementParserException(ex);
 		}
 
-		/** * get value to set ** */
+		// get value to set
 		Element valueEl = element.getElementsByTagName("value")
 				.get(0);
 		Object newValue;
@@ -81,13 +83,11 @@ public class SetFieldParser implements ElementParser {
 			throw new ElementParserException(ex);
 		}
 
-		/** * get Field and set value ** */
+		// get Field and set value
 		try {
 			Field field = myClass.getField(fieldName);
 			field.set(myObject, newValue);
-		} catch (NoSuchFieldException ex) {
-			throw new ElementParserException(ex);
-		} catch (IllegalAccessException ex) {
+		} catch (NoSuchFieldException | IllegalAccessException ex) {
 			throw new ElementParserException(ex);
 		}
 

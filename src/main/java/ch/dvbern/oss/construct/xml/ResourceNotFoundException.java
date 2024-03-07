@@ -15,7 +15,10 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.Serial;
 
 /**
  * Exception indicating that a specific resource could not have been found. Used
@@ -25,15 +28,16 @@ import javax.annotation.Nonnull;
  */
 public class ResourceNotFoundException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = -1502396802449310508L;
 
 	/**
-	 * Constructs an instance of <code>ResourceNotFoundException</code> with
+	 * Constructs an instance of {@code ResourceNotFoundException} with
 	 * the specified detail message.
 	 *
 	 * @param msg the detail message.
 	 */
-	public ResourceNotFoundException(@Nonnull String msg) {
+	public ResourceNotFoundException(@NonNull String msg) {
 		super(msg);
 	}
 }

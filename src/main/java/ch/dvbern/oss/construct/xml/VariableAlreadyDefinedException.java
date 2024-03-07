@@ -15,7 +15,10 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import javax.annotation.Nonnull;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.Serial;
 
 /**
  * Exception indicating that a variable with the given name is already stored in
@@ -25,15 +28,16 @@ import javax.annotation.Nonnull;
  */
 public class VariableAlreadyDefinedException extends Exception {
 
+	@Serial
 	private static final long serialVersionUID = -3083483453012984072L;
 
 	/**
-	 * Constructs an instance of <code>VariableAlreadyDefinedException</code>
+	 * Constructs an instance of {@code VariableAlreadyDefinedException}
 	 * with the specified detail message.
 	 *
 	 * @param msg the detail message.
 	 */
-	public VariableAlreadyDefinedException(@Nonnull String msg) {
+	public VariableAlreadyDefinedException(@NonNull String msg) {
 		super(msg);
 	}
 }

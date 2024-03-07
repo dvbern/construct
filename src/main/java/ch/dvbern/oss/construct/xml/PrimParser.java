@@ -15,18 +15,15 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import java.util.Collections;
-import java.util.HashSet;
+import ch.dvbern.oss.construct.ConstructionException;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
-import ch.dvbern.oss.construct.ConstructionException;
-
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
  * xml-tags with the element-name of a primitive (see description in
- * <code>PrimObjectFactory</code>) (for example <code>&lt;int  &gt;</code>).
+ * {@code PrimObjectFactory}) (for example {@code <int  >}).
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
  *
@@ -35,20 +32,8 @@ import ch.dvbern.oss.construct.ConstructionException;
  */
 public class PrimParser implements ElementParser {
 
-	private static final Set<String> ALLOWED_ELEMENT_NAMES;
-
-	static {
-		Set<String> names = new HashSet<>();
-		names.add("string");
-		names.add("int");
-		names.add("long");
-		names.add("short");
-		names.add("float");
-		names.add("double");
-		names.add("boolean");
-		names.add("char");
-		ALLOWED_ELEMENT_NAMES = Collections.unmodifiableSet(names);
-	}
+	private static final Set<String> ALLOWED_ELEMENT_NAMES =
+		Set.of("string", "int", "long", "short", "float", "double", "boolean", "char");
 
 	/**
 	 * Method parses the passed xml-element and creates an object based on the
@@ -63,29 +48,26 @@ public class PrimParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	@NonNull
+	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 		String elementName = element.getNodeName();
 		if (!ALLOWED_ELEMENT_NAMES.contains(elementName)) {
 			throw new ElementParserException(
-					"PrimParser can not handle elements with the name="
-							+ elementName);
+				"PrimParser can not handle elements with the name=" + elementName);
 		}
 
 		//primitives and Strings
-		Class klass;
+		Class<?> klass = null;
 		try {
 			klass = ClassFactory.getKlass(elementName);
 		} catch (ClassNotFoundException ex) {
 			throw new ElementParserException(
-					"ClassFactory could NOT load Class with type="
-							+ elementName, ex);
+				"ClassFactory could NOT load Class with type=" + elementName, ex);
 		}
 		String strValue = element.getAttribute("value");
 		if (strValue == null) {
-			throw new ElementParserException(
-					"definition of argument NOT correct (value must NOT be null)");
+			throw new ElementParserException("definition of argument NOT correct (value must NOT be null)");
 		}
 		Object value;
 		try {

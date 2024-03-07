@@ -15,16 +15,17 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.Optional;
 
-import javax.annotation.Nonnull;
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "invoke" (<code>&lt;invoke  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "invoke" ({@code <invoke  >}).
+ * The parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -44,20 +45,20 @@ public class InvokeParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	@NonNull
+	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
-		/** * get name of method ** */
-		String methodName = element.getAttribute("methodName");
+		String methodName = Optional
+			.ofNullable(element.getAttribute("methodName"))
+			.orElseThrow(() -> new ElementParserException("methodName attribute is missing"));
 
-		/** ** get object, on which method is to invoke ** */
-		List objectElChildren = element.getElementsByTagName("target");
+		var objectElChildren = element.getElementsByTagName("target");
 		if (objectElChildren.size() != 1) {
 			throw new ElementParserException(
 					"object must have exactly on child (construct or ref or cast...)");
 		}
-		Element objectElToParse = (Element) objectElChildren.get(0);
+		Element objectElToParse = objectElChildren.get(0);
 		Object myObject;
 		Class<?> myClass;
 		try {
@@ -71,12 +72,11 @@ public class InvokeParser implements ElementParser {
 			throw new ElementParserException(ex);
 		}
 
-		/** * get parameters ** */
-		List parameterElList = element.getElementsByTagName("parameters");
+		var parameterElList = element.getElementsByTagName("parameters");
 		Class<?>[] classArray = new Class[parameterElList.size()];
 		Object[] objArray = new Object[parameterElList.size()];
 		for (int i = 0; i < parameterElList.size(); i++) {
-			Element paramEl = (Element) parameterElList.get(i);
+			Element paramEl = parameterElList.get(i);
 			try {
 				ClassObjectPair cop = factory.getParser(
 						paramEl.getNodeName()).parse(paramEl, factory);
@@ -87,7 +87,6 @@ public class InvokeParser implements ElementParser {
 			}
 		}
 
-		/** * get Method and invoke ** */
 		try {
 			Method method = myClass.getMethod(methodName, classArray);
 			Object obj = method.invoke(myObject, objArray);
@@ -95,11 +94,7 @@ public class InvokeParser implements ElementParser {
 				return new ClassObjectPair(Object.class, null);
 			}
 			return new ClassObjectPair(obj.getClass(), obj);
-		} catch (NoSuchMethodException ex) {
-			throw new ElementParserException(ex);
-		} catch (IllegalAccessException ex) {
-			throw new ElementParserException(ex);
-		} catch (InvocationTargetException ex) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
 			throw new ElementParserException(ex);
 		}
 

@@ -15,15 +15,16 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is responsible for maintaining a variable-scope where variables
- * (name and value) are stored (by <code>VardefParser</code>) and can be
- * retrieved (by <code>VarParser</code>). For retrieving and storing
+ * (name and value) are stored (by {@code VardefParser}) and can be
+ * retrieved (by {@code VarParser}). For retrieving and storing
  * ElementParsers, the ScopeParserFactory uses a ParserFactory.
  *
  * @see ParserFactory
@@ -32,10 +33,10 @@ import javax.annotation.Nonnull;
  */
 public class ScopeParserFactory extends ParserFactory {
 
-	@Nonnull
+	@NonNull
 	private final ParserFactory factory;
 
-	@Nonnull
+	@NonNull
 	private final Map<String, ClassObjectPair> varScope;
 
 	/**
@@ -44,45 +45,45 @@ public class ScopeParserFactory extends ParserFactory {
 	 * @param factory ParserFactory responsible for managing the ElementParsers
 	 * @see ElementParser
 	 */
-	public ScopeParserFactory(@Nonnull ParserFactory factory) {
+	public ScopeParserFactory(@NonNull ParserFactory factory) {
 		this.factory = factory;
 		varScope = new HashMap<>();
 	}
 
 	/**
-	 * Method returns <code>ElementParser</code> for a xml-tag with the
-	 * <code>element-name</code>.
+	 * Method returns {@code ElementParser} for a xml-tag with the
+	 * {@code element-name}.
 	 *
 	 * @param elementName Name under which the parser is registered. Should
 	 * correspond to the element-name of the tag, for which the parser is
 	 * designed.
-	 * @return <code>ElementParser</code> for the given
-	 * <code>element-name</code>. Never null.
+	 * @return {@code ElementParser} for the given
+	 * {@code element-name}. Never null.
 	 * @throws ParserNotRegisteredException Thrown if there is no parser
-	 *                                      registered for the given <code>element-name</code>.
+	 *                                      registered for the given {@code element-name}.
 	 */
 	@Override
-	@Nonnull
-	public ElementParser getParser(@Nonnull String elementName)
+	@NonNull
+	public ElementParser getParser(@NonNull String elementName)
 			throws ParserNotRegisteredException {
 		return factory.getParser(elementName);
 	}
 
 	/**
-	 * Method registers implementation of <code>ElementParser</code> under the
-	 * <code>element-name</code>.<code>element-name</code> should
+	 * Method registers implementation of {@code ElementParser} under the
+	 * {@code element-name}.{@code element-name} should
 	 * correspond to the element-name of the tag, for which the parser is
 	 * designed.
 	 *
 	 * @param elementName Name, under which the parser is registered. Should
 	 * correspond to the element-name of the tag, for which the parser is
 	 * designed.
-	 * @param parser Implementation of <code>ElementParser</code>.
+	 * @param parser Implementation of {@code ElementParser}.
 	 * @throws ParserAlreadyRegisteredException there is already a registered
 	 *                                          parser
 	 */
 	@Override
-	public void registerParser(@Nonnull String elementName, @Nonnull ElementParser parser)
+	public void registerParser(@NonNull String elementName, @NonNull ElementParser parser)
 			throws ParserAlreadyRegisteredException {
 		factory.registerParser(elementName, parser);
 	}
@@ -99,18 +100,15 @@ public class ScopeParserFactory extends ParserFactory {
 	 * @throws VariableNotDefinedException Thrown if no variable-definition
 	 *                                     with the varNmae is found in this scope or in a "higher" scope
 	 */
-	@Nonnull
-	public ClassObjectPair getVariableCOP(@Nonnull String varName)
+	@NonNull
+	public ClassObjectPair getVariableCOP(@NonNull String varName)
 			throws VariableNotDefinedException {
 		ClassObjectPair value = varScope.get(varName);
-		if (value == null) {
-			if (factory instanceof ScopeParserFactory) {
-				value = ((ScopeParserFactory) factory).getVariableCOP(varName);
-			}
+		if (value == null && (factory instanceof ScopeParserFactory scopeParserFactory)) {
+			value = scopeParserFactory.getVariableCOP(varName);
 		}
 		if (value == null) {
-			throw new VariableNotDefinedException("variable with name="
-					+ varName + " not defined");
+			throw new VariableNotDefinedException("variable with name=" + varName + " not defined");
 		}
 		return value;
 	}
@@ -126,7 +124,7 @@ public class ScopeParserFactory extends ParserFactory {
 	 *                                         ScopeParserFactory. (Variable with the same varName may be
 	 *                                         stored in "higher" scopes.)
 	 */
-	public void setVariableCOP(@Nonnull String varName, @Nonnull ClassObjectPair cop)
+	public void setVariableCOP(@NonNull String varName, @NonNull ClassObjectPair cop)
 			throws VariableAlreadyDefinedException {
 		synchronized (varScope) {
 			if (varScope.get(varName) != null) {

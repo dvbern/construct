@@ -15,25 +15,26 @@
  */
 package ch.dvbern.oss.construct.xml;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.io.InputStream;
 
-import javax.annotation.Nonnull;
 
 /**
  * Implementation of ResourceLocator. Uses ClassLoader for locating the
  * resources. The resources (xml-files) must therefore be in the classpath of
  * the classloader. <br>
- * As <code>ResourceLocator</code> this class acts as event source for
- * <code>ResourceChangedEvent</code> s and implements the methods
- * <code>addResourceChangeListener</code> and
- * <code>removeResourceChangeListener</code> (empy implementations).
+ * As {@code ResourceLocator} this class acts as event source for
+ * {@code ResourceChangedEvent} s and implements the methods
+ * {@code addResourceChangeListener} and
+ * {@code removeResourceChangeListener} (empy implementations).
  *
  * @see ResourceChangedEvent
  */
 public class ClassLoaderResourceLocator implements ResourceLocator {
 
-	@Nonnull
-	private ClassLoader cl;
+	@NonNull
+	private final ClassLoader cl;
 
 	/**
 	 * Default constructor. Uses class loader of this class for locating the
@@ -49,28 +50,27 @@ public class ClassLoaderResourceLocator implements ResourceLocator {
 	 *
 	 * @param cl ClassLoader used for locating the resources; never null.
 	 */
-	public ClassLoaderResourceLocator(@Nonnull ClassLoader cl) {
+	public ClassLoaderResourceLocator(@NonNull ClassLoader cl) {
 		this.cl = cl;
 	}
 
 	/**
 	 * Method returns specified resource as inputStream.
 	 *
-	 * @param resource name of resource, e.g. name of xml-file
+	 * @param resourceName name of resource, e.g. name of xml-file
 	 * @return InputStream of specified resource, never null.
 	 * @throws ResourceNotFoundException if resource could not have been located
 	 */
 	@Override
-	@Nonnull
-	public InputStream getResourceAsStream(@Nonnull String resource)
+	@NonNull
+	public InputStream getResourceAsStream(@NonNull String resourceName)
 			throws ResourceNotFoundException {
-		InputStream ins = cl.getResourceAsStream(resource);
+		InputStream ins = cl.getResourceAsStream(resourceName);
 		if (ins == null) {
 			throw new ResourceNotFoundException("resource with objectId="
-					+ resource + " not found");
-		} else {
-			return ins;
+				+ resourceName + " not found");
 		}
+		return ins;
 	}
 
 	/**
@@ -80,7 +80,8 @@ public class ClassLoaderResourceLocator implements ResourceLocator {
 	 * @param listener listener interested in changes or removals of resources
 	 */
 	@Override
-	public void addResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+	public void addResourceChangeListener(@NonNull ResourceChangeListener listener) {
+		// NOP
 	}
 
 	/**
@@ -90,7 +91,8 @@ public class ClassLoaderResourceLocator implements ResourceLocator {
 	 * @param listener registered listener that has to be removed
 	 */
 	@Override
-	public void removeResourceChangeListener(@Nonnull ResourceChangeListener listener) {
+	public void removeResourceChangeListener(@NonNull ResourceChangeListener listener) {
+		// NOP
 	}
 
 }

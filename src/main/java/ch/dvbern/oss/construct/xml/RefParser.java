@@ -15,21 +15,19 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.annotation.Nonnull;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing
- * xml-tags with the element-name "ref" (<code>&lt;ref  &gt;</code>). The
- * parser may use other <code>ElementParser</code> instances for parsing
+ * Implementation of {@code ElementParser}. Responsible for parsing
+ * xml-tags with the element-name "ref" ({@code <ref  >}). The
+ * parser may use other {@code ElementParser} instances for parsing
  * nested elements.
  * <p>
  * For a detailed description of the xml-tags see the special documentation.
@@ -49,45 +47,35 @@ public class RefParser implements ElementParser {
 	 *                                instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	@NonNull
+	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 		String elementName = element.getNodeName();
 		if (!elementName.equals("ref")) {
-			throw new ElementParserException(
-					"RefParser can not handle elements with the name="
-							+ elementName);
+			throw new ElementParserException("RefParser can not handle elements with the name=" + elementName);
 		}
 		String objectId = element.getAttribute("id");
-		if (objectId == null || objectId.equals("")) {
+		if (objectId == null || objectId.isEmpty()) {
 			throw new ElementParserException(
 					"id of ref tag must be the name of a xml-file");
 		}
 		try {
 			InputStream ins = factory.getResourceLocator().getResourceAsStream(
 					objectId);
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+			DocumentBuilder builder = DocumentBuildFactoryWrapper.newInstance()
 					.newDocumentBuilder();
 			Document doc = builder.parse(ins);
 			Element root = new Element(doc.getDocumentElement());
 
 			return factory.getParser(root.getNodeName()).parse(
 					root, factory);
-		} catch (SAXException ex) {
-			throw new ElementParserException("parsing of file with id="
-					+ objectId + " NOT successfull", ex);
-		} catch (IOException ex) {
-			throw new ElementParserException("parsing of file with id="
-					+ objectId + " NOT successfull", ex);
-		} catch (ParserConfigurationException ex) {
+		} catch (SAXException | IOException | ParserConfigurationException ex) {
 			throw new ElementParserException("parsing of file with id="
 					+ objectId + " NOT successfull", ex);
 		} catch (ParserNotRegisteredException ex) {
 			throw new ElementParserException("no parser found", ex);
 		} catch (ResourceNotFoundException ex) {
-			throw new ElementParserException(
-					"ref parser: resource not foung",
-					ex);
+			throw new ElementParserException("ref parser: resource not foung", ex);
 		}
 	}
 

@@ -15,15 +15,15 @@
  */
 package ch.dvbern.oss.construct.xml;
 
-import java.lang.reflect.Array;
-import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-import javax.annotation.Nonnull;
+import java.lang.reflect.Array;
+
 
 /**
- * Implementation of <code>ElementParser</code>. Responsible for parsing xml-tags with the element-name "array"
- * (<code>&lt;array  &gt;</code>).
- * The parser may use other <code>ElementParser</code> instances for parsing nested elements. <br>
+ * Implementation of {@code ElementParser}. Responsible for parsing xml-tags with the element-name "array"
+ * ({@code <array  >}).
+ * The parser may use other {@code ElementParser} instances for parsing nested elements. <br>
  * For a detailed description of the xml-tags see the special documentation.
  */
 public class ArrayParser implements ElementParser {
@@ -38,8 +38,8 @@ public class ArrayParser implements ElementParser {
 	 *                                class/object instances.
 	 */
 	@Override
-	@Nonnull
-	public ClassObjectPair parse(@Nonnull Element element, @Nonnull ParserFactory factory)
+	@NonNull
+	public ClassObjectPair parse(@NonNull Element element, @NonNull ParserFactory factory)
 			throws ElementParserException {
 
 		// get Class of array
@@ -53,7 +53,7 @@ public class ArrayParser implements ElementParser {
 			throw new ElementParserException("Attribute 'elementtype' may not be null/empty on element "
 					+ element.getNodeName());
 		}
-		Class arrayClass;
+		Class<?> arrayClass = null;
 		try {
 			arrayClass = ClassFactory.getKlass(type);
 		} catch (ClassNotFoundException ex) {
@@ -62,10 +62,10 @@ public class ArrayParser implements ElementParser {
 					ex);
 		}
 		// get children
-		List arrayChildren = element.getChildElements();
+		var arrayChildren = element.getChildElements();
 		Object array = Array.newInstance(arrayClass, arrayChildren.size());
 		for (int i = 0; i < arrayChildren.size(); i++) {
-			Element el = (Element) arrayChildren.get(i);
+			Element el = arrayChildren.get(i);
 			try {
 				ClassObjectPair cop = factory.getParser(el.getNodeName()).parse(el, factory);
 				Array.set(array, i, cop.getObject());
@@ -77,7 +77,7 @@ public class ArrayParser implements ElementParser {
 				throw new ElementParserException("ArrayParser: Could NOT set value into array", ex);
 			}
 		}
-		Class klass = array.getClass();
+		var klass = array.getClass();
 
 		return new ClassObjectPair(klass, array);
 
