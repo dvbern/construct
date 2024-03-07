@@ -1,6 +1,6 @@
 # construct
 
-**⚠️This library was mainly released for archival purposes ⚠️**
+**⚠️This library should not be used for new projects ⚠️**
 
 Instantiate and manipulate Java objects parsed from an Xml structure.
 
@@ -51,6 +51,13 @@ Using maven:
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
+
+## Release
+Releases are made with jgitflow:
+
+```bash
+./mvnw jgitflow:release-start jgitflow:release-finish
+```
 
 ## Contributing Guidelines
 
