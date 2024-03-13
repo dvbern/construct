@@ -13,7 +13,7 @@
 
 	<name>DVBern Construct</name>
 
-	<version>3.0.2</version>
+	<version>3.0.3-SNAPSHOT</version>
 	<description>Instanzieren von Java Objekten aus einer XML Struktur heraus</description>
 
 	<properties>
